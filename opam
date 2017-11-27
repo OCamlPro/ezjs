@@ -1,0 +1,43 @@
+(**************************************************************)
+(*                                                            *)
+(*      This file is managed by ocp-autoconf                  *)
+(*  Remove it from `manage_files` in 'ocp-autoconf.config'    *)
+(*  if you want to modify it manually (or use 'opam.trailer') *)
+(*                                                            *)
+(**************************************************************)
+
+opam-version: "1.2"
+maintainer: "Fabrice Le Fessant <fabrice.le_fessant@ocamlpro.com>"
+authors: [
+  "Cagdas Bozman <cagdas.bozman@ocamlpro.com>"
+  "Michael Laporte <michael.laporte@ocamlpro.com>"
+  "Fabrice Le Fessant <fabrice.le_fessant@ocamlpro.com>"
+]
+homepage: "http://github.com/OCamlPro/ocplib-jsutils"
+dev-repo: "https://github.com/OCamlPro/ocplib-jsutils.git"
+bug-reports: "https://github.com/OCamlPro/ocplib-jsutils/issues"
+build: [
+  [     "./configure"
+    "--prefix"
+    "%{prefix}%"
+    "--with-ocamldir=%{prefix}%/lib"
+    "--with-metadir=%{prefix}%/lib"
+  ]
+  [ make ]
+]
+install: [
+  [ make "install" ]
+]
+remove: [
+]
+depends: [
+     "js_of_ocaml"
+     "js_of_ocaml-tyxml"
+     "lwt"
+     "ocamlfind"
+     "ocp-build" {>= "1.99.19-beta" }
+     "omd"
+     "tyxml"
+     "yojson"
+]
+available: [ocaml-version >= "3.12.0"]

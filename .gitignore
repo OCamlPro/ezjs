@@ -1,0 +1,22 @@
+
+#############################################################################
+#
+#          This file is managed by ocp-autoconf.
+#
+#  Remove it from `manage_files` in 'ocp-autoconf.config' if you want to
+#  modify it manually.
+#
+#############################################################################
+
+# ocp-build working directories
+_obuild
+
+# ocp-lint working directories
+_olint
+
+# backups of modified files
+*~
+*.annot
+
+# content of file ocp-autoconf.d/gitignore
+

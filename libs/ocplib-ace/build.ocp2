@@ -1,0 +1,18 @@
+
+
+OCaml.library("ace",
+  ocaml + {
+    link = [ "-linkall" ];
+    files = [
+    "ace_types.mli";
+    "ace.ml",        { pp = camlp4_optcomp_js };
+    "ocaml_mode.ml", { pp = camlp4_optcomp_js };
+  ];
+  requires = [
+    "jsutils";
+    "js_of_ocaml";
+    "js_of_ocaml-lwt";
+    "lwt";
+    "ocp-indent.lib";
+  ];
+  });

@@ -1,0 +1,18 @@
+OCaml.library("jsutils",
+  ocaml + {
+  files = [
+    "js_utils.ml",   { pp = camlp4_optcomp_js };
+    "lwt_request.ml", { pp = camlp4_optcomp_js };
+  ];
+  requires = [
+    "lwt";
+    "js_of_ocaml.tyxml";
+  ];
+  });
+
+OCaml.library("xor",
+  ocaml + {
+  has_asm = true;
+  files = [ "xor.ml" ];
+  requires = [ "base64" ];
+  });
