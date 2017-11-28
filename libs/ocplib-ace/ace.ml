@@ -98,20 +98,19 @@ let set_custom_data { editor } data =
 let set_mode {editor} name =
   editor##getSession()##setMode (Js.string name)
 
-let set_theme {editor} name =
-  editor##setTheme (Js.string name)
-
 type mark_type = Error | Warning | Message
 
-let string_of_make_type = function
+let string_of_mark_type = function
   | Error -> "error"
   | Warning -> "warning"
-  | Message -> "info"
+  | Message -> "message"
 
 let require s = (Js.Unsafe.variable "ace")##require(Js.string s)
 
 type range = Ace_types.range Js.t
+
 let range_cstr = (require  "ace/range")##_Range
+
 let range sr sc er ec : range =
   Js.Unsafe.new_obj range_cstr
     [| Js.Unsafe.inject sr ; Js.Unsafe.inject sc ;
@@ -124,7 +123,7 @@ type loc = {
 
 let set_mark editor ?loc ?(type_ = Message) msg =
   let session = editor.editor##getSession() in
-  let type_ = string_of_make_type type_ in
+  let type_ = string_of_mark_type type_ in
   let sr, sc, range =
     match loc with
     | None -> 0, 0, None
@@ -144,14 +143,34 @@ let set_mark editor ?loc ?(type_ = Message) msg =
   | None -> ()
   | Some range ->
     editor.marks <-
-      session##addMarker (range, Js.string type_, Js.string "text", Js._false) ::
-      editor.marks
+      session##addMarker (range, Js.string type_, Js.string "text", Js._false)
+      :: editor.marks
+
+let add_marker editor type_ { loc_start = (sr, sc) ; loc_end = (er, ec) } =
+  let range = range (sr - 1) sc (er - 1) ec in
+  let session = editor.editor##getSession() in
+  let type_ = string_of_mark_type type_ in
+  editor.marks <-
+    session##addMarker (range, Js.string type_, Js.string "text", Js._false) ::
+    editor.marks
+
+let set_annotation editor type_ msg { loc_start = (sr, sc) } =
+  let session = editor.editor##getSession() in
+  let annot : annotation Js.t = Js.Unsafe.obj [||] in
+  annot##row <- (sr - 1);
+  annot##column <- sc;
+  annot##text <- Js.string msg;
+  annot##type_ <- Js.string (string_of_mark_type type_);
+  let annotations =
+    Array.concat [[| annot |]; Js.to_array (session##getAnnotations ())] in
+  session##setAnnotations(Js.array @@ annotations)
 
 let set_background_color editor color =
   editor.editor_div##style##backgroundColor <- Js.string color
 
 let add_class { editor_div } name =
   editor_div##classList##add(Js.string name)
+
 let remove_class { editor_div } name =
   editor_div##classList##remove(Js.string name)
 
@@ -182,7 +201,7 @@ let get_keybinding_menu e =
 let show_keybindings e =
   match get_keybinding_menu e with
   | None ->
-      Firebug.console##log
+      Js_utils.js_log
         (Js.string "You should load: 'ext-keybinding_menu.js'")
   | Some o ->
       o##showKeyboardShortcuts()
@@ -209,6 +228,7 @@ let add_keybinding { editor }
 (** Mode *)
 
 type token = Ace_types.token Js.t
+
 let token ~type_ value =
   let obj : Ace_types.token Js.t = Js.Unsafe.obj [||] in
   obj##value <- Js.string value;
@@ -261,9 +281,10 @@ let define_mode name helpers =
     [| Js.Unsafe.inject (Js.string ("ace/mode/" ^ name)) ;
        Js.Unsafe.inject js_helpers |]
 
-let set_font_size {editor} sz =
+let set_font_size { editor } sz =
   editor##setFontSize (sz)
-let set_tab_size {editor} sz =
+
+let set_tab_size { editor } sz =
   editor##getSession()##setTabSize (sz)
 
 let get_state { editor } row =
@@ -286,3 +307,56 @@ let delete doc range =
 
 let remove { editor } dir =
   editor##remove(Js.string "left")
+
+let set_read_only { editor } rd =
+  editor##setReadOnly (Js.bool rd)
+
+let set_theme { editor } thm =
+  editor##setTheme (Js.string thm)
+
+let get_lines { editor } begin_line end_line =
+  let document = editor##getSession()##getDocument() in
+  document##getLines (begin_line, end_line)
+  |> Js.str_array
+  |> Js.to_array
+  |> Array.map (fun s -> Js.to_string s)
+
+let set_value { editor } value =
+  editor##setValue (Js.string value)
+
+let clear_selection { editor } =
+  editor##clearSelection ()
+
+type option_value =
+  | Int of int
+  | String of string
+
+let set_option { editor } option value =
+  let v =
+    match value with
+    | Int n -> Js.Unsafe.inject n
+    | String s -> Js.Unsafe.inject (Js.string s)
+  in
+  editor##setOption (Js.string option, v)
+
+let set_first_line_number editor n =
+  set_option editor "firstLineNumber" (Int n)
+
+let set_tab_size editor n =
+  set_option editor "tabSize" (Int n)
+
+let get_length { editor } =
+  let document = editor##getSession()##getDocument() in
+  document##getLength ()
+
+let set_highlight_active_line { editor } actived =
+  editor##setHighlightActiveLine (Js.bool actived)
+
+let set_highlight_gutter_line { editor } actived =
+  editor##setHighlightGutterLine (Js.bool actived)
+
+let set_show_print_margin { editor } actived =
+  editor##setShowPrintMargin (Js.bool actived)
+
+let set_display_indent_guides { editor } actived =
+  editor##setDisplayIndentGuides (Js.bool actived)

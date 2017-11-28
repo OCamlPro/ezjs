@@ -1,4 +1,4 @@
-OCaml.library("jsutils",
+OCaml.library("ocplib-jsutils",
   ocaml + {
   files = [
     "js_utils.ml",   { pp = camlp4_optcomp_js };
@@ -10,7 +10,7 @@ OCaml.library("jsutils",
   ];
   });
 
-OCaml.library("xor",
+OCaml.library("ocplib-xor",
   ocaml + {
   has_asm = true;
   files = [ "xor.ml" ];
