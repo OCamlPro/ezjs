@@ -1,6 +1,6 @@
 
 
-OCaml.library("ace",
+OCaml.library("ocplib-ace",
   ocaml + {
     link = [ "-linkall" ];
     files = [
@@ -9,7 +9,7 @@ OCaml.library("ace",
     "ocaml_mode.ml", { pp = camlp4_optcomp_js };
   ];
   requires = [
-    "jsutils";
+    "ocplib-jsutils";
     "js_of_ocaml";
     "js_of_ocaml-lwt";
     "lwt";
