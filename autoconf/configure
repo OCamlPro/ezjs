@@ -1799,7 +1799,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 CONFIGURE_ARGS=$*
 
-OCAML_MINIMAL_VERSION=4.02.0
+OCAML_MINIMAL_VERSION=4.02.3
 
 
 # Check whether --enable-version-check was given.
