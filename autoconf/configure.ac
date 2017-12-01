@@ -147,6 +147,22 @@ AC_CHECK_OCAML_PKG(js_of_ocaml-tyxml)
 if test "$OCAML_PKG_js_of_ocaml_tyxml" = "no"; then
    AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml-tyxml'.])
 fi
+AC_CHECK_OCAML_PKG(optcomp)
+if test "$OCAML_PKG_optcomp" = "no"; then
+   AC_MSG_ERROR([Please install OCaml package 'optcomp'.])
+fi
+AC_CHECK_OCAML_PKG(js_of_ocaml-camlp4)
+if test "$OCAML_PKG_js_of_ocaml_camlp4" = "no"; then
+   AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml-camlp4'.])
+fi
+AC_CHECK_OCAML_PKG(js_of_ocaml-lwt)
+if test "$OCAML_PKG_js_of_ocaml_lwt" = "no"; then
+   AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml-lwt'.])
+fi
+AC_CHECK_OCAML_PKG(base64)
+if test "$OCAML_PKG_base64" = "no"; then
+   AC_MSG_ERROR([Please install OCaml package 'base64'.])
+fi
 OPAM_REPO=/home/lefessan/GIT/ocp-public/opam-repository
 OPAM_REPO_OFFICIAL_REMOTE=ocaml
 OPAM_REPO_FORK_REMOTE=origin

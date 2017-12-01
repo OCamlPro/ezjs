@@ -1,3 +1,6 @@
+[![Travis-CI Build Status](https://travis-ci.org/OCamlPro/ocplib-jsutils.svg?branch=master)](https://travis-ci.org/OCamlPro/ocplib-jsutils)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/9b6liqyly6fcp3s0/branch/master?svg=true)](https://ci.appveyor.com/project/OCamlPro-Bozman/ocplib-jsutils)
+
 ocplib-jsutils
 ==============
 

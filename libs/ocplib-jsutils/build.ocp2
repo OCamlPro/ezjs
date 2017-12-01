@@ -5,6 +5,7 @@ OCaml.library("ocplib-jsutils",
     "lwt_request.ml", { pp = camlp4_optcomp_js };
   ];
   requires = [
+    "optcomp";
     "lwt";
     "js_of_ocaml.tyxml";
   ];

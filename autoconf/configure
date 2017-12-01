@@ -592,6 +592,10 @@ OPAM_REPO_FORK_REMOTE
 OPAM_REPO_OFFICIAL_REMOTE
 OPAM_REPO
 ROOTDIR
+OCAML_PKG_base64
+OCAML_PKG_js_of_ocaml_lwt
+OCAML_PKG_js_of_ocaml_camlp4
+OCAML_PKG_optcomp
 OCAML_PKG_js_of_ocaml_tyxml
 OCAML_PKG_yojson
 OCAML_PKG_omd
@@ -4424,6 +4428,126 @@ $as_echo "not found" >&6; }
 
 if test "$OCAML_PKG_js_of_ocaml_tyxml" = "no"; then
    as_fn_error $? "Please install OCaml package 'js_of_ocaml-tyxml'." "$LINENO" 5
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package optcomp" >&5
+$as_echo_n "checking for OCaml findlib package optcomp... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in optcomp  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_optcomp=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_optcomp_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_optcomp=no
+  fi
+
+
+
+if test "$OCAML_PKG_optcomp" = "no"; then
+   as_fn_error $? "Please install OCaml package 'optcomp'." "$LINENO" 5
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package js_of_ocaml-camlp4" >&5
+$as_echo_n "checking for OCaml findlib package js_of_ocaml-camlp4... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in js_of_ocaml-camlp4  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_js_of_ocaml_camlp4=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_js_of_ocaml_camlp4_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_js_of_ocaml_camlp4=no
+  fi
+
+
+
+if test "$OCAML_PKG_js_of_ocaml_camlp4" = "no"; then
+   as_fn_error $? "Please install OCaml package 'js_of_ocaml-camlp4'." "$LINENO" 5
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package js_of_ocaml-lwt" >&5
+$as_echo_n "checking for OCaml findlib package js_of_ocaml-lwt... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in js_of_ocaml-lwt  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_js_of_ocaml_lwt=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_js_of_ocaml_lwt_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_js_of_ocaml_lwt=no
+  fi
+
+
+
+if test "$OCAML_PKG_js_of_ocaml_lwt" = "no"; then
+   as_fn_error $? "Please install OCaml package 'js_of_ocaml-lwt'." "$LINENO" 5
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package base64" >&5
+$as_echo_n "checking for OCaml findlib package base64... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in base64  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_base64=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_base64_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_base64=no
+  fi
+
+
+
+if test "$OCAML_PKG_base64" = "no"; then
+   as_fn_error $? "Please install OCaml package 'base64'." "$LINENO" 5
 fi
 OPAM_REPO=/home/lefessan/GIT/ocp-public/opam-repository
 OPAM_REPO_OFFICIAL_REMOTE=ocaml

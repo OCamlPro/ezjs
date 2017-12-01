@@ -8,7 +8,7 @@ autoconf/Makefile.rules c9e85dee44380b1a855cb2d49da44d54
 autoconf/build.ocp 9d81103f0dd977b6414645b9ab29c713
 autoconf/config.ocp2gen.in 98b5f8ae8a16187c0c76daccc72bee2d
 autoconf/config.ocpgen.in 159639bcf1a04a7c846aa1dffe556db9
-autoconf/configure.ac 27f0a084203f117322c58d12db7c2069
+autoconf/configure.ac 95aa2ee05de9255e5097a3db13331e68
 autoconf/m4/ax_compare_version.m4 ebb455a7fd6a8ba9a4e38a25c8f0b686
 autoconf/m4/ocaml.m4 bffe7da970a9e23a89b611c00360f36f
 autoconf/ocaml-config.h.in 361f7d5a23b30c6c49756a9e34c2dcf9
@@ -18,5 +18,5 @@ build.ocp e34f091d3841a5b334fbb7341b9e227e
 build.ocp2 1e8c5c999be6aa80323779226d7c7f1a
 configure 3ffc5da4b7c00140c3024342e64cc2a5
 ocp-autoconf.d/configure.ac bb8a88addef00eed10bfc70827998e9e
-opam 034758a28f2b3db674df1be07b379220
+opam 6c575538dcb4659db85d1f2123fa0564
 push-opam.sh c48fac7c8991f96357c9fc65a2ae6288
