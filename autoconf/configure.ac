@@ -147,10 +147,6 @@ AC_CHECK_OCAML_PKG(js_of_ocaml-tyxml)
 if test "$OCAML_PKG_js_of_ocaml_tyxml" = "no"; then
    AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml-tyxml'.])
 fi
-AC_CHECK_OCAML_PKG(optcomp)
-if test "$OCAML_PKG_optcomp" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'optcomp'.])
-fi
 AC_CHECK_OCAML_PKG(js_of_ocaml-camlp4)
 if test "$OCAML_PKG_js_of_ocaml_camlp4" = "no"; then
    AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml-camlp4'.])

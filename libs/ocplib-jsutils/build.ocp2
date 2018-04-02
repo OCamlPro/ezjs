@@ -1,11 +1,10 @@
 OCaml.library("ocplib-jsutils",
   ocaml + {
   files = [
-    "js_utils.ml",   { pp = camlp4_optcomp_js };
-    "lwt_request.ml", { pp = camlp4_optcomp_js };
+    "js_utils.ml",   { pp = camlp4_js };
+    "lwt_request.ml", { pp = camlp4_js };
   ];
   requires = [
-    "optcomp";
     "lwt";
     "js_of_ocaml.tyxml";
   ];

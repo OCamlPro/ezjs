@@ -5,7 +5,7 @@ OCaml.library("ocplib-ace",
     link = [ "-linkall" ];
     files = [
     "ace_types.mli";
-    "ace.ml",        { pp = camlp4_optcomp_js };
+    "ace.ml",        { pp = camlp4_js };
   ];
   requires = [
     "ocplib-jsutils";
