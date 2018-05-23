@@ -32,6 +32,8 @@ remove: [
 ]
 depends: [
      "js_of_ocaml"
+     "js_of_ocaml-camlp4"
+     "js_of_ocaml-ppx"
      "js_of_ocaml-tyxml"
      "lwt"
      "ocamlfind"

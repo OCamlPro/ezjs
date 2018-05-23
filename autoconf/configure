@@ -592,7 +592,10 @@ OPAM_REPO_FORK_REMOTE
 OPAM_REPO_OFFICIAL_REMOTE
 OPAM_REPO
 ROOTDIR
+PROJECTURE_ARGS
 OCAML_PKG_js_of_ocaml_tyxml
+OCAML_PKG_js_of_ocaml_camlp4
+OCAML_PKG_js_of_ocaml_ppx
 OCAML_PKG_yojson
 OCAML_PKG_omd
 OCAML_PKG_lwt
@@ -601,13 +604,18 @@ OCAML_PKG_js_of_ocaml
 OCAML_PKG_ocp_build
 OCAML_TOOL_ocp_build
 OCAMLBIN
+OCAMLVERSION_C
 CONFIGURE_ARGS
 metadir
 ocamldir
 OCAMLFIND
 OCAML_USE_POSIX_TYPES
 AWK
+OCAML_POINT_VERSION
+OCAML_MINOR_VERSION
+OCAML_MAJOR_VERSION
 SED
+OCAML_OS_TYPE
 OCAMLBUILD
 OCAMLDOC
 OCAMLMKLIB
@@ -1793,7 +1801,7 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-CONFIGURE_ARGS=$*
+PROJECTURE_ARGS=$*
 
 OCAML_MINIMAL_VERSION=3.12.0
 
@@ -2699,7 +2707,7 @@ fi
 
 
   if test "$OCAMLC" != "no"; then
-     OCAMLVERSION=`$OCAMLC -v | sed -n -e 's|.*version* *\(.*\)$|\1|p'`
+     OCAMLVERSION=`$OCAMLC -v | tr -d '\015' | sed -n -e 's|.*version* *\(.*\)$|\1|p'`
      { $as_echo "$as_me:${as_lineno-$LINENO}: result: OCaml version is $OCAMLVERSION" >&5
 $as_echo "OCaml version is $OCAMLVERSION" >&6; }
      # If OCAMLLIB is set, use it
@@ -2813,7 +2821,7 @@ fi
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find ocamlopt; bytecode compilation only." >&5
 $as_echo "$as_me: WARNING: Cannot find ocamlopt; bytecode compilation only." >&2;}
      else
-	TMPVERSION=`$OCAMLOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
+	TMPVERSION=`$OCAMLOPT -v | tr -d '\015' | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
 	if test "$TMPVERSION" != "$OCAMLVERSION" ; then
 	    { $as_echo "$as_me:${as_lineno-$LINENO}: result: versions differs from ocamlc; ocamlopt discarded." >&5
 $as_echo "versions differs from ocamlc; ocamlopt discarded." >&6; }
@@ -2919,7 +2927,7 @@ else
 fi
 
      if test "$OCAMLCDOTOPT" != "no"; then
-	TMPVERSION=`$OCAMLCDOTOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
+	TMPVERSION=`$OCAMLCDOTOPT -v | tr -d '\015' | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
 	if test "$TMPVERSION" != "$OCAMLVERSION" ; then
 	    { $as_echo "$as_me:${as_lineno-$LINENO}: result: versions differs from ocamlc; ocamlc.opt discarded." >&5
 $as_echo "versions differs from ocamlc; ocamlc.opt discarded." >&6; }
@@ -3023,7 +3031,7 @@ else
 fi
 
 	if test "$OCAMLOPTDOTOPT" != "no"; then
-	   TMPVERSION=`$OCAMLOPTDOTOPT -v | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
+	   TMPVERSION=`$OCAMLOPTDOTOPT -v | tr -d '\015' | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
 	   if test "$TMPVERSION" != "$OCAMLVERSION" ; then
 	      { $as_echo "$as_me:${as_lineno-$LINENO}: result: version differs from ocamlc; ocamlopt.opt discarded." >&5
 $as_echo "version differs from ocamlc; ocamlopt.opt discarded." >&6; }
@@ -3320,7 +3328,7 @@ else
 fi
 
 	if test "$OCAMLDEPDOTOPT" != "no"; then
-	   TMPVERSION=`$OCAMLDEPDOTOPT -version | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
+	   TMPVERSION=`$OCAMLDEPDOTOPT -version | tr -d '\015' | sed -n -e 's|.*version* *\(.*\)$|\1|p' `
 	   if test "$TMPVERSION" != "$OCAMLVERSION" ; then
 	      { $as_echo "$as_me:${as_lineno-$LINENO}: result: version differs from ocamlc; ocamldep.opt discarded." >&5
 $as_echo "version differs from ocamlc; ocamldep.opt discarded." >&6; }
@@ -3706,6 +3714,21 @@ else
 fi
 
 
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking OCaml Sys.os_type" >&5
+$as_echo_n "checking OCaml Sys.os_type... " >&6; }
+
+  cat > conftest.ml <<EOF
+  print_string(Sys.os_type);;
+EOF
+
+  OCAML_OS_TYPE=`$OCAML conftest.ml`
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OCAML_OS_TYPE" >&5
+$as_echo "$OCAML_OS_TYPE" >&6; }
+
+
+if test "${OCAML_OS_TYPE}" = "Win32" ; then
+  OCAMLLIB="$(echo "${OCAMLLIB}" | tr -d '\015' | sed -e 's|\\|/|g')"
+fi
 
 ROOTDIR=$(dirname $(pwd))
 
@@ -3797,8 +3820,12 @@ $as_echo_n "checking Point version... " >&6; }
 $as_echo "$AX_POINT_VERSION" >&6; }
 
 OCAML_MAJOR_VERSION=$AX_MAJOR_VERSION
+
 OCAML_MINOR_VERSION=$AX_MINOR_VERSION
+
 OCAML_POINT_VERSION=$AX_POINT_VERSION
+
+OCAMLVERSION_C=$OCAML_MAJOR_VERSION$OCAML_MINOR_VERSION$OCAML_POINT_VERSION
 
 if test "$OCAMLC" = "no"; then
    as_fn_error $? "You must install the OCaml compiler" "$LINENO" 5
@@ -4040,7 +4067,11 @@ fi
 
 
 if test "${OCAMLFIND}" != "no"; then
-  metadir="$(${OCAMLFIND} -printconf destdir)"
+  if test "${OCAML_OS_TYPE}" = "Win32" ; then
+    metadir="$(${OCAMLFIND} -printconf destdir | tr -d '\015' | sed -e 's|\\|/|g')"
+  else
+    metadir="$(${OCAMLFIND} -printconf destdir)"
+  fi
   echo "initializing metadir from ocamlfind config"
 fi
 
@@ -4071,6 +4102,7 @@ fi
 if test "${with_metadir+set}" = set; then :
   withval=$with_metadir; metadir="${withval}"
 fi
+
 
 
 
@@ -4208,7 +4240,299 @@ $as_echo "not found" >&6; }
 
 
 if test "$OCAML_PKG_ocp_build" = "no"; then
-   as_fn_error $? "Please install OCaml package 'ocp-build'." "$LINENO" 5
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Please install OCaml package 'ocp-build'." >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Please install OCaml package 'ocp-build'." >&2;}
+else
+
+
+
+  # Used to indicate true or false condition
+  ax_compare_version=false
+
+  # Convert the two version strings to be compared into a format that
+  # allows a simple string comparison.  The end result is that a version
+  # string of the form 1.12.5-r617 will be converted to the form
+  # 0001001200050617.  In other words, each number is zero padded to four
+  # digits, and non digits are removed.
+
+  ax_compare_version_A=`echo "$OCAML_PKG_ocp_build_VERSION" | sed -e 's/\([0-9]*\)/Z\1Z/g' \
+                     -e 's/Z\([0-9]\)Z/Z0\1Z/g' \
+                     -e 's/Z\([0-9][0-9]\)Z/Z0\1Z/g' \
+                     -e 's/Z\([0-9][0-9][0-9]\)Z/Z0\1Z/g' \
+                     -e 's/[^0-9]//g'`
+
+
+  ax_compare_version_B=`echo "1.99.19-beta" | sed -e 's/\([0-9]*\)/Z\1Z/g' \
+                     -e 's/Z\([0-9]\)Z/Z0\1Z/g' \
+                     -e 's/Z\([0-9][0-9]\)Z/Z0\1Z/g' \
+                     -e 's/Z\([0-9][0-9][0-9]\)Z/Z0\1Z/g' \
+                     -e 's/[^0-9]//g'`
+
+
+    ax_compare_version=`echo "x$ax_compare_version_A
+x$ax_compare_version_B" | sed 's/^ *//' | sort -r | sed "s/x${ax_compare_version_A}/false/;s/x${ax_compare_version_B}/true/;1q"`
+
+
+
+    if test "$ax_compare_version" = "true" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Version >= 1.99.19-beta of ocp-build is needed" >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Version >= 1.99.19-beta of ocp-build is needed" >&2;}
+      fi
+
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package js_of_ocaml" >&5
+$as_echo_n "checking for OCaml findlib package js_of_ocaml... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in js_of_ocaml  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_js_of_ocaml=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_js_of_ocaml_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_js_of_ocaml=no
+  fi
+
+
+
+if test "$OCAML_PKG_js_of_ocaml" = "no"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Please install OCaml package 'js_of_ocaml'." >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Please install OCaml package 'js_of_ocaml'." >&2;}
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package tyxml" >&5
+$as_echo_n "checking for OCaml findlib package tyxml... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in tyxml  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_tyxml=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_tyxml_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_tyxml=no
+  fi
+
+
+
+if test "$OCAML_PKG_tyxml" = "no"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Please install OCaml package 'tyxml'." >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Please install OCaml package 'tyxml'." >&2;}
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package lwt" >&5
+$as_echo_n "checking for OCaml findlib package lwt... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in lwt  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_lwt=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_lwt_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_lwt=no
+  fi
+
+
+
+if test "$OCAML_PKG_lwt" = "no"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Please install OCaml package 'lwt'." >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Please install OCaml package 'lwt'." >&2;}
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package omd" >&5
+$as_echo_n "checking for OCaml findlib package omd... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in omd  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_omd=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_omd_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_omd=no
+  fi
+
+
+
+if test "$OCAML_PKG_omd" = "no"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Please install OCaml package 'omd'." >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Please install OCaml package 'omd'." >&2;}
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package yojson" >&5
+$as_echo_n "checking for OCaml findlib package yojson... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in yojson  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_yojson=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_yojson_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_yojson=no
+  fi
+
+
+
+if test "$OCAML_PKG_yojson" = "no"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Please install OCaml package 'yojson'." >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Please install OCaml package 'yojson'." >&2;}
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package js_of_ocaml-ppx" >&5
+$as_echo_n "checking for OCaml findlib package js_of_ocaml-ppx... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in js_of_ocaml-ppx  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_js_of_ocaml_ppx=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_js_of_ocaml_ppx_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_js_of_ocaml_ppx=no
+  fi
+
+
+
+if test "$OCAML_PKG_js_of_ocaml_ppx" = "no"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Please install OCaml package 'js_of_ocaml-ppx'." >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Please install OCaml package 'js_of_ocaml-ppx'." >&2;}
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package js_of_ocaml-camlp4" >&5
+$as_echo_n "checking for OCaml findlib package js_of_ocaml-camlp4... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in js_of_ocaml-camlp4  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_js_of_ocaml_camlp4=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_js_of_ocaml_camlp4_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_js_of_ocaml_camlp4=no
+  fi
+
+
+
+if test "$OCAML_PKG_js_of_ocaml_camlp4" = "no"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Please install OCaml package 'js_of_ocaml-camlp4'." >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Please install OCaml package 'js_of_ocaml-camlp4'." >&2;}
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package js_of_ocaml-tyxml" >&5
+$as_echo_n "checking for OCaml findlib package js_of_ocaml-tyxml... " >&6; }
+
+  unset found
+  unset pkg
+  found=no
+  for pkg in js_of_ocaml-tyxml  ; do
+    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
+      OCAML_PKG_js_of_ocaml_tyxml=$pkg
+      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
+      OCAML_PKG_js_of_ocaml_tyxml_VERSION=$ocaml_pkg_version
+
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
+$as_echo "$ocaml_pkg_version" >&6; }
+      found=yes
+      break
+    fi
+  done
+  if test "$found" = "no" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    OCAML_PKG_js_of_ocaml_tyxml=no
+  fi
+
+
+
+if test "$OCAML_PKG_js_of_ocaml_tyxml" = "no"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: BEFORE ERROR: Please install OCaml package 'js_of_ocaml-tyxml'." >&5
+$as_echo "$as_me: WARNING: BEFORE ERROR: Please install OCaml package 'js_of_ocaml-tyxml'." >&2;}
+fi
+if test "$OCAML_PKG_ocp_build" = "no"; then
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Missing dependencies (see warnings above).
+See \`config.log' for more details" "$LINENO" 5; }
 fi
 
 
@@ -4242,188 +4566,59 @@ x$ax_compare_version_B" | sed 's/^ *//' | sort -r | sed "s/x${ax_compare_version
 
 
     if test "$ax_compare_version" = "true" ; then
-    as_fn_error $? "Version 1.99.19-beta of ocp-build is needed" "$LINENO" 5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Problems with dependencies (see warnings above)
+See \`config.log' for more details" "$LINENO" 5; }
       fi
 
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package js_of_ocaml" >&5
-$as_echo_n "checking for OCaml findlib package js_of_ocaml... " >&6; }
-
-  unset found
-  unset pkg
-  found=no
-  for pkg in js_of_ocaml  ; do
-    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
-      OCAML_PKG_js_of_ocaml=$pkg
-      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
-      OCAML_PKG_js_of_ocaml_VERSION=$ocaml_pkg_version
-
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
-$as_echo "$ocaml_pkg_version" >&6; }
-      found=yes
-      break
-    fi
-  done
-  if test "$found" = "no" ; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
-$as_echo "not found" >&6; }
-    OCAML_PKG_js_of_ocaml=no
-  fi
-
-
-
 if test "$OCAML_PKG_js_of_ocaml" = "no"; then
-   as_fn_error $? "Please install OCaml package 'js_of_ocaml'." "$LINENO" 5
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Missing dependencies (see warnings above).
+See \`config.log' for more details" "$LINENO" 5; }
 fi
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package tyxml" >&5
-$as_echo_n "checking for OCaml findlib package tyxml... " >&6; }
-
-  unset found
-  unset pkg
-  found=no
-  for pkg in tyxml  ; do
-    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
-      OCAML_PKG_tyxml=$pkg
-      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
-      OCAML_PKG_tyxml_VERSION=$ocaml_pkg_version
-
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
-$as_echo "$ocaml_pkg_version" >&6; }
-      found=yes
-      break
-    fi
-  done
-  if test "$found" = "no" ; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
-$as_echo "not found" >&6; }
-    OCAML_PKG_tyxml=no
-  fi
-
-
-
 if test "$OCAML_PKG_tyxml" = "no"; then
-   as_fn_error $? "Please install OCaml package 'tyxml'." "$LINENO" 5
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Missing dependencies (see warnings above).
+See \`config.log' for more details" "$LINENO" 5; }
 fi
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package lwt" >&5
-$as_echo_n "checking for OCaml findlib package lwt... " >&6; }
-
-  unset found
-  unset pkg
-  found=no
-  for pkg in lwt  ; do
-    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
-      OCAML_PKG_lwt=$pkg
-      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
-      OCAML_PKG_lwt_VERSION=$ocaml_pkg_version
-
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
-$as_echo "$ocaml_pkg_version" >&6; }
-      found=yes
-      break
-    fi
-  done
-  if test "$found" = "no" ; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
-$as_echo "not found" >&6; }
-    OCAML_PKG_lwt=no
-  fi
-
-
-
 if test "$OCAML_PKG_lwt" = "no"; then
-   as_fn_error $? "Please install OCaml package 'lwt'." "$LINENO" 5
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Missing dependencies (see warnings above).
+See \`config.log' for more details" "$LINENO" 5; }
 fi
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package omd" >&5
-$as_echo_n "checking for OCaml findlib package omd... " >&6; }
-
-  unset found
-  unset pkg
-  found=no
-  for pkg in omd  ; do
-    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
-      OCAML_PKG_omd=$pkg
-      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
-      OCAML_PKG_omd_VERSION=$ocaml_pkg_version
-
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
-$as_echo "$ocaml_pkg_version" >&6; }
-      found=yes
-      break
-    fi
-  done
-  if test "$found" = "no" ; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
-$as_echo "not found" >&6; }
-    OCAML_PKG_omd=no
-  fi
-
-
-
 if test "$OCAML_PKG_omd" = "no"; then
-   as_fn_error $? "Please install OCaml package 'omd'." "$LINENO" 5
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Missing dependencies (see warnings above).
+See \`config.log' for more details" "$LINENO" 5; }
 fi
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package yojson" >&5
-$as_echo_n "checking for OCaml findlib package yojson... " >&6; }
-
-  unset found
-  unset pkg
-  found=no
-  for pkg in yojson  ; do
-    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
-      OCAML_PKG_yojson=$pkg
-      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
-      OCAML_PKG_yojson_VERSION=$ocaml_pkg_version
-
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
-$as_echo "$ocaml_pkg_version" >&6; }
-      found=yes
-      break
-    fi
-  done
-  if test "$found" = "no" ; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
-$as_echo "not found" >&6; }
-    OCAML_PKG_yojson=no
-  fi
-
-
-
 if test "$OCAML_PKG_yojson" = "no"; then
-   as_fn_error $? "Please install OCaml package 'yojson'." "$LINENO" 5
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Missing dependencies (see warnings above).
+See \`config.log' for more details" "$LINENO" 5; }
 fi
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OCaml findlib package js_of_ocaml-tyxml" >&5
-$as_echo_n "checking for OCaml findlib package js_of_ocaml-tyxml... " >&6; }
-
-  unset found
-  unset pkg
-  found=no
-  for pkg in js_of_ocaml-tyxml  ; do
-    if $OCAMLFIND query $pkg >/dev/null 2>/dev/null; then
-      OCAML_PKG_js_of_ocaml_tyxml=$pkg
-      ocaml_pkg_version=$($OCAMLFIND query -l $pkg|grep version: | awk '{ print $2}')
-      OCAML_PKG_js_of_ocaml_tyxml_VERSION=$ocaml_pkg_version
-
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ocaml_pkg_version" >&5
-$as_echo "$ocaml_pkg_version" >&6; }
-      found=yes
-      break
-    fi
-  done
-  if test "$found" = "no" ; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
-$as_echo "not found" >&6; }
-    OCAML_PKG_js_of_ocaml_tyxml=no
-  fi
-
-
-
+if test "$OCAML_PKG_js_of_ocaml_ppx" = "no"; then
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Missing dependencies (see warnings above).
+See \`config.log' for more details" "$LINENO" 5; }
+fi
+if test "$OCAML_PKG_js_of_ocaml_camlp4" = "no"; then
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Missing dependencies (see warnings above).
+See \`config.log' for more details" "$LINENO" 5; }
+fi
 if test "$OCAML_PKG_js_of_ocaml_tyxml" = "no"; then
-   as_fn_error $? "Please install OCaml package 'js_of_ocaml-tyxml'." "$LINENO" 5
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "Missing dependencies (see warnings above).
+See \`config.log' for more details" "$LINENO" 5; }
 fi
 OPAM_REPO=/home/lefessan/GIT/ocp-public/opam-repository
 OPAM_REPO_OFFICIAL_REMOTE=ocaml
@@ -4447,6 +4642,7 @@ DOWNLOAD_URL_PREFIX=http://github.com/OCamlPro/ocplib-jsutils/archive/
 ## END of autoconf.ac                                         #
 ##                                                            #
 ###############################################################
+
 
 
 

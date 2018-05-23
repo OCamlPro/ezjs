@@ -8,7 +8,7 @@
 #                                                     #
 #######################################################
 AC_INIT(ocplib-jsutils,1.0)
-CONFIGURE_ARGS=$*
+PROJECTURE_ARGS=$*
 AC_COPYRIGHT()
 OCAML_MINIMAL_VERSION=3.12.0
 AC_CONFIG_MACRO_DIR([m4])
@@ -26,13 +26,18 @@ AC_ARG_ENABLE(bin-annot,
 AC_PROG_CC
 
 AC_PROG_OCAML
+AC_CHECK_OCAML_OS_TYPE
+if test "${OCAML_OS_TYPE}" = "Win32" ; then
+  OCAMLLIB="$(echo "${OCAMLLIB}" | tr -d '\015' | sed -e 's|\\|/|g')"
+fi
 
 ROOTDIR=$(dirname $(pwd))
 
 AX_SPLIT_VERSION(OCAMLVERSION)
-OCAML_MAJOR_VERSION=$AX_MAJOR_VERSION
-OCAML_MINOR_VERSION=$AX_MINOR_VERSION
-OCAML_POINT_VERSION=$AX_POINT_VERSION
+AC_SUBST(OCAML_MAJOR_VERSION,$AX_MAJOR_VERSION)
+AC_SUBST(OCAML_MINOR_VERSION,$AX_MINOR_VERSION)
+AC_SUBST(OCAML_POINT_VERSION,$AX_POINT_VERSION)
+OCAMLVERSION_C=$OCAML_MAJOR_VERSION$OCAML_MINOR_VERSION$OCAML_POINT_VERSION
 
 if test "$OCAMLC" = "no"; then
    AC_MSG_ERROR([You must install the OCaml compiler])
@@ -70,7 +75,11 @@ metadir='${ocamldir}'
 
 AC_PROG_FINDLIB
 if test "${OCAMLFIND}" != "no"; then
-  metadir="$(${OCAMLFIND} -printconf destdir)"
+  if test "${OCAML_OS_TYPE}" = "Win32" ; then
+    metadir="$(${OCAMLFIND} -printconf destdir | tr -d '\015' | sed -e 's|\\|/|g')"
+  else
+    metadir="$(${OCAMLFIND} -printconf destdir)"
+  fi
   echo "initializing metadir from ocamlfind config"
 fi
 
@@ -106,6 +115,7 @@ AC_SUBST(metadir)
 
 AC_SUBST(CONFIGURE_ARGS)
 AC_SUBST(OCAMLVERSION)
+AC_SUBST(OCAMLVERSION_C)
 AC_SUBST(OCAMLLIB)
 AC_SUBST(OCAMLOPT)
 AC_SUBST(OCAMLDEP)
@@ -119,33 +129,71 @@ if test "$OCAML_TOOL_ocp_build" = "no"; then
 fi
 AC_CHECK_OCAML_PKG(ocp-build)
 if test "$OCAML_PKG_ocp_build" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'ocp-build'.])
-fi
+   AC_MSG_WARN([BEFORE ERROR: Please install OCaml package 'ocp-build'.])
+else
   AX_COMPARE_VERSION( [$OCAML_PKG_ocp_build_VERSION], [lt], [1.99.19-beta],
-     AC_MSG_ERROR([Version 1.99.19-beta of ocp-build is needed]))
+     AC_MSG_WARN([BEFORE ERROR: Version >= 1.99.19-beta of ocp-build is needed]))
+fi
 AC_CHECK_OCAML_PKG(js_of_ocaml)
 if test "$OCAML_PKG_js_of_ocaml" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml'.])
+   AC_MSG_WARN([BEFORE ERROR: Please install OCaml package 'js_of_ocaml'.])
 fi
 AC_CHECK_OCAML_PKG(tyxml)
 if test "$OCAML_PKG_tyxml" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'tyxml'.])
+   AC_MSG_WARN([BEFORE ERROR: Please install OCaml package 'tyxml'.])
 fi
 AC_CHECK_OCAML_PKG(lwt)
 if test "$OCAML_PKG_lwt" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'lwt'.])
+   AC_MSG_WARN([BEFORE ERROR: Please install OCaml package 'lwt'.])
 fi
 AC_CHECK_OCAML_PKG(omd)
 if test "$OCAML_PKG_omd" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'omd'.])
+   AC_MSG_WARN([BEFORE ERROR: Please install OCaml package 'omd'.])
 fi
 AC_CHECK_OCAML_PKG(yojson)
 if test "$OCAML_PKG_yojson" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'yojson'.])
+   AC_MSG_WARN([BEFORE ERROR: Please install OCaml package 'yojson'.])
+fi
+AC_CHECK_OCAML_PKG(js_of_ocaml-ppx)
+if test "$OCAML_PKG_js_of_ocaml_ppx" = "no"; then
+   AC_MSG_WARN([BEFORE ERROR: Please install OCaml package 'js_of_ocaml-ppx'.])
+fi
+AC_CHECK_OCAML_PKG(js_of_ocaml-camlp4)
+if test "$OCAML_PKG_js_of_ocaml_camlp4" = "no"; then
+   AC_MSG_WARN([BEFORE ERROR: Please install OCaml package 'js_of_ocaml-camlp4'.])
 fi
 AC_CHECK_OCAML_PKG(js_of_ocaml-tyxml)
 if test "$OCAML_PKG_js_of_ocaml_tyxml" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml-tyxml'.])
+   AC_MSG_WARN([BEFORE ERROR: Please install OCaml package 'js_of_ocaml-tyxml'.])
+fi
+if test "$OCAML_PKG_ocp_build" = "no"; then
+   AC_MSG_FAILURE([Missing dependencies (see warnings above).])
+fi
+  AX_COMPARE_VERSION( [$OCAML_PKG_ocp_build_VERSION], [lt], [1.99.19-beta],
+     AC_MSG_FAILURE([Problems with dependencies (see warnings above)]))
+if test "$OCAML_PKG_js_of_ocaml" = "no"; then
+   AC_MSG_FAILURE([Missing dependencies (see warnings above).])
+fi
+if test "$OCAML_PKG_tyxml" = "no"; then
+   AC_MSG_FAILURE([Missing dependencies (see warnings above).])
+fi
+if test "$OCAML_PKG_lwt" = "no"; then
+   AC_MSG_FAILURE([Missing dependencies (see warnings above).])
+fi
+if test "$OCAML_PKG_omd" = "no"; then
+   AC_MSG_FAILURE([Missing dependencies (see warnings above).])
+fi
+if test "$OCAML_PKG_yojson" = "no"; then
+   AC_MSG_FAILURE([Missing dependencies (see warnings above).])
+fi
+if test "$OCAML_PKG_js_of_ocaml_ppx" = "no"; then
+   AC_MSG_FAILURE([Missing dependencies (see warnings above).])
+fi
+if test "$OCAML_PKG_js_of_ocaml_camlp4" = "no"; then
+   AC_MSG_FAILURE([Missing dependencies (see warnings above).])
+fi
+if test "$OCAML_PKG_js_of_ocaml_tyxml" = "no"; then
+   AC_MSG_FAILURE([Missing dependencies (see warnings above).])
 fi
 OPAM_REPO=/home/lefessan/GIT/ocp-public/opam-repository
 OPAM_REPO_OFFICIAL_REMOTE=ocaml
@@ -171,7 +219,7 @@ DOWNLOAD_URL_PREFIX=http://github.com/OCamlPro/ocplib-jsutils/archive/
 ###############################################################
 
 AC_SUBST(OCAMLFIND)
-AC_SUBST(CONFIGURE_ARGS)
+AC_SUBST(PROJECTURE_ARGS)
 AC_SUBST(ROOTDIR)
 AC_SUBST(prefix)
 AC_SUBST(exec_prefix)
@@ -189,6 +237,7 @@ AC_SUBST(OPAM_REPO_OFFICIAL_REMOTE)
 AC_SUBST(OPAM_REPO_FORK_REMOTE)
 AC_SUBST(DOWNLOAD_URL_PREFIX)
 AC_SUBST(OCAMLVERSION)
+AC_SUBST(OCAMLVERSION_C)
 AC_SUBST(OCAMLC)
 AC_SUBST(OCAMLOPT)
 AC_SUBST(OCAMLDEP)
