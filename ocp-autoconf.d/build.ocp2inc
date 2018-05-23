@@ -1,0 +1,3 @@
+camlp4_js = [
+  "camlp4o"; "%{js_of_ocaml-camlp4_SRC_DIR}%/pa_js.cma"
+];
