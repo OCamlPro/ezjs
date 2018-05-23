@@ -42,6 +42,9 @@ module Manip : sig
   val setInnerHtml: 'a elt -> string -> unit
   val clone: ?deep:bool -> 'a elt -> 'a elt
 
+  val get_elt :
+    string -> 'a Tyxml_js.Html5.elt -> Dom_html.element Js.t
+
   val appendChild: ?before:'a elt -> 'b elt ->  'c elt -> unit
   val appendToBody: ?before:'a elt -> 'c elt -> unit
   val appendChildren: ?before:'a elt -> 'b elt ->  'c elt list -> unit
@@ -57,7 +60,9 @@ module Manip : sig
   val removeSelf: 'a elt -> unit
 
   val children: 'a elt -> 'b elt list
+  val parent: 'a elt -> 'b elt option
   val by_id: string -> 'b elt option
+  val by_class: string -> 'b elt list
 
   val disable: 'a elt -> unit
   val enable: 'a elt -> unit
@@ -69,6 +74,8 @@ module Manip : sig
 
   val focus: 'a elt -> unit
   val blur: 'a elt -> unit
+
+  val scrollIntoView : ?bottom:bool -> 'a Tyxml_js.Html5.elt -> unit
 
   module Elt : sig
     val body : [`Body] elt
@@ -97,6 +104,7 @@ module Manip : sig
     val onreturn: ('a,Dom_html.keyboardEvent) ev_unit
     val onchange: ('a,Dom_html.event) ev
     val onchange_select: ('a,Dom_html.event) ev
+    val oninput: ('a,Dom_html.event) ev
   end
 
   module Attr : sig
@@ -142,6 +150,8 @@ module Manip : sig
     val borderTopWidth: 'a elt -> string
     val borderTopWidthPx: 'a elt -> int
     val borderWidth: 'a elt -> string
+    val borderWidthPx: 'a elt -> int
+    val borderRadius: 'a elt -> string
     val bottom: 'a elt -> string
     val captionSide: 'a elt -> string
     val clear: 'a elt -> string
@@ -262,6 +272,7 @@ module Manip : sig
     val borderTopWidth: 'a elt -> string -> unit
     val borderTopWidthPx: 'a elt -> int -> unit
     val borderWidth: 'a elt -> string -> unit
+    val borderRadius: 'a elt -> string -> unit
     val bottom: 'a elt -> string -> unit
     val bottomPx: 'a elt -> int -> unit
     val captionSide: 'a elt -> string -> unit
@@ -380,7 +391,4 @@ end
 val parse_fragment: unit -> (string * string) list
 val set_fragment: (string * string) list -> unit
 
-module MakeLocal(V: sig type t val name: string end) : sig
-  val get: unit -> V.t option
-  val set: V.t -> unit
-end
+val find_component : string -> 'a Tyxml_js.Of_dom.elt

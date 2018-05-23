@@ -18,7 +18,7 @@
 
 let doc = Dom_html.document
 let window = Dom_html.window
-let loc = Js.Unsafe.variable "location"
+(* let loc = Js.Unsafe.variable "location" *)
 
 let alert s = window##alert (Js.string s)
 let confirm s = Js.to_bool (window##confirm (Js.string s))
@@ -30,27 +30,29 @@ let js_error obj = Firebug.console##error (obj)
 
 let log fmt =
   Format.kfprintf
-    (fun s -> Firebug.console##log (Js.string (Format.flush_str_formatter ())))
+    (fun _fmt -> Firebug.console##log (Js.string (Format.flush_str_formatter ())))
     Format.str_formatter
     fmt
 let debug fmt =
   Format.kfprintf
-    (fun s -> Firebug.console##debug (Js.string (Format.flush_str_formatter ())))
+    (fun _fmt -> Firebug.console##debug (Js.string (Format.flush_str_formatter ())))
     Format.str_formatter
     fmt
 let warn fmt =
   Format.kfprintf
-    (fun s -> Firebug.console##warn (Js.string (Format.flush_str_formatter ())))
+    (fun _fmt -> Firebug.console##warn (Js.string (Format.flush_str_formatter ())))
     Format.str_formatter
     fmt
 let error fmt =
   Format.kfprintf
-    (fun s -> Firebug.console##error (Js.string (Format.flush_str_formatter ())))
+    (fun _fmt -> Firebug.console##error (Js.string (Format.flush_str_formatter ())))
     Format.str_formatter
     fmt
 
+    (*
 let is_hidden div =
   div##style##display = Js.string "none"
+     *)
 
 let reload () = window##location##reload ()
 
@@ -181,6 +183,15 @@ module Manip = struct
       ) in
     Js.Opt.to_option res
 
+  let by_class n =
+    let nl = Dom_html.window##document##getElementsByClassName (Js.string n) in
+    Array.init (nl##length) (fun i ->
+        let node = nl##item(i) in
+        let node = Js.Opt.get node (fun _ -> assert false) in
+        Of_dom.of_element (Dom_html.element node)
+      )
+    |> Array.to_list
+
   let childLength elt =
     let node = get_node elt in
     node##childNodes##length
@@ -232,22 +243,15 @@ module Manip = struct
     let node = get_node elt in
     raw_replaceChildren node elts
 
-  let rec filterElements nodes = match nodes with
-    | [] -> []
-    | node :: nodes ->
-      let elts = filterElements nodes in
-      Js.Opt.case
-        (Dom.CoerceTo.element node)
-        (fun () -> elts)
-        (fun elt -> elt :: elts)
-
-  let childElements elt =
-    let node = get_node elt in
-    filterElements (Dom.list_of_nodeList (node##childNodes))
-
   let children elt =
     let node = get_node elt in
     List.map Html5.tot (Dom.list_of_nodeList (node##childNodes))
+
+  let parent elt =
+    let node = get_node elt in
+    Js.Opt.case (node##parentNode)
+      (fun () -> None)
+      (fun elt -> Some (Html5.tot elt))
 
   let appendToBody ?before elt2 =
     let body = (Of_dom.of_body Dom_html.window##document##body) in
@@ -402,6 +406,9 @@ module Manip = struct
     let onchange_select elt f =
       let elt = get_elt_select "Ev.onchange_select" elt in
       elt##onchange <- (bool_cb f)
+    let oninput elt f =
+      let elt = get_elt_input "Ev.oninput" elt in
+      elt##oninput <- (bool_cb f)
   end
 
   module Attr = struct
@@ -525,6 +532,9 @@ module Manip = struct
     let borderWidthPx elt =
       let elt = get_elt "Css.borderWidthPx" elt in
       Js.parseInt (elt##style##borderWidth)
+    let borderRadius elt =
+      let elt = get_elt "Css.borderRadius" elt in
+      Js.to_bytestring (elt##style##borderRadius)
     let bottom elt =
       let elt = get_elt "Css.bottom" elt in
       Js.to_bytestring (elt##style##bottom)
@@ -868,6 +878,9 @@ module Manip = struct
     let borderWidth elt v =
       let elt = get_elt "SetCss.borderWidth" elt in
       elt##style##borderWidth <- Js.bytestring v
+    let borderRadius elt v =
+      let elt = get_elt "SetCss.borderRadius" elt in
+      elt##style##borderRadius <- Js.bytestring v
     let bottom elt v =
       let elt = get_elt "SetCss.bottom" elt in
       elt##style##bottom <- Js.bytestring v
@@ -1140,44 +1153,7 @@ let set_fragment args =
   let fragment = String.concat "&" pairs in
   Url.Current.set_fragment fragment
 
-let local_args = ref []
-
-module MakeLocal(V: sig type t val name: string end) = struct
-
-  let () =
-    if List.mem V.name !local_args then
-      warn "Duplicate key in LocalStorage: %s" V.name
-    else
-      local_args := V.name :: !local_args
-
-  let get_storage () =
-    try
-      match Js.Optdef.to_option Dom_html.window##localStorage with
-      | None -> raise Not_found
-      | Some t -> t
-    with exn ->
-      let msg =
-        Format.sprintf
-          "Warning: can't access to localStorage.\n%s@."
-          (Printexc.to_string exn) in
-      Firebug.console##log (Js.string msg);
-      raise Not_found
-
-  let name = Js.string V.name
-
-  let get () =
-    try
-      let s = get_storage () in
-      match Js.Opt.to_option (s##getItem(name)) with
-      | None -> None
-      | Some s -> Some (Json.unsafe_input s)
-    with Not_found -> None
-
-  let set v =
-    try
-      let s = get_storage () in
-      let str = Json.output v in
-      s##setItem(name, str)
-    with Not_found -> ()
-
-end
+let find_component id =
+  match Manip.by_id id with
+  | Some div -> div
+  | None -> failwith ("Cannot find id " ^ id)

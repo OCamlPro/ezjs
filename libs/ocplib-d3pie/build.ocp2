@@ -18,12 +18,12 @@
 (*  SOFTWARE.                                                             *)
 (**************************************************************************)
 
-OCaml.library( "ocplib-d3pie",
+OCaml.library( "ocplib-d3pie-js",
   ocaml + {
       link = [ "-linkall" ];
       files = [
           "d3pie_types.mli";
-          "d3pie.ml", { pp = camlp4_optcomp_js };
+          "d3pie.ml", { pp = camlp4_js };
       ];
       requires = [
         "js_of_ocaml";

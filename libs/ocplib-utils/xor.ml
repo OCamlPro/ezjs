@@ -51,4 +51,4 @@ let xor ?prefix str =
 
 let alphabet = Bytes.to_string alphabet
 let decode ?prefix str = xor ?prefix @@ B64.decode ~alphabet str
-let encode ?prefix str = B64.encode ~alphabet @@ xor ?prefix str
+let encode ?prefix str = B64.encode ~alphabet ( xor ?prefix str )

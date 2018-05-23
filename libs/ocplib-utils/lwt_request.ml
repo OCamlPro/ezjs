@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
 
-open Js_utils
-open Lwt.Infix
-
 exception Request_failed of (int * string)
 
 let url_encode_list l =
@@ -44,8 +41,12 @@ let get ?(headers=[]) ~url ~args =
 	        (Request_failed (code, Js.to_string req##responseText)) in
   req##onreadystatechange <- Js.wrap_callback
       (fun _ -> (match req##readyState with
-	     XmlHttpRequest.DONE -> callback ()
-	   | _ -> ()));
+	           XmlHttpRequest.DONE -> callback ()
+                 | XmlHttpRequest.UNSENT
+                 | XmlHttpRequest.OPENED
+                 | XmlHttpRequest.HEADERS_RECEIVED
+                 | XmlHttpRequest.LOADING -> ()
+      ));
   req##send(Js.null);
   Lwt.on_cancel res (fun () -> req##abort ());
   res
@@ -71,7 +72,11 @@ let post ?(headers=[]) ?(get_args=[]) ~url ~body =
   req##onreadystatechange <- Js.wrap_callback
       (fun _ -> (match req##readyState with
 	     XmlHttpRequest.DONE -> callback ()
-	   | _ -> ()));
+                 | XmlHttpRequest.UNSENT
+                 | XmlHttpRequest.OPENED
+                 | XmlHttpRequest.HEADERS_RECEIVED
+                 | XmlHttpRequest.LOADING -> ()
+	   ));
   let body = Js.Opt.map (Js.Opt.option body) Js.string in
   req##send(body);
   Lwt.on_cancel res (fun () -> req##abort ());

@@ -28,15 +28,21 @@ let token_type =
   let open Approx_tokens in
   function
 
-  | COMMENT_OPEN_EOL
-  | COMMENT_OPEN_CLOSE
-  | COMMENT_OPEN
+  (*  | COMMENT_OPEN_EOL *)
+  (*  | COMMENT_OPEN_CLOSE *)
+  (*| COMMENT_OPEN
   | COMMENT_VERB_OPEN
   | COMMENT_CODE_OPEN
   | COMMENT_CONTENT
   | COMMENT_CLOSE
   | COMMENT_VERB_CLOSE
-  | COMMENT_CODE_CLOSE -> "comment"
+  | COMMENT_CODE_CLOSE
+  *)
+  | COMMENT
+  | OCAMLDOC_CODE
+  | OCAMLDOC_VERB
+  | COMMENTCONT
+   -> "comment"
 
   | AND
   | AS
@@ -165,7 +171,7 @@ let token_type =
 
   | LIDENT _ -> "variable"
   | UIDENT _ -> "constant"
-  | TYPEVAR -> "type"
+  (*  | TYPEVAR -> "type" *)
 
   | EOL
   | SPACES -> "text"
@@ -174,19 +180,23 @@ let token_type =
   | EOF -> assert false
 
   | CHAR _
+  | STRING _
+  | QUOTATION
+  (*  | STRING_OPEN *)
+  (* | STRING_CONTENT *)
+  (* | ESCAPED_EOL *)
+  (* | STRING_CLOSE  *)
 
-  | STRING_OPEN
-  | STRING_CONTENT
-  | ESCAPED_EOL
-  | STRING_CLOSE
-
+(*
   | PPX_QUOTATION_OPEN
   | PPX_QUOTATION_CONTENT
-  | PPX_QUOTATION_CLOSE -> "string"
-
+  | PPX_QUOTATION_CLOSE
+*)  -> "string"
+(*
   | P4_QUOTATION_OPEN
   | P4_QUOTATION_CONTENT
   | P4_QUOTATION_CLOSE -> "meta"
+*)
 
 type state = {
   block: IndentBlock.t;
