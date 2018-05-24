@@ -1,4 +1,4 @@
-[![Travis-CI Build Status](https://travis-ci.org/OCamlPro/ocplib-utils.svg?branch=master)](https://travis-ci.org/OCamlPro/ocplib-utils)
+[![Travis-CI Build Status](https://travis-ci.org/OCamlPro/ocplib-jsutils.svg?branch=master)](https://travis-ci.org/OCamlPro/ocplib-jsutils)
 
 # ocplib-jsutils
 
