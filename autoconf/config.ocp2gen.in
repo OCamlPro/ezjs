@@ -17,7 +17,6 @@ autoconf = {
   opam_repo_fork_remote="@OPAM_REPO_FORK_REMOTE@";
   download_url_prefix="@DOWNLOAD_URL_PREFIX@";
   conf_ocamlversion="@OCAMLVERSION@";
-  conf_ocamlversion_c="@OCAMLVERSION_C@";
   conf_ocamlc="@OCAMLC@";
   conf_ocamlopt="@OCAMLOPT@";
   conf_ocamldep="@OCAMLDEP@";
