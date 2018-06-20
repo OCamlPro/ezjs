@@ -40,6 +40,7 @@ module Icon = struct
 
   let right_icon () = span ~a:[ a_class [ "fa"; "fa-arrow-right" ] ] []
   let left_icon () = span ~a:[ a_class [ "fa"; "fa-arrow-left" ] ] []
+  let down_icon () = span ~a:[ a_class [ "fa"; "fa-arrow-down" ] ] []
   (* let double_right_icon () = span ~a:[ a_class [ "fa"; "fa-angle-double-right" ] ] []
    * let double_left_icon () = span ~a:[ a_class [ "fa"; "fa-angle-double-left" ] ] [] *)
   let double_right_icon () = pcdata "»"
@@ -61,6 +62,7 @@ module Icon = struct
   let link_icon () = span ~a:[ a_class [ "fa"; "fa-link"] ] [ ]
   let check_icon () = span ~a:[ a_class [ "fa"; "fa-check"] ] [ ]
   let database_icon () = span ~a:[ a_class [ "fa"; "fa-database"] ] [ ]
+  let bill_icon () = span ~a:[ a_class [ "fa"; "fa-money-bill-wave"] ] []
   let liquidity_icon () =
     img ~a:[ a_class [ "liquidity-icon" ] ]
       ~src:"images/liquidity_icon.svg" ~alt:"Liquidity" ()
