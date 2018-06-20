@@ -63,6 +63,9 @@ module Icon = struct
   let check_icon () = span ~a:[ a_class [ "fa"; "fa-check"] ] [ ]
   let database_icon () = span ~a:[ a_class [ "fa"; "fa-database"] ] [ ]
   let bill_icon () = span ~a:[ a_class [ "fa"; "fa-money-bill-wave"] ] []
+  let cross_icon () = span ~a:[ a_class [ "fa"; "fa-times"] ] []
+  let bill_icon () = span ~a:[ a_class [ "fas"; "fa-money-bill-wave"] ] []
+  let cycle_icon () = span ~a:[ a_class [ "fas"; "fa-recycle"] ] []
   let liquidity_icon () =
     img ~a:[ a_class [ "liquidity-icon" ] ]
       ~src:"images/liquidity_icon.svg" ~alt:"Liquidity" ()
@@ -131,6 +134,19 @@ module Grid = struct
   let col_10 = "col-10"
   let col_11 = "col-11"
   let col_12 = "col-12"
+
+  let col_all1 = [col_1; cxs1; csm1; clg1]
+  let col_all2 = [col_2; cxs2; csm2; clg2]
+  let col_all3 = [col_3; cxs3; csm3; clg3]
+  let col_all4 = [col_4; cxs4; csm4; clg4]
+  let col_all5 = [col_5; cxs5; csm5; clg5]
+  let col_all6 = [col_6; cxs6; csm6; clg6]
+  let col_all7 = [col_7; cxs7; csm7; clg7]
+  let col_all8 = [col_8; cxs8; csm8; clg8]
+  let col_all9 = [col_9; cxs9; csm9; clg9]
+  let col_all10 = [col_10; cxs10; csm10; clg10]
+  let col_all11 = [col_11; cxs11; csm11; clg11]
+  let col_all12 = [col_12; cxs12; csm12; clg12]
 
   let clgoffset0 = "col-lg-offset-0"
   let clgoffset1 = "col-lg-offset-1"
