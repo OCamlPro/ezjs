@@ -64,7 +64,6 @@ module Icon = struct
   let database_icon () = span ~a:[ a_class [ "fa"; "fa-database"] ] [ ]
   let bill_icon () = span ~a:[ a_class [ "fa"; "fa-money-bill-wave"] ] []
   let cross_icon () = span ~a:[ a_class [ "fa"; "fa-times"] ] []
-  let bill_icon () = span ~a:[ a_class [ "fas"; "fa-money-bill-wave"] ] []
   let cycle_icon () = span ~a:[ a_class [ "fas"; "fa-recycle"] ] []
   let liquidity_icon () =
     img ~a:[ a_class [ "liquidity-icon" ] ]
