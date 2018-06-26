@@ -78,7 +78,7 @@ type doc
 val document: 'a editor -> doc
 val replace: doc -> Ace_types.range Js.t -> string -> unit
 val delete: doc -> Ace_types.range Js.t -> unit
-val remove: 'a editor -> string -> unit
+val remove: 'a editor -> unit
 
 val get_custom_data: 'a editor -> 'a
 val set_custom_data: 'a editor -> 'a -> unit

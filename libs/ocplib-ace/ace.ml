@@ -55,27 +55,28 @@ let read_range range =
   ((range##start##row, range##start##column),
    (range##end_##row, range##end_##column))
 
-let get_contents ?range {editor} =
-  let document = editor##getSession()##getDocument() in
+let get_contents ?range e =
+  let document = e.editor##getSession()##getDocument() in
   match range with
   | None ->
       Js.to_string @@ document##getValue()
   | Some r ->
       Js.to_string @@ document##getTextRange(r)
 
-let set_contents {editor} code =
-  let document = editor##getSession()##getDocument() in
+let set_contents e code =
+  let document = e.editor##getSession()##getDocument() in
   document##setValue (Js.string code)
 
-let get_selection_range {editor} = editor##getSelectionRange()
+let get_selection_range e =
+  e.editor##getSelectionRange()
 
-let get_selection {editor} =
-  let document = editor##getSession()##getDocument() in
-  let range = editor##getSelectionRange() in
+let get_selection e =
+  let document = e.editor##getSession()##getDocument() in
+  let range = e.editor##getSelectionRange() in
   Js.to_string @@ document##getTextRange(range)
 
-let get_line {editor} line =
-  let document = editor##getSession()##getDocument() in
+let get_line e line =
+  let document = e.editor##getSession()##getDocument() in
   Js.to_string @@ document##getLine (line)
 
 let create_editor editor_div =
@@ -86,25 +87,31 @@ let create_editor editor_div =
   editor##customData <- (data, None);
   data
 
-let get_custom_data { editor } =
-  match snd editor##customData with
+let get_custom_data e =
+  match snd e.editor##customData with
   | None -> raise Not_found
   | Some x -> x
 
-let set_custom_data { editor } data =
-  let ed = fst editor##customData in
-  editor##customData <- (ed, Some data)
+let set_custom_data e data =
+  let ed = fst e.editor##customData in
+  e.editor##customData <- (ed, Some data)
 
-let set_mode {editor} name =
-  editor##getSession()##setMode (Js.string name)
+let set_mode e name =
+  e.editor##getSession()##setMode (Js.string name)
 
-let set_theme {editor} name =
-  editor##setTheme (Js.string name)
+let set_theme e name =
+  e.editor##setTheme (Js.string name)
 
-type mark_type = Error | Warning | Message
+module Mark_type = struct
+
+  type mark_type = Error | Warning | Message
+
+end
+
+include Mark_type
 
 let string_of_make_type = function
-  | Error -> "error"
+  | Mark_type.Error -> "error"
   | Warning -> "warning"
   | Message -> "info"
 
@@ -150,10 +157,10 @@ let set_mark editor ?loc ?(type_ = Message) msg =
 let set_background_color editor color =
   editor.editor_div##style##backgroundColor <- Js.string color
 
-let add_class { editor_div } name =
-  editor_div##classList##add(Js.string name)
-let remove_class { editor_div } name =
-  editor_div##classList##remove(Js.string name)
+let add_class e name =
+  e.editor_div##classList##add(Js.string name)
+let remove_class e name =
+  e.editor_div##classList##remove(Js.string name)
 
 let clear_marks editor =
   let session = editor.editor##getSession() in
@@ -164,8 +171,8 @@ let clear_marks editor =
 let record_event_handler editor event handler =
   editor.editor##on(Js.string event, handler)
 
-let focus { editor } = editor##focus ()
-let resize { editor } force = editor##resize (Js.bool force)
+let focus e = e.editor##focus ()
+let resize e force = e.editor##resize (Js.bool force)
 
 let get_keybinding_menu e =
   if e.keybinding_menu then
@@ -175,7 +182,7 @@ let get_keybinding_menu e =
     Js.Optdef.case
       ext
       (fun () -> None)
-      (fun ext ->
+      (fun _ext ->
          e.keybinding_menu <- true;
          Some (Obj.magic e.editor : keybinding_menu Js.t))
 
@@ -187,7 +194,7 @@ let show_keybindings e =
   | Some o ->
       o##showKeyboardShortcuts()
 
-let add_keybinding { editor }
+let add_keybinding e
     ?ro ?scrollIntoView ?multiSelectAction
     name key exec =
   let command : _ command Js.t = Js.Unsafe.obj [||] in
@@ -204,7 +211,7 @@ let add_keybinding { editor }
   binding##win <- Js.string key;
   binding##mac <- Js.string key;
   command##bindKey <- binding;
-  editor##commands##addCommand (command)
+  e.editor##commands##addCommand (command)
 
 (** Mode *)
 
@@ -261,22 +268,22 @@ let define_mode name helpers =
     [| Js.Unsafe.inject (Js.string ("ace/mode/" ^ name)) ;
        Js.Unsafe.inject js_helpers |]
 
-let set_font_size {editor} sz =
-  editor##setFontSize (sz)
-let set_tab_size {editor} sz =
-  editor##getSession()##setTabSize (sz)
+let set_font_size e sz =
+  e.editor##setFontSize (sz)
+let set_tab_size e sz =
+  e.editor##getSession()##setTabSize (sz)
 
-let get_state { editor } row =
-  editor##getSession()##getState(row)
+let get_state e row =
+  e.editor##getSession()##getState(row)
 
-let get_last { editor } =
-  let doc = editor##getSession()##getDocument () in
+let get_last e =
+  let doc = e.editor##getSession()##getDocument () in
   let lines = doc##getLength() in
   let last = doc##getLine(lines - 1) in
   create_position (lines - 1) last##length
 
-let document { editor } =
-  editor##getSession()##getDocument()
+let document e =
+  e.editor##getSession()##getDocument()
 
 let replace doc range text =
   doc##replace (range, Js.string text)
@@ -284,5 +291,5 @@ let replace doc range text =
 let delete doc range =
   doc##replace (range, Js.string "")
 
-let remove { editor } dir =
-  editor##remove(Js.string "left")
+let remove e =
+  e.editor##remove(Js.string "left")
