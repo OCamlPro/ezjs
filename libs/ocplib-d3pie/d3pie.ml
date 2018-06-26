@@ -116,6 +116,8 @@ let create_small_segment_grouping_type = function
   | Value_grouping ->
      Js.string "value"
 
+module Small_segment_grouping = struct
+
 type d3pie_small_segment_grouping = {
   enabled : bool;
   value : int;
@@ -123,6 +125,10 @@ type d3pie_small_segment_grouping = {
   label : string;
   color : string;
 }
+
+end
+
+include Small_segment_grouping
 
 let create_small_segment_grouping enabled value value_type label color =
   let segment_grouping : smallSegmentGrouping Js.t = Js.Unsafe.obj [| |] in
@@ -149,11 +155,17 @@ let default_small_segment_grouping = {
   color = "#CCCCCC";
 }
 
-type d3pie_data_content = {
-  label : string;
-  value : int;
-  caption : string;
-}
+module Data_content = struct
+
+  type d3pie_data_content = {
+    label : string;
+    value : int;
+    caption : string;
+  }
+
+end
+
+include Data_content
 
 let create_data_content label value caption =
   let data_content : dataContent Js.t = Js.Unsafe.obj [| |] in
@@ -164,15 +176,17 @@ let create_data_content label value caption =
 
 let class_of_data_content data_content =
   create_data_content
-    (Js.string data_content.label)
+    (Js.string data_content.Data_content.label)
     data_content.value
     (Js.string data_content.caption)
 
+(*
 let default_data_content = {
   label = "";
   value = 0;
   caption = "";
 }
+*)
 
 type d3pie_sort_order =
   | No_sort
@@ -230,10 +244,16 @@ let create_label_format_value format_value =
   in
   Js.string str
 
+module Inner_labels_descriptor = struct
+
 type d3pie_inner_labels_descriptor = {
   format : d3pie_label_format_value;
   hide_when_less_than_percentage : int option;
 }
+
+end
+
+include Inner_labels_descriptor
 
 let create_inner_labels_descriptor format hide_when_less_than_percentage =
   let inner_labels_descriptor : innerLabelsDescriptor Js.t =
@@ -255,11 +275,17 @@ let default_inner_labels_descriptor = {
   hide_when_less_than_percentage = None;
 }
 
+module Outer_labels_descriptor = struct
+
 type d3pie_outer_labels_descriptor = {
   format : d3pie_label_format_value;
   hide_when_less_than_percentage : int option;
   pie_distance : int;
 }
+end
+
+include Outer_labels_descriptor
+
 
 let create_outer_labels_descriptor
       format hide_when_less_than_percentage pie_distance =
@@ -276,7 +302,7 @@ let create_outer_labels_descriptor
 
 let class_of_outer_labels_descriptor outer_labels_descriptor =
   create_outer_labels_descriptor
-    (create_label_format_value outer_labels_descriptor.format)
+    (create_label_format_value outer_labels_descriptor.Outer_labels_descriptor.format)
     (js_option_of_option outer_labels_descriptor.hide_when_less_than_percentage)
     outer_labels_descriptor.pie_distance
 
@@ -409,10 +435,15 @@ let create_tooltip_type type_ =
   in
   Js.string str
 
+module Tooltips = struct
+
 type d3pie_tooltips = {
   enabled : bool;
   type_ : d3pie_tooltip_type;
 }
+
+    end
+include Tooltips
 
 let create_tooltips enabled type_ =
   let tooltips : tooltips Js.t =
@@ -424,7 +455,7 @@ let create_tooltips enabled type_ =
 
 let class_of_tooltips tooltips =
   create_tooltips
-    (Js.bool tooltips.enabled)
+    (Js.bool tooltips.Tooltips.enabled)
     (create_tooltip_type tooltips.type_)
 
 let default_tooltips = {
@@ -554,6 +585,8 @@ let default_callbacks = {
   on_mouseout_segment = default_callback_value;
 }
 
+module Settings = struct
+
 type d3pie_settings = {
   data : d3pie_data;
   header : d3pie_header;
@@ -564,6 +597,8 @@ type d3pie_settings = {
   misc : d3pie_misc;
   callbacks : d3pie_callbacks;
 }
+end
+include Settings
 
 let create_settings data header size labels effects tooltips misc callbacks =
   let settings : settings Js.t = Js.Unsafe.obj [||] in
@@ -579,7 +614,7 @@ let create_settings data header size labels effects tooltips misc callbacks =
 
 let class_of_settings settings =
   create_settings
-    (class_of_data settings.data)
+    (class_of_data settings.Settings.data)
     (class_of_header settings.header)
     (class_of_size settings.size)
     (class_of_labels settings.labels)
@@ -602,8 +637,8 @@ let default_settings = {
 let set_data_content data_content settings =
   {
     settings with
-    data = {
-      settings.data with
+    Settings.data = {
+      settings.Settings.data with
       content = data_content;
     };
   }
@@ -611,8 +646,8 @@ let set_data_content data_content settings =
 let set_data_sort_order sort_order settings =
   {
     settings with
-    data = {
-      settings.data with
+    Settings.data = {
+      settings.Settings.data with
       sort_order = sort_order;
     };
   }
@@ -660,7 +695,7 @@ let set_inner_label_format format settings =
       settings.labels with
       inner = {
         settings.labels.inner with
-        format = format;
+        Inner_labels_descriptor.format = format;
       };
     };
   }
@@ -734,10 +769,10 @@ let set_on_mouseout_callback on_mouseout_segment settings =
 let set_small_segment_grouping value_type value label color settings =
   {
     settings with
-    data = {
-      settings.data with
+    Settings.data = {
+      settings.Settings.data with
       small_segment_grouping = {
-        enabled = true;
+        Small_segment_grouping.enabled = true;
         value_type = value_type;
         value = value;
         label = label;
@@ -749,11 +784,11 @@ let set_small_segment_grouping value_type value label color settings =
 let unset_small_segment_grouping settings =
   {
     settings with
-    data = {
-      settings.data with
+    Settings.data = {
+      settings.Settings.data with
       small_segment_grouping = {
         settings.data.small_segment_grouping with
-        enabled = false;
+        Small_segment_grouping.enabled = false;
       }
     }
   }
