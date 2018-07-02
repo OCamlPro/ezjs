@@ -289,9 +289,9 @@ module Menu = struct
   type menu =
     | Dropdown of string list *
                     Html_types.span_content_fun Tyxml_js.Html.elt list  *
-                      menu list
+                  menu list * bool
     | Link of string list *
-                string * Html_types.flow5_without_interactive Tyxml_js.Html.elt
+                string * Html_types.flow5_without_interactive Tyxml_js.Html.elt * bool
     | Action of string list *
                   (unit -> unit) *
                     Html_types.flow5_without_interactive Tyxml_js.Html.elt
@@ -299,11 +299,12 @@ module Menu = struct
 
   let rec bootstrap_menu =
     function
-    | Dropdown (classes, title, items) ->
+    | Dropdown (classes, title, items, disabled) ->
        li ~a:[ a_class ("dropdown" :: classes) ]
           [
             a ~a:[
-                a_class ["dropdown-toggle"];
+              a_class (["dropdown-toggle"] @
+                       if disabled then ["disabled"] else []);
                 a_href "#";
                 a_user_data "toggle" "dropdown";
                 Attributes.a_role "button";
@@ -314,8 +315,8 @@ module Menu = struct
             ul ~a:[ a_class [ "dropdown-menu" ] ]
                (List.map bootstrap_menu items)
           ]
-    | Link (classes, url, s) ->
-       li [
+    | Link (classes, url, s, disabled) ->
+      li ~a:[ a_class (if disabled then [ "disabled" ] else [] ) ] [
            a ~a:[ a_class classes; a_href url ] [s]
          ]
     | Action (classes, f, s) ->
