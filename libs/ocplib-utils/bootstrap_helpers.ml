@@ -34,6 +34,9 @@ module Attributes = struct
   let a_data_trigger value =
     a_data_custom "trigger" value
 
+  let a_attrib key value =
+    to_attrib @@ Tyxml_js.Xml.string_attrib key value
+
 end
 
 module Icon = struct
