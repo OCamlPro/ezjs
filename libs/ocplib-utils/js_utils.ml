@@ -1157,3 +1157,14 @@ let find_component id =
   match Manip.by_id id with
   | Some div -> div
   | None -> failwith ("Cannot find id " ^ id)
+
+module Clipboard = struct
+  let set_copy value =
+    Js.Unsafe.eval_string
+      (Printf.sprintf "document.addEventListener('copy', function(e){\
+        e.clipboardData.setData('text/plain', '%s');\
+        e.preventDefault();})" value)
+
+  let copy () : unit = Dom_html.document##execCommand(Js.string "copy",
+                                                      Js._false, Js.null)
+end

@@ -71,6 +71,7 @@ module Icon = struct
   let liquidity_icon () =
     img ~a:[ a_class [ "liquidity-icon" ] ]
       ~src:"images/liquidity_icon.svg" ~alt:"Liquidity" ()
+  let clipboard_icon () = span ~a:[ a_class [ "fa"; "fa-clipboard" ] ] []
 
   let space_icon () = entity "nbsp"
   let tz_icon () = entity "#xa729"
