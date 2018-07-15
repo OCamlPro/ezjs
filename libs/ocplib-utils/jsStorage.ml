@@ -12,7 +12,12 @@ let get_storage () =
       (Printexc.to_string exn);
     raise Not_found
 
-module MakeLocal(V: sig type t val name: string end) = struct
+module MakeLocal(V: sig type t val name: string end) :
+sig
+  val set : V.t -> unit
+  val get : unit -> V.t option
+  val clear : unit -> unit
+end = struct
 
   let () =
     if List.mem V.name !local_args then
@@ -27,13 +32,13 @@ module MakeLocal(V: sig type t val name: string end) = struct
       let s = get_storage () in
       match Js.Opt.to_option (s##getItem(name)) with
       | None -> None
-      | Some s -> Some (Json.unsafe_input s)
+      | Some s -> Some (Json.unsafe_input s : V.t)
     with Not_found -> None
 
   let set v =
     try
       let s = get_storage () in
-      let str = Json.output v in
+      let str = Json.output (v : V.t) in
       s##setItem(name, str)
     with Not_found -> ()
 
