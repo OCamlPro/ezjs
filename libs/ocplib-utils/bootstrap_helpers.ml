@@ -296,6 +296,8 @@ module Menu = struct
                   menu list * bool
     | Link of string list *
                 string * Html_types.flow5_without_interactive Tyxml_js.Html.elt * bool
+    | Link2 of string list *
+                [ Html_types.a_attrib ] Tyxml_js.Html5.attrib list * Html_types.flow5_without_interactive Tyxml_js.Html.elt * bool
     | Action of string list *
                   (unit -> unit) *
                     Html_types.flow5_without_interactive Tyxml_js.Html.elt
@@ -322,6 +324,10 @@ module Menu = struct
     | Link (classes, url, s, disabled) ->
       li ~a:[ a_class (if disabled then [ "disabled" ] else [] ) ] [
            a ~a:[ a_class classes; a_href url ] [s]
+         ]
+    | Link2 (classes, attribs, s, disabled) ->
+      li ~a:[ a_class (if disabled then [ "disabled" ] else [] ) ] [
+           a ~a:([ a_class classes ] @ attribs) [s]
          ]
     | Action (classes, f, s) ->
        li [
