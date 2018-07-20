@@ -7,6 +7,10 @@ val declare_translations :
   string ->
   (string * string) list ->
   unit
+val add_translations :
+  string ->
+  (string * string) list ->
+  unit
 val same : string -> string * string
 
 
