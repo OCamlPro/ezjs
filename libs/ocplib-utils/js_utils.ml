@@ -1159,12 +1159,32 @@ let find_component id =
   | None -> failwith ("Cannot find id " ^ id)
 
 module Clipboard = struct
-  let set_copy value =
-    Js.Unsafe.eval_string
-      (Printf.sprintf "document.addEventListener('copy', function(e){\
-        e.clipboardData.setData('text/plain', '%s');\
-        e.preventDefault();})" value)
+  type t = {
+    mutable intercept : bool ;
+    mutable data : string ;
+  }
 
-  let copy () : unit = Dom_html.document##execCommand(Js.string "copy",
-                                                      Js._false, Js.null)
+  let clipboard =
+    { intercept = false ; data = "" }
+
+  let set_copy () =
+    Dom.addEventListener
+      doc
+      (Dom.Event.make "copy")
+      (Dom.handler (fun e ->
+           if clipboard.intercept then begin
+             (e##clipboardData##setData(Js.string "text/plain", Js.string clipboard.data));
+             Dom.preventDefault e;
+             clipboard.intercept <- false ;
+             clipboard.data <- ""
+           end;
+           Js._true))
+      Js._true |> ignore
+
+  let copy value : unit =
+    clipboard.intercept <- true;
+    clipboard.data <- value;
+    Dom_html.document##execCommand(Js.string "copy",
+                                   Js._false, Js.null)
+
 end
