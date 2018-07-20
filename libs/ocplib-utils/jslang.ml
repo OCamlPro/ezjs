@@ -39,6 +39,18 @@ let declare_translations lang list =
   List.iter (fun (s1, s2) -> Hashtbl.add dict s1 s2) list;
   declare_table lang dict
 
+let add_translations lang list =
+  let dict =
+    try
+      StringMap.find lang !dictionaries
+    with Not_found ->
+      let dict = Hashtbl.create 133 in
+      dictionaries := StringMap.add lang dict !dictionaries;
+      dict
+  in
+  List.iter (fun (s1, s2) -> Hashtbl.add dict s1 s2) list;
+  ()
+
 let s_ s =
   match !current_dict with
   | None -> s
