@@ -394,6 +394,6 @@ val set_fragment: (string * string) list -> unit
 val find_component : string -> 'a Tyxml_js.Of_dom.elt
 
 module Clipboard : sig
-  val set_copy : string -> unit
-  val copy : unit -> unit
+  val set_copy : unit -> unit
+  val copy : string -> unit
 end
