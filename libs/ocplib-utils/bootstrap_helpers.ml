@@ -41,37 +41,35 @@ end
 
 module Icon = struct
 
-  let right_icon () = span ~a:[ a_class [ "fa"; "fa-arrow-right" ] ] []
-  let left_icon () = span ~a:[ a_class [ "fa"; "fa-arrow-left" ] ] []
-  let down_icon () = span ~a:[ a_class [ "fa"; "fa-arrow-down" ] ] []
+  let right_icon () = span ~a:[ a_class [ "fas"; "fa-arrow-right" ] ] []
+  let left_icon () = span ~a:[ a_class [ "fas"; "fa-arrow-left" ] ] []
+  let down_icon () = span ~a:[ a_class [ "fas"; "fa-arrow-down" ] ] []
   (* let double_right_icon () = span ~a:[ a_class [ "fa"; "fa-angle-double-right" ] ] []
    * let double_left_icon () = span ~a:[ a_class [ "fa"; "fa-angle-double-left" ] ] [] *)
   let double_right_icon () = pcdata "»"
   let double_left_icon () = pcdata "«"
-  let hourglass_icon () = span ~a:[ a_class [ "fa"; "fa-hourglass-half" ] ] []
-  let clock_icon () = span ~a:[ a_class [ "fa"; "fa-clock" ] ] []
-  let code_branch_icon () = span ~a:[ a_class [ "fa"; "fa-code-branch" ] ] []
-  let exchange_icon () = span ~a:[ a_class [ "fa"; "fa-exchange-alt"] ] [ ]
-  let bars_icon () = span ~a:[ a_class [ "fa"; "fa-bars"] ] [ ]
-  let chart_line_icon () = span ~a:[ a_class [ "fa"; "fa-chart-line"] ] [ ]
-  let chart_bar_icon () = span ~a:[ a_class [ "far"; "fa-chart-bar" ] ] [ ]
-  let cube_icon () = span ~a:[ a_class [ "fa"; "fa-cube"] ] [ ]
-  let cubes_icon () = span ~a:[ a_class [ "fa"; "fa-cubes"] ] [ ]
-  let chart_pie_icon () = span ~a:[ a_class [ "fa"; "fa-chart-pie"] ] [ ]
-  let signal_icon () = span ~a:[ a_class [ "fa"; "fa-signal"] ] [ ]
-  let money_bill_icon () = span ~a:[ a_class [ "far"; "fa-money-bill-alt" ] ] [ ]
-  let code_icon () = span ~a:[ a_class [ "fa"; "fa-code"] ] [ ]
-  let handshake_icon () = span ~a:[ a_class [ "fa"; "fa-handshake"] ] [ ]
-  let link_icon () = span ~a:[ a_class [ "fa"; "fa-link"] ] [ ]
-  let check_icon () = span ~a:[ a_class [ "fa"; "fa-check"] ] [ ]
-  let database_icon () = span ~a:[ a_class [ "fa"; "fa-database"] ] [ ]
-  let bill_icon () = span ~a:[ a_class [ "fa"; "fa-money-bill-wave"] ] []
-  let cross_icon () = span ~a:[ a_class [ "fa"; "fa-times"] ] []
-  let cycle_icon () = span ~a:[ a_class [ "fas"; "fa-recycle"] ] []
+  let hourglass_icon () = span ~a:[ a_class [ "fas"; "fa-hourglass-half" ] ] []
+  let clock_icon () = span ~a:[ a_class [ "fas"; "fa-clock" ] ] []
+  let code_branch_icon () = span ~a:[ a_class [ "fas"; "fa-code-branch" ] ] []
+  let exchange_icon () = span ~a:[ a_class [ "fas"; "fa-exchange-alt"] ] [ ]
+  let bars_icon () = span ~a:[ a_class [ "fas"; "fa-bars"] ] [ ]
+  let chart_line_icon () = span ~a:[ a_class [ "fas"; "fa-chart-line"] ] [ ]
+  let cube_icon () = span ~a:[ a_class [ "fas"; "fa-cube"] ] [ ]
+  let cubes_icon () = span ~a:[ a_class [ "fas"; "fa-cubes"] ] [ ]
+  let chart_pie_icon () = span ~a:[ a_class [ "fas"; "fa-chart-pie"] ] [ ]
+  let signal_icon () = span ~a:[ a_class [ "fas"; "fa-signal"] ] [ ]
+  let code_icon () = span ~a:[ a_class [ "fas"; "fa-code"] ] [ ]
+  let handshake_icon () = span ~a:[ a_class [ "fas"; "fa-handshake"] ] [ ]
+  let link_icon () = span ~a:[ a_class [ "fas"; "fa-link"] ] [ ]
+  let check_icon () = span ~a:[ a_class [ "fas"; "fa-check"] ] [ ]
+  let database_icon () = span ~a:[ a_class [ "fas"; "fa-database"] ] [ ]
+  let bill_icon () = span ~a:[ a_class [ "fas"; "fa-money-bill-wave"] ] []
+  let cross_icon () = span ~a:[ a_class [ "fas"; "fa-times"] ] []
+  let cycle_icon () = span ~a:[ a_class [ "fas"; "fa-undo"] ] []
   let liquidity_icon () =
     img ~a:[ a_class [ "liquidity-icon" ] ]
       ~src:"images/liquidity_icon.svg" ~alt:"Liquidity" ()
-  let clipboard_icon () = span ~a:[ a_class [ "fa"; "fa-clipboard" ] ] []
+  let clipboard_icon () = span ~a:[ a_class [ "fas"; "fa-clipboard" ] ] []
 
   let space_icon () = entity "nbsp"
   let tz_icon () = entity "#xa729"
@@ -79,6 +77,29 @@ module Icon = struct
   let right_left_arrow_icon () = entity "#8644"
   let times_icon () = entity "times"
   let no_break_space_icon () = entity "#160"
+
+    let params_icon () = span ~a:[ a_class [ "fas"; "fa-cog"] ] []
+  let folder_icon () = span ~a:[ a_class [ "fas"; "fa-folder-open"] ] []
+  let account_icon () = span ~a:[ a_class [ "fas"; "fa-user-circle"] ] []
+  let secret_icon () = span ~a:[ a_class [ "fas"; "fa-user-secret"] ] []
+  let arrow_up_icon () = span ~a:[ a_class [ "fas"; "fa-arrow-alt-circle-up"] ] []
+  let slots_icon () = span ~a:[ a_class [ "fab"; "fa-buromobelexperte"] ] []
+  let stamp_icon () = span ~a:[ a_class [ "fas"; "fa-stamp" ] ] []
+  let astronaut_icon () = span ~a:[ a_class [ "fas"; "fa-user-astronaut" ] ] []
+  let burn_icon () = span ~a:[ a_class [ "fas"; "fa-burn" ] ] []
+  let cookie_icon () = span ~a:[ a_class [ "fas"; "fa-cookie-bite" ] ] []
+  let wallet_icon () = span ~a:[ a_class [ "fas"; "fa-wallet" ] ] []
+  let balance_icon () = span ~a:[ a_class [ "fas"; "fa-balance-scale" ] ] []
+  let uncle_icon () = span ~a:[ a_class [ "fas"; "fa-code-branch" ] ] []
+  let ruler_icon () = span ~a:[ a_class [ "fas"; "fa-ruler" ] ] []
+  let manager_icon () = span ~a:[ a_class [ "fas"; "fa-user-shield" ] ] []
+  let originator_icon () = span ~a:[ a_class [ "fas"; "fa-user-edit" ] ] []
+  let priority_icon () = span ~a:[ a_class [ "fas"; "fa-angle-double-up" ] ] []
+  let deposit_icon () = span ~a:[ a_class [ "fas"; "fa-hand-holding" ] ] []
+  let spinner_icon () = span ~a:[ a_class [ "fas"; "fa-spinner" ] ] []
+  let ghost_icon () = span ~a:[ a_class [ "fas"; "fa-snapchat-ghost" ] ] []
+  let image_icon () = span ~a:[ a_class [ "fas"; "fa-image"] ] []
+  let number_icon icon () = span [pcdata "# "; icon ()]
 end
 
 module Grid = struct
