@@ -121,6 +121,19 @@ module Grid = struct
   let clg11 = "col-lg-11"
   let clg12 = "col-lg-12"
 
+  let cmd1 = "col-md-1"
+  let cmd2 = "col-md-2"
+  let cmd3 = "col-md-3"
+  let cmd4 = "col-md-4"
+  let cmd5 = "col-md-5"
+  let cmd6 = "col-md-6"
+  let cmd7 = "col-md-7"
+  let cmd8 = "col-md-8"
+  let cmd9 = "col-md-9"
+  let cmd10 = "col-md-10"
+  let cmd11 = "col-md-11"
+  let cmd12 = "col-md-12"
+
   let csm1 = "col-sm-1"
   let csm2 = "col-sm-2"
   let csm3 = "col-sm-3"
@@ -147,32 +160,6 @@ module Grid = struct
   let cxs11 = "col-xs-11"
   let cxs12 = "col-xs-12"
 
-  let col_1 = "col-1"
-  let col_2 = "col-2"
-  let col_3 = "col-3"
-  let col_4 = "col-4"
-  let col_5 = "col-5"
-  let col_6 = "col-6"
-  let col_7 = "col-7"
-  let col_8 = "col-8"
-  let col_9 = "col-9"
-  let col_10 = "col-10"
-  let col_11 = "col-11"
-  let col_12 = "col-12"
-
-  let col_all1 = [col_1; cxs1; csm1; clg1]
-  let col_all2 = [col_2; cxs2; csm2; clg2]
-  let col_all3 = [col_3; cxs3; csm3; clg3]
-  let col_all4 = [col_4; cxs4; csm4; clg4]
-  let col_all5 = [col_5; cxs5; csm5; clg5]
-  let col_all6 = [col_6; cxs6; csm6; clg6]
-  let col_all7 = [col_7; cxs7; csm7; clg7]
-  let col_all8 = [col_8; cxs8; csm8; clg8]
-  let col_all9 = [col_9; cxs9; csm9; clg9]
-  let col_all10 = [col_10; cxs10; csm10; clg10]
-  let col_all11 = [col_11; cxs11; csm11; clg11]
-  let col_all12 = [col_12; cxs12; csm12; clg12]
-
   let clgoffset0 = "col-lg-offset-0"
   let clgoffset1 = "col-lg-offset-1"
   let clgoffset2 = "col-lg-offset-2"
@@ -186,6 +173,20 @@ module Grid = struct
   let clgoffset10 = "col-lg-offset-10"
   let clgoffset11 = "col-lg-offset-11"
   let clgoffset12 = "col-lg-offset-12"
+
+  let cmdoffset0 = "col-md-offset-0"
+  let cmdoffset1 = "col-md-offset-1"
+  let cmdoffset2 = "col-md-offset-2"
+  let cmdoffset3 = "col-md-offset-3"
+  let cmdoffset4 = "col-md-offset-4"
+  let cmdoffset5 = "col-md-offset-5"
+  let cmdoffset6 = "col-md-offset-6"
+  let cmdoffset7 = "col-md-offset-7"
+  let cmdoffset8 = "col-md-offset-8"
+  let cmdoffset9 = "col-md-offset-9"
+  let cmdoffset10 = "col-md-offset-10"
+  let cmdoffset11 = "col-md-offset-11"
+  let cmdoffset12 = "col-md-offset-12"
 
   let csmoffset0 = "col-sm-offset-0"
   let csmoffset1 = "col-sm-offset-1"
