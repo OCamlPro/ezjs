@@ -1,0 +1,16 @@
+
+
+(* `camlp4_js` is inherited from ../build.ocp2 *)
+
+pp_js = { pp = camlp4_js };
+
+OCaml.library("ocplib-odometer",  ocaml+ {
+  files = [
+    "odometer.ml", pp_js;
+  ];
+  requires = [
+    "lwt";
+    "js_of_ocaml.tyxml";
+    "ocplib-utils-js";
+  ];
+  });
