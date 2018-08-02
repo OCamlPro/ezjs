@@ -100,6 +100,8 @@ module Icon = struct
   let ghost_icon () = span ~a:[ a_class [ "fas"; "fa-snapchat-ghost" ] ] []
   let image_icon () = span ~a:[ a_class [ "fas"; "fa-image"] ] []
   let camera_icon () = span ~a:[ a_class [ "fas"; "fa-camera"] ] []
+  let play_icon () = span ~a:[ a_class ["fas"; "fa-play"] ] []
+  let stop_icon () = span ~a:[ a_class ["fas"; "fa-stop"] ] []
   let number_icon icon () = span [pcdata "# "; icon ()]
 end
 
