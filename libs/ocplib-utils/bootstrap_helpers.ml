@@ -102,6 +102,7 @@ module Icon = struct
   let camera_icon () = span ~a:[ a_class [ "fas"; "fa-camera"] ] []
   let play_icon () = span ~a:[ a_class ["fas"; "fa-play"] ] []
   let stop_icon () = span ~a:[ a_class ["fas"; "fa-stop"] ] []
+  let exclamation_icon () = span ~a:[ a_class ["fas"; "fa-exclamation-triangle"] ] []
   let number_icon icon () = span [pcdata "# "; icon ()]
 end
 
