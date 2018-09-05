@@ -11,11 +11,13 @@ let jsdeps = ref [
 class type export =
   object
     method enabled : bool_field
+    method divId : Js.js_string Js.t Js.opt Js.prop
   end
 
-let export () =
+let export ?divId () =
   let obj : export Js.t = Js.Unsafe.obj [||] in
   obj##enabled <- true;
+  obj##divId <- Js.Opt.option divId;
   obj
 
 class type legend =  object
