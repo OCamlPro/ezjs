@@ -75,6 +75,8 @@ module Manip : sig
   val focus: 'a elt -> unit
   val blur: 'a elt -> unit
 
+  val upload_input: 'a elt -> (string -> unit) -> bool
+
   val scrollIntoView : ?bottom:bool -> 'a Tyxml_js.Html5.elt -> unit
 
   module Elt : sig
