@@ -334,6 +334,47 @@ module Manip = struct
     let elt = get_value_elt "value" elt in
     Js.to_string elt##value
 
+  type files = < files: File.fileList Js.t Js.optdef Js.readonly_prop >
+  let get_files_elt name elt : files Js.t =
+    if Js.undefined == (Js.Unsafe.coerce @@ Html5.toelt elt)##files then
+      manip_error
+        "Cannot call %s on a node without a 'files' property"
+        name;
+    Js.Unsafe.coerce @@ Html5.toelt elt
+
+  let files elt =
+    let elt = get_files_elt "files" elt in
+    elt##files
+
+  let upload_input elt post =
+    let files = files elt in
+    Js.Optdef.case files
+      (fun () -> raise Not_found)
+      (fun files ->
+         let nfiles = files##length in
+         let rec aux  = function
+           | i when i < 0 -> ()
+           | i ->
+             let file = files##item(i) in
+             Js.Opt.case file
+               (fun () -> assert false)
+               (fun file ->
+                  let reader = jsnew File.fileReader () in
+                  reader##onloadend <-
+                    Dom.handler (fun _evt ->
+                        if reader##readyState = File.DONE then
+                          Js.Opt.case (File.CoerceTo.string (reader##result))
+                            (fun () -> assert false)
+                            (fun s ->
+                               let s = Js.to_string (Dom_html.window##btoa(s)) in
+                               post s);
+                        Js._true
+                      );
+                  reader##readAsBinaryString (file););
+             aux (i-1) in
+         aux (nfiles - 1);
+         true)
+
   module Elt = struct
     let body =
       try Of_dom.of_body (Dom_html.window##document##body)
