@@ -25,6 +25,8 @@ class type legend =  object
   method titleText : string_field
   method valueText : string_field
   method maxColumns : int_field
+  method position : string_field
+  method useGraphSettings : bool_field
 end
 
 class type titleObj = object
@@ -92,10 +94,37 @@ module ValueAxis = struct
     end
 end
 
-module Graph = struct
+module DataItem = struct
 
-  class type ['dataItem] t =
+  class type t =
     object
+      method x : string_field
+      method y : (string * float_field) array_field
+    end
+    
+  let dataProvider array =
+    let new_array =
+      Array.map
+        (fun (title, value_array) ->
+           let obj : t Js.t =
+             Js.Unsafe.obj @@ Array.map
+               (fun (field_name,field_val) ->
+                  field_name,Js.Unsafe.inject field_val)
+               value_array
+           in
+           obj##x <- Js.string title;
+           obj
+        ) array
+    in
+    Js.array new_array
+      
+end
+
+module Graph = struct
+  
+  class type t =
+    object
+      method dataProvider : DataItem.t Js.t array_field
       method lineColor : string_field
       method negativeLineColor : string_field
       method bullet : string_field
@@ -106,6 +135,7 @@ module Graph = struct
       method bulletBorderThickness : int_field
       method lineThickness : int_field
       method valueAxis : ValueAxis.t Js.t Js.prop
+      method title : string_field
 
       method valueField : string_field (* do not modify *)
       method _type : string_field (* do not modify *)
@@ -143,45 +173,18 @@ class type categoryAxis =
   end
 
 module Serial = struct
-  class type dataItem =
-    object
-      method x : string_field
-      method y : float_field
-    end
-
-  class type dataItem2 =
-    object
-      method x : string_field
-      method y1 : float_field
-      method y2 : float_field
-    end
-
+      
   let dataProvider array =
-    let array =
-      Array.map (fun (title, value) ->
-          let obj : dataItem Js.t = Js.Unsafe.obj [||] in
-          obj##x <- Js.string title;
-          obj##y <- value;
-          obj
-        ) array
-    in
-    Js.array array
+    DataItem.dataProvider @@
+    Array.map (fun (title,value) -> (title,[|"y",value|])) array
 
   let dataProvider2 array =
-    let array =
-      Array.map (fun (title, value1, value2) ->
-          let obj : dataItem2 Js.t = Js.Unsafe.obj [||] in
-          obj##x <- Js.string title;
-          obj##y1 <- value1;
-          obj##y2 <- value2;
-          obj
-        ) array
-    in
-    Js.array array
-
-  class type ['dataItem] t =
+    DataItem.dataProvider @@
+    Array.map (fun (title,v1,v2) -> (title,[|"y1",v1;"y2",v2|])) array
+    
+  class type t =
     object
-      method dataProvider : 'dataItem Js.t Js.js_array Js.t Js.prop
+      method dataProvider : DataItem.t Js.t Js.js_array Js.t Js.prop
       method marginLeft : int_field
       method dataDateFormat : string_field
       method creditsPosition : string_field
@@ -189,11 +192,12 @@ module Serial = struct
       method categoryAxis : categoryAxis Js.t Js.prop
       method addChartCursor : ChartCursor.t Js.t -> unit Js.meth
       method addChartScrollbar : ChartScrollbar.t Js.t -> unit Js.meth
-      method addGraph : 'dataItem Graph.t Js.t -> unit Js.meth
+      method addGraph : Graph.t Js.t -> unit Js.meth
       method write : Js.js_string Js.t -> unit Js.meth
       method addValueAxis : ValueAxis.t Js.t -> unit Js.meth
       method clear : unit Js.meth
       method categoryField : string_field
+      method legend : legend Js.t Js.prop
     end
 
 end
@@ -203,9 +207,9 @@ class type amCharts =
     method isReady : bool_field
     method ready : (unit -> unit) Js.callback -> unit Js.meth
     method _AmPieChart : Pie.t Js.t Js.constr Js.prop
-    method _AmSerialChart : 'dataItem Serial.t Js.t Js.constr Js.prop
+    method _AmSerialChart : Serial.t Js.t Js.constr Js.prop
     method _ValueAxis : ValueAxis.t Js.t Js.constr Js.prop
-    method _AmGraph : 'a Graph.t Js.t Js.constr Js.prop
+    method _AmGraph : Graph.t Js.t Js.constr Js.prop
     method _ChartCursor : ChartCursor.t Js.t Js.constr Js.prop
     method _ChartScrollbar : ChartScrollbar.t Js.t Js.constr Js.prop
   end
@@ -240,19 +244,16 @@ let title () =
   let title : titleObj Js.t = Js.Unsafe.obj [||] in
   title
 
-let serial () =
+let serialN () =
   let chart =
-    (jsnew ((amCharts())##_AmSerialChart) () : Serial.dataItem Serial.t Js.t)
+    (jsnew ((amCharts())##_AmSerialChart) () : Serial.t Js.t)
   in
   chart##categoryField <- Js.string "x";
   chart
 
-let serial2 () =
-  let chart =
-    (jsnew ((amCharts())##_AmSerialChart) () : Serial.dataItem2 Serial.t Js.t)
-  in
-  chart##categoryField <- Js.string "x";
-  chart
+let serial = serialN
+
+let serial2 = serialN
 
 let valueAxis () =
   jsnew ((amCharts())##_ValueAxis) ()
@@ -263,20 +264,14 @@ let chartCursor () =
 let chartScrollbar () =
   jsnew ((amCharts())##_ChartScrollbar) ()
 
-let graph _type =
+let graphN field _type =
   let graph = jsnew ((amCharts())##_AmGraph) () in
-  graph##valueField <- Js.string "y";
+  graph##valueField <- Js.string field;
   graph##_type <- Js.string _type;
-  (graph : Serial.dataItem Graph.t Js.t)
+  (graph : Graph.t Js.t)
 
-let graph1_2 _type =
-  let graph = jsnew ((amCharts())##_AmGraph) () in
-  graph##valueField <- Js.string "y1";
-  graph##_type <- Js.string _type;
-  (graph : Serial.dataItem2 Graph.t Js.t)
+let graph = graphN "y"
 
-let graph2_2 _type =
-  let graph = jsnew ((amCharts())##_AmGraph) () in
-  graph##valueField <- Js.string "y2";
-  graph##_type <- Js.string _type;
-  (graph : Serial.dataItem2 Graph.t Js.t)
+let graph1_2 = graphN "y1"
+
+let graph2_2 = graphN "y2"
