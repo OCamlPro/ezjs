@@ -334,6 +334,10 @@ module Manip = struct
     let elt = get_value_elt "value" elt in
     Js.to_string elt##value
 
+  let set_value elt s =
+    let elt = get_value_elt "value" elt in
+    elt##value <- (Js.string s)
+
   type files = < files: File.fileList Js.t Js.optdef Js.readonly_prop >
   let get_files_elt name elt : files Js.t =
     if Js.undefined == (Js.Unsafe.coerce @@ Html5.toelt elt)##files then
@@ -344,36 +348,32 @@ module Manip = struct
 
   let files elt =
     let elt = get_files_elt "files" elt in
-    elt##files
+    let files = elt##files in
+    Js.Optdef.case files
+      (fun () -> [])
+      (fun files -> if files##length < 0 then [] else
+          let l = List.init (files##length) (fun i -> files##item(i)) in
+          List.rev @@ List.fold_left (fun acc file ->
+              Js.Opt.case file
+                (fun () -> acc)
+                (fun file -> file :: acc)) [] l)
 
   let upload_input elt post =
     let files = files elt in
-    Js.Optdef.case files
-      (fun () -> raise Not_found)
-      (fun files ->
-         let nfiles = files##length in
-         let rec aux  = function
-           | i when i < 0 -> ()
-           | i ->
-             let file = files##item(i) in
-             Js.Opt.case file
-               (fun () -> assert false)
-               (fun file ->
-                  let reader = jsnew File.fileReader () in
-                  reader##onloadend <-
-                    Dom.handler (fun _evt ->
-                        if reader##readyState = File.DONE then
-                          Js.Opt.case (File.CoerceTo.string (reader##result))
-                            (fun () -> assert false)
-                            (fun s ->
-                               let s = Js.to_string (Dom_html.window##btoa(s)) in
-                               post s);
-                        Js._true
-                      );
-                  reader##readAsBinaryString (file););
-             aux (i-1) in
-         aux (nfiles - 1);
-         true)
+    List.iter (fun file ->
+        let reader = jsnew File.fileReader () in
+        reader##onloadend <-
+          Dom.handler (fun _evt ->
+              if reader##readyState = File.DONE then
+                Js.Opt.case (File.CoerceTo.string (reader##result))
+                  (fun () -> assert false)
+                  (fun s ->
+                     let s = Js.to_string (Dom_html.window##btoa(s)) in
+                     post s);
+              Js._true
+            );
+        reader##readAsBinaryString (file);) files;
+    true
 
   module Elt = struct
     let body =
