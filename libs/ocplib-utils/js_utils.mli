@@ -68,6 +68,7 @@ module Manip : sig
   val enable: 'a elt -> unit
 
   val value: 'a elt -> string
+  val set_value: 'a elt -> string -> unit
 
   val addClass: 'a elt -> string -> unit
   val removeClass: 'a elt -> string -> unit
@@ -75,6 +76,7 @@ module Manip : sig
   val focus: 'a elt -> unit
   val blur: 'a elt -> unit
 
+  val files: 'a elt -> File.file Js.t list
   val upload_input: 'a elt -> (string -> unit) -> bool
 
   val scrollIntoView : ?bottom:bool -> 'a Tyxml_js.Html5.elt -> unit
