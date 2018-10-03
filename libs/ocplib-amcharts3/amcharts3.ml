@@ -21,12 +21,57 @@ let export ?divId () =
   obj
 
 class type legend =  object
+  method accessibleLabel : string_field
+  method align : string_field
+  method autoMargins : bool_field
+  method backgroundAlpha : int_field
+  method backgroundColor : string_field
+  method borderAlpha : int_field
+  method borderColor : string_field
+  method bottom : int_field
+  method color : string_field
+  method combineLegend : bool_field
+  method divId : string_field
   method enabled : bool_field
-  method titleText : string_field
-  method valueText : string_field
+  method equalWidths : bool_field
+  method fontSize : int_field
+  method forceWidth : bool_field
+  method gradientRotation : int_field
+  method horizontalGap : int_field
+  method labelWidth : int_field
+  method left : int_field
+  method marginBottom : int_field
+  method marginLeft : int_field
+  method marginRight : int_field
+  method marginTop : int_field
+  method markerBorderAlpha : int_field
+  method markerBorderColor : string_field
+  method markerBorderThickness : int_field
+  method markerDisabledColor : string_field
+  method markerLabelGap : int_field
+  method markerSize : int_field
+  method markerType : string_field
   method maxColumns : int_field
+  method periodValueText : string_field
   method position : string_field
+  method reversedOrder : bool_field
+  method right : int_field
+  method rollOverColor : string_field
+  method rollOverGraphAlpha : int_field
+  method showEntries : bool_field
+  method spacing : int_field
+  method switchable : bool_field
+  method switchColor : string_field
+  method switchType : string_field
+  method tabIndex : int_field
+  method textClickEnabled : bool_field
+  method top : int_field       
   method useGraphSettings : bool_field
+  method valueAlign : string_field
+  method valueText : string_field
+  method valueWidth : int_field
+  method verticalGap : int_field
+  method width : int_field
 end
 
 class type titleObj = object
