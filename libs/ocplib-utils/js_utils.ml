@@ -351,12 +351,15 @@ module Manip = struct
     let files = elt##files in
     Js.Optdef.case files
       (fun () -> [])
-      (fun files -> if files##length < 0 then [] else
-          let l = List.init (files##length) (fun i -> files##item(i)) in
-          List.rev @@ List.fold_left (fun acc file ->
-              Js.Opt.case file
-                (fun () -> acc)
-                (fun file -> file :: acc)) [] l)
+      (fun files ->
+         let rec list_init n f = match n with
+           | i when i<=0 -> []
+           | i -> f (i-1) :: (list_init (i-1) f) in
+         let l = list_init (files##length) (fun i -> files##item(i)) in
+         List.rev @@ List.fold_left (fun acc file ->
+             Js.Opt.case file
+               (fun () -> acc)
+               (fun file -> file :: acc)) [] l)
 
   let upload_input elt post =
     let files = files elt in

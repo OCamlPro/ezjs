@@ -232,35 +232,51 @@ module Panel = struct
 
   (** Helpers *)
   let make_panel
-      ?(panel_class=[]) ?(panel_id)
-      ?(panel_heading_class=[]) ?panel_heading_id
-      ?(panel_title_class=[])
-      ?(panel_body_class=[]) ?panel_body_id
-      ?(panel_title_content)
-      ?(panel_title_extra=[])
-      ?(panel_body_content=[]) () =
+      ?(panel_class=[]) ?(panel_id) (* panel info *)
+      ?(panel_heading_class=[]) ?panel_heading_id (* panel heading info *)
+      ?(panel_title_class=[]) ?(panel_title_content) ?(panel_title_extra=[]) (* panel title info *)
+      ?(panel_body_class=[]) ?panel_body_id ?(panel_body_content=[]) (* panel body info *)
+      ?(panel_footer_class=[]) ?panel_footer_id ?panel_footer_content (* panel footer info *)
+      () =
     let unopt_id = function None -> [] | Some id -> [ a_id id ] in
-    let panel_id, panel_heading_id, panel_body_id =
+    let panel_id, panel_heading_id, panel_body_id, panel_footer_id =
       unopt_id panel_id, unopt_id panel_heading_id,
-      unopt_id panel_body_id in
+      unopt_id panel_body_id, unopt_id panel_footer_id in
     let panel_title_content = match panel_title_content with
       | None -> []
       | Some elt ->
         List.iter (Js_utils.Manip.addClass elt) (panel_title :: panel_title_class) ;
         [ elt ] in
-    match panel_title_content with
-    | [] ->
+    match panel_title_content, panel_footer_content with
+    | [], None ->
       div ~a:(a_class (panel :: panel_primary :: panel_class) :: panel_id) [
         div ~a:(a_class (panel_body :: panel_body_class) :: panel_body_id)
           panel_body_content
       ]
-    | _ ->  (* TODO panel_id a ajouter *)
+    | _, None ->  (* TODO panel_id a ajouter *)
       div ~a:(a_class (panel :: panel_primary :: panel_class) :: panel_id) [
         div ~a:(a_class (panel_heading :: panel_heading_class) :: panel_heading_id) (
           panel_title_content @ panel_title_extra) ;
         div ~a:(a_class (panel_body :: panel_body_class) :: panel_body_id)
           panel_body_content
       ]
+    | [], Some footer_content ->
+      div ~a:(a_class (panel :: panel_primary :: panel_class) :: panel_id) [
+        div ~a:(a_class (panel_body :: panel_body_class) :: panel_body_id)
+          panel_body_content;
+        div ~a:(a_class (panel_footer :: panel_footer_class) :: panel_footer_id)
+          footer_content
+      ]
+    | _, Some footer_content ->
+      div ~a:(a_class (panel :: panel_primary :: panel_class) :: panel_id) [
+        div ~a:(a_class (panel_heading :: panel_heading_class) :: panel_heading_id) (
+          panel_title_content @ panel_title_extra) ;
+        div ~a:(a_class (panel_body :: panel_body_class) :: panel_body_id)
+          panel_body_content;
+        div ~a:(a_class (panel_footer :: panel_footer_class) :: panel_footer_id)
+          footer_content
+      ]
+
 end
 
 module Table = struct
