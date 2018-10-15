@@ -21,12 +21,57 @@ let export ?divId () =
   obj
 
 class type legend =  object
+  method accessibleLabel : string_field
+  method align : string_field
+  method autoMargins : bool_field
+  method backgroundAlpha : int_field
+  method backgroundColor : string_field
+  method borderAlpha : int_field
+  method borderColor : string_field
+  method bottom : int_field
+  method color : string_field
+  method combineLegend : bool_field
+  method divId : string_field
   method enabled : bool_field
-  method titleText : string_field
-  method valueText : string_field
+  method equalWidths : bool_field
+  method fontSize : int_field
+  method forceWidth : bool_field
+  method gradientRotation : int_field
+  method horizontalGap : int_field
+  method labelWidth : int_field
+  method left : int_field
+  method marginBottom : int_field
+  method marginLeft : int_field
+  method marginRight : int_field
+  method marginTop : int_field
+  method markerBorderAlpha : int_field
+  method markerBorderColor : string_field
+  method markerBorderThickness : int_field
+  method markerDisabledColor : string_field
+  method markerLabelGap : int_field
+  method markerSize : int_field
+  method markerType : string_field
   method maxColumns : int_field
+  method periodValueText : string_field
   method position : string_field
+  method reversedOrder : bool_field
+  method right : int_field
+  method rollOverColor : string_field
+  method rollOverGraphAlpha : int_field
+  method showEntries : bool_field
+  method spacing : int_field
+  method switchable : bool_field
+  method switchColor : string_field
+  method switchType : string_field
+  method tabIndex : int_field
+  method textClickEnabled : bool_field
+  method top : int_field       
   method useGraphSettings : bool_field
+  method valueAlign : string_field
+  method valueText : string_field
+  method valueWidth : int_field
+  method verticalGap : int_field
+  method width : int_field
 end
 
 class type titleObj = object
@@ -82,18 +127,126 @@ module Pie = struct
 
 end
 
+module AxisBase =
+  struct
+    class type t =
+      object
+        method autoGridCount : bool_field
+        method autoRotateAngle : int_field
+        method autoRotateCOunt : int_field
+        method axisAlpha : float_field
+        method axisColor : string_field
+        method axisThickness : int_field
+        method axisX : int_field (* Read-only *)
+        method axisY : int_field (* Read-only *)
+        (* method balloon : AmBalloon.t TODO *)
+        method boldLabels : bool_field
+        method boldPeriodBeginning : bool_field
+        method centerLabelOnFullPeriod : bool_field
+        method centerLabels : bool_field
+        method centerRotatedLabels : bool_field
+        method color : string_field
+        method dashLength : int_field
+        (* method dateFormats : date array_field TODO *)  
+        method fillAlpha : int_field
+        method fillColor : string_field
+        method firstDayOfWeek : int_field
+        method fontSize : int_field
+        method gridAlpha : float_field
+        method gridColor : string_field
+        method gridCount : int_field
+        method gridThickness : int_field
+        (* method guides : Guide.t array_field TODO *)
+        method ignoreAxisWidth : bool_field
+        method inside : bool_field
+        method labelFrequency : int_field
+        method labelOffset : int_field
+        method labelRotation : int_field
+        method labelsEnables : bool_field
+        (* method listeners : object array_field TODO *)
+        method markPeriodChange : bool_field
+        method minHorizontalGap : int_field
+        method minorGridAlpha: float_field
+        method minorGridEnabled : bool_field
+        method minorTickLength : int_field
+        method minVerticalGap : int_field
+        method offset : int_field
+        method position : string_field (* "left" or "right" *)
+        method showFirstLabel : bool_field
+        method showLastLabel : bool_field
+        method tickLength : int_field
+        method title : string_field
+        method titleBold : bool_field
+        method titleFOntSize : int_field
+        method titleRotation : int_field    
+      end
+  end
+  
 module ValueAxis = struct
 
   class type t =
     object
-      method axisAlpha : float_field
-      method inside : bool_field
-      method dashLength : int_field
-      method title : string_field
-      method position : string_field (* "left" or "right" *)
+      inherit AxisBase.t
+      method autoWrap : bool_field
+      method axisFrequency : int_field
+      method axisTitleOffset : int_field
+      (* method balloonTextFunction : object TODO *)
+      method baseCoord : int_field
+      method baseValue : int_field
+      method duration : string_field
+      (* method durationUnits : object TODO*)
+      method gridType : string_field
+      method id : string_field
+      method includeAllValues : bool_field
+      method includeGuidesInMinMax : bool_field
+      method includeHidden : bool_field
+      method integersOnly : bool_field
+      (*method labelFunction : ? TODO *)
+      method logarithmic : bool_field
+      method max : int_field (* Read-only *)
+      method maximum : int_field
+      (* method maximumDate : Date.t TODO *) 
+      method min : int_field (* Read-only *)
+      method minimum : int_field
+      (* method minimumDate : Date.t TODO *)
+      method minMaxMultiplier : float_field
+      method minPeriod : string_field
+      method pointPosition : string_field
+      method position : string_field
+      method precision : int_field
+      method radarCategoriesEnabled : bool_field
+      method recalculateToPercents : bool_field
+      method reversed : bool_field
+      method stackType : string_field
+      method step : int_field (* Read-only *)
+      method strictMinMax : bool_field
+      method synchronizationMultiplier : int_field
+      method synchronizeWith : t
+      method totalText : string_field
+      method totalTextColor : string_field
+      method totalTextOffset : int_field
+      method treatZeroAs : float_field
+      (* method type : string_field  // "type" is an OCaml key word*)
+      method unit : string_field
+      method unitPosition : string_field
+      method usePrefixes : bool_field
+      method useScientificNotation : bool_field
+      method zeroGridAlpha : float_field
     end
 end
 
+module CategoryAxis =
+  struct 
+    class type t =
+      object
+        inherit AxisBase.t
+        method minPeriod : string_field
+        method parseDates : bool_field
+      end
+  end
+  
+class type categoryAxis = CategoryAxis.t
+  
 module DataItem = struct
 
   class type t =
@@ -136,6 +289,7 @@ module Graph = struct
       method lineThickness : int_field
       method valueAxis : ValueAxis.t Js.t Js.prop
       method title : string_field
+      method dashLength : int_field
 
       method valueField : string_field (* do not modify *)
       method _type : string_field (* do not modify *)
@@ -161,16 +315,6 @@ module ChartScrollbar = struct
     end
 
 end
-
-class type categoryAxis =
-  object
-    method title : string_field
-    method parseDates : bool_field
-    method minPeriod : string_field
-    method dashLength : int_field
-    method minorGridEnabled : bool_field
-    method minorGridAlpha : float_field
-  end
 
 module Serial = struct
       
