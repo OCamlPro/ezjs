@@ -29,5 +29,5 @@ type string_id
 val ss_ : string -> string_id
 val t_ : string_id -> string
 val pcdata_t : string_id -> [> `PCDATA ] Tyxml_js.Html5.elt
-
+val id_ : string_id -> string
 val string_ids : unit -> StringCompat.StringSet.t

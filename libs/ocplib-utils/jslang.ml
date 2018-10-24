@@ -94,11 +94,14 @@ type string_id = {
   mutable epoch : int ;
 }
 
-let string_ids = ref StringSet.empty
+let string_ids = ref StringMap.empty
 let ss_ id =
-  let s = { id ; translation = None ; epoch = 0 } in
-  string_ids := StringSet.add id !string_ids;
-  s
+  try
+    StringMap.find id !string_ids
+  with Not_found ->
+    let s = { id ; translation = None ; epoch = 0 } in
+    string_ids := StringMap.add id s !string_ids;
+    s
 
 let t_ s =
   let epoch = !strings_epoch in
@@ -112,6 +115,10 @@ let t_ s =
     s.epoch <- epoch;
     tr
 
+let id_ s = s.id
+
 let pcdata_t s = Tyxml_js.Html5.pcdata (t_ s)
 
-let string_ids() = !string_ids
+let string_ids() =
+  StringMap.fold (fun ele _ set ->
+      StringSet.add ele set) !string_ids StringSet.empty
