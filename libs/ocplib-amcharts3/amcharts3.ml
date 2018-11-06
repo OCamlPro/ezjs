@@ -177,7 +177,8 @@ module AxisBase =
         method tickLength : int_field
         method title : string_field
         method titleBold : bool_field
-        method titleFOntSize : int_field
+        method titleFontSize : int_field
+        method titleColor : string_field
         method titleRotation : int_field    
       end
   end
