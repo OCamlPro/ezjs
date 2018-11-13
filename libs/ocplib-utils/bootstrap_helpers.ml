@@ -77,8 +77,13 @@ module Icon = struct
   let right_left_arrow_icon () = entity "#8644"
   let times_icon () = entity "times"
   let no_break_space_icon () = entity "#160"
+  let snowflake () = entity "#x2744"
+  let thumb_up () = entity "#x1f44d"
+  let beta () = entity "#x3b2"
+  let chart_up () = entity "#x1F4C8"
+  let chart_down () =  entity "#x1F4C9"
 
-    let params_icon () = span ~a:[ a_class [ "fas"; "fa-cog"] ] []
+  let params_icon () = span ~a:[ a_class [ "fas"; "fa-cog"] ] []
   let folder_icon () = span ~a:[ a_class [ "fas"; "fa-folder-open"] ] []
   let account_icon () = span ~a:[ a_class [ "fas"; "fa-user-circle"] ] []
   let secret_icon () = span ~a:[ a_class [ "fas"; "fa-user-secret"] ] []
