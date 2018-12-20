@@ -192,6 +192,16 @@ module Manip = struct
       )
     |> Array.to_list
 
+  let by_tag n =
+    let nl = Dom_html.window##document##getElementsByTagName (Js.string n) in
+    Array.init (nl##length) (fun i ->
+        let node = nl##item(i) in
+        let node = Js.Opt.get node (fun _ -> assert false) in
+        Of_dom.of_element (Dom_html.element node)
+      )
+    |> Array.to_list
+
+
   let childLength elt =
     let node = get_node elt in
     node##childNodes##length
