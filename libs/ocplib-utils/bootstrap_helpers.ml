@@ -1,5 +1,9 @@
 open Tyxml_js.Html5
 
+module Misc = struct
+  let lead = "lead"
+end
+
 module Attributes = struct
   (** WAI-ARIA attributes (deprecated by Tyxml_js >= 4.1.0 *)
   let a_aria attr value =
@@ -115,6 +119,12 @@ module Grid = struct
   let container = "container"
   let container_fluid = "container-fluid"
   let row = "row"
+
+  let xs_size = 768
+  let sm_size = 992
+  let md_size = 1200
+  let lg_size = 1500
+  let xl_size = 1800
 
   let clg1 = "col-lg-1"
   let clg2 = "col-lg-2"
@@ -316,7 +326,10 @@ module Button = struct
   let btn_secondary = "btn-secondary"
   let btn_default = "btn-default"
   let btn_group = "btn-group"
+  let btn_xs = "btn-xs"
   let btn_sm = "btn-sm"
+  let btn_md = "btn-md"
+  let btn_lg = "btn-lg"
   let dropdown_menu = "dropdown-menu"
   let dropdown_toggle = "dropdown-toggle"
 end
