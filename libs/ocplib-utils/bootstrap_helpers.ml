@@ -362,6 +362,8 @@ module Menu = struct
                   (unit -> unit) *
                     Html_types.flow5_without_interactive Tyxml_js.Html.elt
     | Separator of string list
+    | Header of string list * string
+    | Generic of string list * Html_types.li_content_fun Tyxml_js.Html.elt list
 
   let rec bootstrap_menu =
     function
@@ -377,25 +379,30 @@ module Menu = struct
                 Attributes.a_aria "haspopup" "true";
                 Attributes.a_aria "expanded" "false";
               ]
-              (span title :: [span ~a:[ a_class ["caret"]] []]);
+              (span title :: [pcdata " "; span ~a:[ a_class ["caret"]] []]);
             ul ~a:[ a_class [ "dropdown-menu" ] ]
                (List.map bootstrap_menu items)
           ]
     | Link (classes, url, s, disabled) ->
       li ~a:[ a_class (if disabled then [ "disabled" ] else [] ) ] [
-           a ~a:[ a_class classes; a_href url ] [s]
-         ]
+        a ~a:[ a_class classes; a_href url ] [s]
+      ]
     | Link2 (classes, attribs, s, disabled) ->
       li ~a:[ a_class (if disabled then [ "disabled" ] else [] ) ] [
-           a ~a:([ a_class classes ] @ attribs) [s]
-         ]
+        a ~a:([ a_class classes ] @ attribs) [s]
+      ]
     | Action (classes, f, s) ->
-       li [
-           a ~a:[ a_class classes;
-                  a_onclick (fun _ev ->  f (); false) ] [s]
-         ]
+      li [
+        a ~a:[ a_class classes;
+               a_onclick (fun _ev ->  f (); false) ] [s]
+      ]
     | Separator classes ->
-       li ~a:[ a_class ("divider" :: classes); Attributes.a_role "separator" ] []
+      li ~a:[ a_class ("divider" :: classes); Attributes.a_role "separator" ] []
+    | Header (classes, header) ->
+      li ~a:[ a_class ("dropdown-header" :: classes) ] [ pcdata header ]
+    | Generic (classes, elts) ->
+      li ~a:[ a_class classes ] elts
+
 
   let bootstrap_dropdown_button ~btn_class ~ctn_class id content menus =
     div ~a:[ a_class (Button.btn_group :: ctn_class) ] [

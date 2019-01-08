@@ -123,6 +123,7 @@ module Pie = struct
 
       method titleField : string_field (* do not modify *)
       method valueField : string_field (* do not modify *)
+      method addClassNames: bool_field
     end
 
 end
@@ -343,6 +344,7 @@ module Serial = struct
       method clear : unit Js.meth
       method categoryField : string_field
       method legend : legend Js.t Js.prop
+      method addClassNames : bool_field
     end
 
 end
