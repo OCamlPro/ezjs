@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU Library General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
 
+open Ocp_js
+
 val alert: string -> unit
 val confirm: string -> bool
 
@@ -35,15 +37,13 @@ module Manip : sig
 
   (* à la Eliom_content.Manip ... *)
 
-  open Tyxml_js.Html5
-
   val window: 'a elt -> Dom_html.window Js.t
 
   val setInnerHtml: 'a elt -> string -> unit
   val clone: ?deep:bool -> 'a elt -> 'a elt
 
   val get_elt :
-    string -> 'a Tyxml_js.Html5.elt -> Dom_html.element Js.t
+    string -> 'a elt -> Dom_html.element Js.t
 
   val appendChild: ?before:'a elt -> 'b elt ->  'c elt -> unit
   val appendToBody: ?before:'a elt -> 'c elt -> unit
@@ -80,7 +80,7 @@ module Manip : sig
   val files: 'a elt -> File.file Js.t list
   val upload_input: 'a elt -> (string -> unit) -> bool
 
-  val scrollIntoView : ?bottom:bool -> 'a Tyxml_js.Html5.elt -> unit
+  val scrollIntoView : ?bottom:bool -> 'a Html.elt -> unit
 
   module Elt : sig
     val body : [`Body] elt
@@ -372,8 +372,8 @@ val window_open: ?features:string -> string -> string -> Dom_html.window Js.t Js
 
 module Window : sig
   val close: Dom_html.window Js.t -> unit
-  val head: Dom_html.window Js.t -> [`Head] Tyxml_js.Html5.elt
-  val body: Dom_html.window Js.t -> [`Body] Tyxml_js.Html5.elt
+  val head: Dom_html.window Js.t -> [`Head] Html.elt
+  val body: Dom_html.window Js.t -> [`Body] Html.elt
   val onresize:
     ?win:Dom_html.window Js.t ->
     (Dom_html.event Js.t -> bool) -> unit
@@ -386,8 +386,8 @@ module Window : sig
   val prompt: ?win:Dom_html.window Js.t -> ?value:string -> string -> string
 end
 
-val hide : 'a Tyxml_js.Html5.elt -> unit
-val show : 'a Tyxml_js.Html5.elt -> unit
+val hide : 'a Html.elt -> unit
+val show : 'a Html.elt -> unit
 
 module Document : sig
   val uri: unit -> string
@@ -396,7 +396,7 @@ end
 val parse_fragment: unit -> (string * string) list
 val set_fragment: (string * string) list -> unit
 
-val find_component : string -> 'a Tyxml_js.Of_dom.elt
+val find_component : string -> 'a Of_dom.elt
 
 module Clipboard : sig
   val set_copy : unit -> unit

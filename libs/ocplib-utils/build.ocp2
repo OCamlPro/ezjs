@@ -6,6 +6,7 @@ pp_js = { pp = camlp4_js };
 
 OCaml.library("ocplib-utils-js",  ocaml+ {
   files = [
+    "ocp_js.ml";
     "js_utils.ml", pp_js;
     "lwt_request.ml", pp_js;
     "xhr.ml", pp_js;

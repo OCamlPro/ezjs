@@ -1,3 +1,4 @@
+open Ocp_js
 
 class type  configuration = object
   method auto : bool Js.prop

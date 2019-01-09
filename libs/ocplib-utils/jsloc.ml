@@ -1,3 +1,5 @@
+open Ocp_js
+
 let path_string () = Url.Current.path_string
 
 let url () =

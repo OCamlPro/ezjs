@@ -1,3 +1,4 @@
+module Js = Js_of_ocaml.Js
 
 class type input = object
   method action : Js.js_string Js.t Js.prop

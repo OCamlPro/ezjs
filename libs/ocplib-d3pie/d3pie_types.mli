@@ -18,6 +18,8 @@
 (*  SOFTWARE.                                                             *)
 (**************************************************************************)
 
+module Js = Js_of_ocaml.Js
+
 (**
  Documentation : d3pie.org/#docs
  **)
@@ -110,7 +112,7 @@ class type misc = object
 end
 
 class type callbackArgument = object
-  method segment : Dom_html.element Js.t Js.prop
+  method segment : Js_of_ocaml.Dom_html.element Js.t Js.prop
   method index : int Js.prop
   method expanded : bool Js.t Js.prop
   method data : callbackArgumentData Js.t Js.prop

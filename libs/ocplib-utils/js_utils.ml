@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU Library General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
 
+open Ocp_js
+
 let doc = Dom_html.document
 let window = Dom_html.window
 (* let loc = Js.Unsafe.variable "location" *)
@@ -67,15 +69,13 @@ module Manip = struct
       (fun s -> debug "%s" s; raise (Error s))
       fmt
 
-  open Tyxml_js
-
   let id x = x
 
-  let get_node = Html5.toelt
+  let get_node = Html.toelt
 
   let get_elt name elt : Dom_html.element Js.t =
     Js.Opt.case
-      (Dom_html.CoerceTo.element (Html5.toelt elt))
+      (Dom_html.CoerceTo.element (Html.toelt elt))
       (fun () ->
          manip_error
            "Cannot call %s on a node which is not an element"
@@ -255,13 +255,13 @@ module Manip = struct
 
   let children elt =
     let node = get_node elt in
-    List.map Html5.tot (Dom.list_of_nodeList (node##childNodes))
+    List.map Html.tot (Dom.list_of_nodeList (node##childNodes))
 
   let parent elt =
     let node = get_node elt in
     Js.Opt.case (node##parentNode)
       (fun () -> None)
-      (fun elt -> Some (Html5.tot elt))
+      (fun elt -> Some (Html.tot elt))
 
   let appendToBody ?before elt2 =
     let body = (Of_dom.of_body Dom_html.window##document##body) in
@@ -297,11 +297,11 @@ module Manip = struct
 
   type disable = < disabled: bool Js.t Js.prop >
   let get_disable_elt name elt : disable Js.t =
-    if Js.undefined == (Js.Unsafe.coerce @@ Html5.toelt elt)##disabled then
+    if Js.undefined == (Js.Unsafe.coerce @@ Html.toelt elt)##disabled then
       manip_error
         "Cannot call %s on a node without a 'disable' property"
         name;
-    Js.Unsafe.coerce @@ Html5.toelt elt
+    Js.Unsafe.coerce @@ Html.toelt elt
 
   let disable elt =
     let elt = get_disable_elt "disable" elt in
@@ -312,33 +312,33 @@ module Manip = struct
 
   type focus = < focus: unit Js.meth >
   let get_focus_elt name elt : focus Js.t =
-    if Js.undefined == (Js.Unsafe.coerce @@ Html5.toelt elt)##focus then
+    if Js.undefined == (Js.Unsafe.coerce @@ Html.toelt elt)##focus then
       manip_error
         "Cannot call %s on a node without a 'focus' property"
         name;
-    Js.Unsafe.coerce @@ Html5.toelt elt
+    Js.Unsafe.coerce @@ Html.toelt elt
   let focus elt =
     let elt = get_focus_elt "focus" elt in
     elt##focus()
 
   type blur = < blur: unit Js.meth >
   let get_blur_elt name elt : blur Js.t =
-    if Js.undefined == (Js.Unsafe.coerce @@ Html5.toelt elt)##blur then
+    if Js.undefined == (Js.Unsafe.coerce @@ Html.toelt elt)##blur then
       manip_error
         "Cannot call %s on a node without a 'blur' property"
         name;
-    Js.Unsafe.coerce @@ Html5.toelt elt
+    Js.Unsafe.coerce @@ Html.toelt elt
   let blur elt =
     let elt = get_blur_elt "blur" elt in
     elt##blur()
 
   type value = < value: Js.js_string Js.t Js.prop >
   let get_value_elt name elt : value Js.t =
-    if Js.undefined == (Js.Unsafe.coerce @@ Html5.toelt elt)##value then
+    if Js.undefined == (Js.Unsafe.coerce @@ Html.toelt elt)##value then
       manip_error
         "Cannot call %s on a node without a 'value' property"
         name;
-    Js.Unsafe.coerce @@ Html5.toelt elt
+    Js.Unsafe.coerce @@ Html.toelt elt
 
   let value elt =
     let elt = get_value_elt "value" elt in
@@ -350,11 +350,11 @@ module Manip = struct
 
   type files = < files: File.fileList Js.t Js.optdef Js.readonly_prop >
   let get_files_elt name elt : files Js.t =
-    if Js.undefined == (Js.Unsafe.coerce @@ Html5.toelt elt)##files then
+    if Js.undefined == (Js.Unsafe.coerce @@ Html.toelt elt)##files then
       manip_error
         "Cannot call %s on a node without a 'files' property"
         name;
-    Js.Unsafe.coerce @@ Html5.toelt elt
+    Js.Unsafe.coerce @@ Html.toelt elt
 
   let files elt =
     let elt = get_files_elt "files" elt in
@@ -397,8 +397,8 @@ module Manip = struct
   end
 
   module Ev = struct
-    type ('a, 'b) ev = 'a Html5.elt -> ('b Js.t -> bool) -> unit
-    type ('a,'b) ev_unit = 'a Html5.elt -> ('b Js.t -> unit) -> unit
+    type ('a, 'b) ev = 'a Html.elt -> ('b Js.t -> bool) -> unit
+    type ('a,'b) ev_unit = 'a Html.elt -> ('b Js.t -> unit) -> unit
     let bool_cb f = Dom_html.handler (fun e -> Js.bool (f e))
     let onkeyup elt f =
       let elt = get_elt "Ev.onkeyup" elt in
@@ -1170,8 +1170,8 @@ let window_open ?features url name =
 
 module Window = struct
   let close win = win##close ()
-  let body win = Tyxml_js.Of_dom.of_body win##document##body
-  let head win = Tyxml_js.Of_dom.of_head win##document##head
+  let body win = Of_dom.of_body win##document##body
+  let head win = Of_dom.of_head win##document##head
   let onunload ?(win = Dom_html.window) f =
     win##onunload <- Dom_html.handler (fun ev -> Js.bool (f ev))
   let onresize ?(win = Dom_html.window) f =
