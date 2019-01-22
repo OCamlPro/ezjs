@@ -50,6 +50,14 @@ module Misc = struct
   let invisible = "invisible"
 end
 
+module Icon = struct
+  let glyph name = span ~a:[ a_class ["glyphicon"; "glyphicon-" ^ name ] ] []
+  let glyph_u name () = glyph name
+  let fas name = span ~a:[ a_class ["fas"; "fa-" ^ name ] ] []
+  let fas_u name () = fas name
+  let number_icon icon =  span [pcdata "# "; icon ]
+  let number_icon_u icon () =  number_icon icon
+end
 
 module Grid = struct
   let container = "container"

@@ -112,7 +112,13 @@ module Icon = struct
   let play_icon () = span ~a:[ a_class ["fas"; "fa-play"] ] []
   let stop_icon () = span ~a:[ a_class ["fas"; "fa-stop"] ] []
   let exclamation_icon () = span ~a:[ a_class ["fas"; "fa-exclamation-triangle"] ] []
+
   let number_icon icon () = span [pcdata "# "; icon ()]
+  let number_icon_u icon () =  number_icon icon
+  let glyph name = span ~a:[ a_class ["glyphicon"; "glyphicon-" ^ name ] ] []
+  let glyph_u name () = glyph name
+  let fas name = span ~a:[ a_class ["fas"; "fa-" ^ name ] ] []
+  let fas_u name () = fas name
 end
 
 module Grid = struct
