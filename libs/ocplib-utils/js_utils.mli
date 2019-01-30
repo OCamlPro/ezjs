@@ -74,6 +74,9 @@ module Manip : sig
   val addClass: 'a elt -> string -> unit
   val removeClass: 'a elt -> string -> unit
 
+  val setAttribute: 'a elt -> string -> string -> unit
+  val removeAttribute: 'a elt -> string -> unit
+
   val focus: 'a elt -> unit
   val blur: 'a elt -> unit
 
