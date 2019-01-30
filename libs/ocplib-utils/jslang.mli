@@ -15,7 +15,7 @@ val same : string -> string * string
 
 type storage = [ `LocalStorage | `Cookie | `Temp ]
 
-val set : ?set:storage -> StringCompat.StringMap.key -> unit
+val set : ?set:storage -> string -> unit
 val get : unit -> string option
 
 val s_ : string -> string
@@ -28,4 +28,3 @@ val t_ : string_id -> string
 val pcdata_t : string_id -> [> `PCDATA ] Ocp_js.elt
 val txt_t : string_id -> [> `PCDATA ] Ocp_js.elt
 val id_ : string_id -> string
-val string_ids : unit -> StringCompat.StringSet.t
