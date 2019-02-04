@@ -116,6 +116,13 @@ module Manip = struct
     let elt = get_elt "removeClass" elt in
     elt##classList##remove(Js.string s)
 
+  let setAttribute elt key value =
+    let elt = get_elt "setAttribute" elt in
+    elt##setAttribute(Js.string key, Js.string value)
+  let removeAttribute elt key =
+    let elt = get_elt "removeAttribute" elt in
+    elt##removeAttribute(Js.string key)
+
   let raw_appendChild ?before node elt2 =
     match before with
     | None -> ignore(node##appendChild(get_node elt2))

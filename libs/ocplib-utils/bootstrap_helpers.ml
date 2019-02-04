@@ -112,6 +112,7 @@ module Icon = struct
   let play_icon () = span ~a:[ a_class ["fas"; "fa-play"] ] []
   let stop_icon () = span ~a:[ a_class ["fas"; "fa-stop"] ] []
   let exclamation_icon () = span ~a:[ a_class ["fas"; "fa-exclamation-triangle"] ] []
+
   let number_icon icon () = span [txt "# "; icon ()]
   let number_icon_u icon () =  number_icon icon
   let glyph name = span ~a:[ a_class ["glyphicon"; "glyphicon-" ^ name ] ] []
