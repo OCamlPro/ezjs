@@ -1,3 +1,4 @@
+open Ocp_js
 
 type string_field = Js.js_string Js.t Js.prop
 type int_field = int Js.prop

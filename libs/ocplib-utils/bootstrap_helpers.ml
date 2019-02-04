@@ -1,4 +1,4 @@
-open Tyxml_js.Html5
+open Ocp_js.Html
 
 module Misc = struct
   let lead = "lead"
@@ -7,13 +7,13 @@ end
 module Attributes = struct
   (** WAI-ARIA attributes (deprecated by Tyxml_js >= 4.1.0 *)
   let a_aria attr value =
-    to_attrib @@ Tyxml_js.Xml.string_attrib ("aria-" ^ attr) value
+    to_attrib @@ Ocp_js.Xml.string_attrib ("aria-" ^ attr) value
 
   let a_role value =
-    to_attrib @@ Tyxml_js.Xml.string_attrib "role" value
+    to_attrib @@ Ocp_js.Xml.string_attrib "role" value
 
   let a_data_custom key value =
-    to_attrib @@ Tyxml_js.Xml.string_attrib
+    to_attrib @@ Ocp_js.Xml.string_attrib
       (Printf.sprintf "data-%s" key) value
 
   let a_data_toggle value =
@@ -39,7 +39,7 @@ module Attributes = struct
     a_data_custom "trigger" value
 
   let a_attrib key value =
-    to_attrib @@ Tyxml_js.Xml.string_attrib key value
+    to_attrib @@ Ocp_js.Xml.string_attrib key value
 
 end
 
@@ -50,8 +50,8 @@ module Icon = struct
   let down_icon () = span ~a:[ a_class [ "fas"; "fa-arrow-down" ] ] []
   (* let double_right_icon () = span ~a:[ a_class [ "fa"; "fa-angle-double-right" ] ] []
    * let double_left_icon () = span ~a:[ a_class [ "fa"; "fa-angle-double-left" ] ] [] *)
-  let double_right_icon () = pcdata "»"
-  let double_left_icon () = pcdata "«"
+  let double_right_icon () = txt "»"
+  let double_left_icon () = txt "«"
   let hourglass_icon () = span ~a:[ a_class [ "fas"; "fa-hourglass-half" ] ] []
   let clock_icon () = span ~a:[ a_class [ "fas"; "fa-clock" ] ] []
   let code_branch_icon () = span ~a:[ a_class [ "fas"; "fa-code-branch" ] ] []
@@ -112,8 +112,7 @@ module Icon = struct
   let play_icon () = span ~a:[ a_class ["fas"; "fa-play"] ] []
   let stop_icon () = span ~a:[ a_class ["fas"; "fa-stop"] ] []
   let exclamation_icon () = span ~a:[ a_class ["fas"; "fa-exclamation-triangle"] ] []
-
-  let number_icon icon () = span [pcdata "# "; icon ()]
+  let number_icon icon () = span [txt "# "; icon ()]
   let number_icon_u icon () =  number_icon icon
   let glyph name = span ~a:[ a_class ["glyphicon"; "glyphicon-" ^ name ] ] []
   let glyph_u name () = glyph name
@@ -358,18 +357,18 @@ module Menu = struct
 
   type menu =
     | Dropdown of string list *
-                    Html_types.span_content_fun Tyxml_js.Html.elt list  *
+                    Html_types.span_content_fun Ocp_js.elt list  *
                   menu list * bool
     | Link of string list *
-                string * Html_types.flow5_without_interactive Tyxml_js.Html.elt * bool
+                string * Html_types.flow5_without_interactive Ocp_js.elt * bool
     | Link2 of string list *
-                [ Html_types.a_attrib ] Tyxml_js.Html5.attrib list * Html_types.flow5_without_interactive Tyxml_js.Html.elt * bool
+                [ Html_types.a_attrib ] attrib list * Html_types.flow5_without_interactive Tyxml_js.Html.elt * bool
     | Action of string list *
                   (unit -> unit) *
-                    Html_types.flow5_without_interactive Tyxml_js.Html.elt
+                    Html_types.flow5_without_interactive Ocp_js.elt
     | Separator of string list
     | Header of string list * string
-    | Generic of string list * Html_types.li_content_fun Tyxml_js.Html.elt list
+    | Generic of string list * Html_types.li_content_fun Ocp_js.elt list
 
   let rec bootstrap_menu =
     function
@@ -385,7 +384,7 @@ module Menu = struct
                 Attributes.a_aria "haspopup" "true";
                 Attributes.a_aria "expanded" "false";
               ]
-              (span title :: [pcdata " "; span ~a:[ a_class ["caret"]] []]);
+              (span title :: [txt " "; span ~a:[ a_class ["caret"]] []]);
             ul ~a:[ a_class [ "dropdown-menu" ] ]
                (List.map bootstrap_menu items)
           ]
@@ -405,7 +404,7 @@ module Menu = struct
     | Separator classes ->
       li ~a:[ a_class ("divider" :: classes); Attributes.a_role "separator" ] []
     | Header (classes, header) ->
-      li ~a:[ a_class ("dropdown-header" :: classes) ] [ pcdata header ]
+      li ~a:[ a_class ("dropdown-header" :: classes) ] [ txt header ]
     | Generic (classes, elts) ->
       li ~a:[ a_class classes ] elts
 

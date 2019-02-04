@@ -1,3 +1,4 @@
+open Ocp_js
 open Jsbind
 
 let jsdeps = ref [
@@ -65,7 +66,7 @@ class type legend =  object
   method switchType : string_field
   method tabIndex : int_field
   method textClickEnabled : bool_field
-  method top : int_field       
+  method top : int_field
   method useGraphSettings : bool_field
   method valueAlign : string_field
   method valueText : string_field
@@ -148,7 +149,7 @@ module AxisBase =
         method centerRotatedLabels : bool_field
         method color : string_field
         method dashLength : int_field
-        (* method dateFormats : date array_field TODO *)  
+        (* method dateFormats : date array_field TODO *)
         method fillAlpha : int_field
         method fillColor : string_field
         method firstDayOfWeek : int_field
@@ -180,10 +181,10 @@ module AxisBase =
         method titleBold : bool_field
         method titleFontSize : int_field
         method titleColor : string_field
-        method titleRotation : int_field    
+        method titleRotation : int_field
       end
   end
-  
+
 module ValueAxis = struct
 
   class type t =
@@ -207,7 +208,7 @@ module ValueAxis = struct
       method logarithmic : bool_field
       method max : int_field (* Read-only *)
       method maximum : int_field
-      (* method maximumDate : Date.t TODO *) 
+      (* method maximumDate : Date.t TODO *)
       method min : int_field (* Read-only *)
       method minimum : int_field
       (* method minimumDate : Date.t TODO *)
@@ -238,7 +239,7 @@ module ValueAxis = struct
 end
 
 module CategoryAxis =
-  struct 
+  struct
     class type t =
       object
         inherit AxisBase.t
@@ -246,9 +247,9 @@ module CategoryAxis =
         method parseDates : bool_field
       end
   end
-  
+
 class type categoryAxis = CategoryAxis.t
-  
+
 module DataItem = struct
 
   class type t =
@@ -256,7 +257,7 @@ module DataItem = struct
       method x : string_field
       method y : (string * float_field) array_field
     end
-    
+
   let dataProvider array =
     let new_array =
       Array.map
@@ -272,11 +273,11 @@ module DataItem = struct
         ) array
     in
     Js.array new_array
-      
+
 end
 
 module Graph = struct
-  
+
   class type t =
     object
       method dataProvider : DataItem.t Js.t array_field
@@ -319,7 +320,7 @@ module ChartScrollbar = struct
 end
 
 module Serial = struct
-      
+
   let dataProvider array =
     DataItem.dataProvider @@
     Array.map (fun (title,value) -> (title,[|"y",value|])) array
@@ -327,7 +328,7 @@ module Serial = struct
   let dataProvider2 array =
     DataItem.dataProvider @@
     Array.map (fun (title,v1,v2) -> (title,[|"y1",v1;"y2",v2|])) array
-    
+
   class type t =
     object
       method dataProvider : DataItem.t Js.t Js.js_array Js.t Js.prop

@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
 
+open Ocp_js
+
 class type token = object
   method value : Js.js_string Js.t Js.prop
   method _type : Js.js_string Js.t Js.prop

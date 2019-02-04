@@ -8,6 +8,6 @@ val all : unit -> (key * value) list
 val set : key -> value -> unit
 
 (** Sets browser cookies with expiration time. *)
-val set_with_timeout : key -> value -> Js.date Js.t -> unit
+val set_with_timeout : key -> value -> Ocp_js.Js.date Ocp_js.Js.t -> unit
 
 val clear : key -> unit

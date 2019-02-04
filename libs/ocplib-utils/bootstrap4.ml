@@ -1,14 +1,14 @@
-open Tyxml_js.Html5
+open Ocp_js.Html
 
 module Attribute = struct
   let a_aria attr value =
-    to_attrib @@ Tyxml_js.Xml.string_attrib ("aria-" ^ attr) value
+    to_attrib @@ Ocp_js.Xml.string_attrib ("aria-" ^ attr) value
 
   let a_role value =
-    to_attrib @@ Tyxml_js.Xml.string_attrib "role" value
+    to_attrib @@ Ocp_js.Xml.string_attrib "role" value
 
   let a_data_custom key value =
-    to_attrib @@ Tyxml_js.Xml.string_attrib
+    to_attrib @@ Ocp_js.Xml.string_attrib
       (Printf.sprintf "data-%s" key) value
 
   let a_data_toggle value =
@@ -34,7 +34,7 @@ module Attribute = struct
     a_data_custom "trigger" value
 
   let a_attrib key value =
-    to_attrib @@ Tyxml_js.Xml.string_attrib key value
+    to_attrib @@ Ocp_js.Xml.string_attrib key value
 end
 
 module Misc = struct
@@ -426,10 +426,10 @@ module Breadcrumb = struct
       | [] -> []
       | [ name, _url ] ->
         [ li ~a:[ a_class [breadcrumb_item; Misc.active];
-                  Attribute.a_aria "current" "page"] [ pcdata name ] ]
+                  Attribute.a_aria "current" "page"] [ txt name ] ]
       | (name, url) :: t ->
         (li ~a:[ a_class [breadcrumb_item] ] [
-            a ~a:[ a_href url ] [ pcdata name ] ]) :: (f t) in
+            a ~a:[ a_href url ] [ txt name ] ]) :: (f t) in
     nav ~a:[ Attribute.a_aria "label" breadcrumb ] [
       ol ~a:[ a_class [breadcrumb] ] (f l)
     ]
@@ -533,8 +533,8 @@ module Carousel = struct
       if List.length captions <> List.length l then [] else
         List.map (fun (title, subtitle) ->
             div ~a:[ a_class [carousel_caption; "d-none"; "d-md-block"] ] [
-              h5 [ pcdata title ];
-              p [ pcdata subtitle ] ]) captions in
+              h5 [ txt title ];
+              p [ txt subtitle ] ]) captions in
     let carousel_id, carousel_link = match carousel_id with
       | None -> [], "#"
       | Some id -> [ a_id id ], "#" ^ id in
@@ -543,11 +543,11 @@ module Carousel = struct
         a ~a:[ a_class [carousel_prev]; a_href carousel_link; a_role ["button"];
                Attribute.a_data_custom "slide" "prev"] [
           span ~a:[ a_class [carousel_prev_icon]; Attribute.a_aria "hidden" "true" ] [];
-          span ~a:[ a_class ["sr-only"] ] [ pcdata "Previous" ] ];
+          span ~a:[ a_class ["sr-only"] ] [ txt "Previous" ] ];
         a ~a:[ a_class [carousel_next]; a_href carousel_link; a_role ["button"];
                Attribute.a_data_custom "slide" "next"] [
           span ~a:[ a_class [carousel_next_icon]; Attribute.a_aria "hidden" "true" ] [];
-          span ~a:[ a_class ["sr-only"] ] [ pcdata "Next" ] ] ]
+          span ~a:[ a_class ["sr-only"] ] [ txt "Next" ] ] ]
       else [] in
     let indicators =
       if indicators then [

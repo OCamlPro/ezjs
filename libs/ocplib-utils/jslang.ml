@@ -86,7 +86,8 @@ let s_ s =
           Js_utils.log "Jslang: no %s-translation for %S" lang s;
           s
 
-let pcdata_s s = Tyxml_js.Html5.pcdata (s_ s)
+let txt_s s = Ocp_js.Html.txt (s_ s)
+let pcdata_s s = txt_s s
 
 type string_id = {
   id : string ;
@@ -117,7 +118,8 @@ let t_ s =
 
 let id_ s = s.id
 
-let pcdata_t s = Tyxml_js.Html5.pcdata (t_ s)
+let txt_t s = Ocp_js.Html.txt (t_ s)
+let pcdata_t s = txt_t s
 
 let string_ids() =
   StringMap.fold (fun ele _ set ->

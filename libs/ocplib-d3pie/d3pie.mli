@@ -130,7 +130,7 @@ type d3pie_callback_argument_data = {
 }
 
 type d3pie_callback_argument = {
-  segment : Dom_html.element Js.t;
+  segment : Js_of_ocaml.Dom_html.element Js_of_ocaml.Js.t;
   index : int;
   expanded : bool;
   data : d3pie_callback_argument_data;
@@ -249,6 +249,6 @@ val set_segment_stroke_color:
   d3pie_settings
 
 val d3pie:
-  Dom_html.element Js.t ->
+  Js_of_ocaml.Dom_html.element Js_of_ocaml.Js.t ->
   d3pie_settings ->
-  D3pie_types.pie Js.t
+  D3pie_types.pie Js_of_ocaml.Js.t

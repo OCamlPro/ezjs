@@ -1,3 +1,4 @@
+open Ocp_js
 
 let on_load_initializers = ref []
 let on_load_done = ref false

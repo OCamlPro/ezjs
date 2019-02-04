@@ -531,7 +531,7 @@ let callback_argument_data_of_class callbackArgumentData =
   }
 
 type d3pie_callback_argument = {
-  segment : Dom_html.element Js.t;
+  segment : Js_of_ocaml.Dom_html.element Js.t;
   index : int;
   expanded : bool;
   data : d3pie_callback_argument_data;
