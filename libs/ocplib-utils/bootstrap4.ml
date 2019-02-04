@@ -17,6 +17,14 @@ module Utils = struct
       a_data_custom "placement" @@ match value with
       | `Top -> "top" | `Left -> "left" | `Right -> "right" | `Bottom -> "bottom"
 
+    let a_width value = a_style (Printf.sprintf "width:%s;" value)
+    let a_height value = a_style (Printf.sprintf "height:%s;" value)
+    let a_maxwidth value = a_style (Printf.sprintf "max-width:%s;" value)
+    let a_maxheight value = a_style (Printf.sprintf "max-height:%s;" value)
+    let a_minwidth value = a_style (Printf.sprintf "min-width:%s;" value)
+    let a_minheight value = a_style (Printf.sprintf "min-height:%s;" value)
+
+
     let unopt_attr a_foo = function
       | None -> []
       | Some foo -> [ a_foo foo ]
@@ -593,6 +601,13 @@ module Utils = struct
     let mh50 = "mh-50"
     let mh75 = "mh75"
     let mh100 = "mh-100"
+    let bh1 = "h1"
+    let bh2 = "h2"
+    let bh3 = "h3"
+    let bh4 = "h4"
+    let bh5 = "h5"
+    let bh6 = "h6"
+
   end
 
   module Spacing = struct
@@ -994,12 +1009,12 @@ module Items = struct
       a ~a:[ a_class (dropdown_item :: item_class);
              a_onclick (fun _ -> onclick (); false) ] [ content ]
 
-    let make_dropdown ?(classes=[]) ?button_id button items =
+    let make_dropdown ?(dp_classes=[]) ?(classes=[]) ?button_id button items =
       let aaria =
         Utils.Attribute.unopt_attr (Utils.Attribute.a_aria "labelledby") button_id in
-      div ~a:[ a_class [dropdown] ] [
+      div ~a:[ a_class (dropdown :: classes) ] [
         button;
-        div ~a:([ a_class (dropdown_menu :: classes);
+        div ~a:([ a_class (dropdown_menu :: dp_classes);
                   a_style "min-width:100%;" ] @ aaria) items ]
   end
 
