@@ -63,6 +63,7 @@ module Utils = struct
     let md_size = 992
     let lg_size = 1200
 
+    let col = "col"
     let col1 = "col-1"
     let col2 = "col-2"
     let col3 = "col-3"
