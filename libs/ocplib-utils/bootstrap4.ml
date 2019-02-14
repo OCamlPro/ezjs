@@ -1132,4 +1132,19 @@ module Items = struct
                Js_utils.Manip.replaceChildren target_elt pop_elt;
                Js._true) |]
   end
+
+  module List_group = struct
+    let list_group = "list-group"
+    let list_group_flush = "list-group-flush"
+    let list_group_item = "list-group-item"
+    let list_group_item_action = "list-group-item-action"
+    let list_group_item_success = "list-group-item-success"
+    let list_group_item_secondary = "list-group-item-secondary"
+    let list_group_item_info = "list-group-item-info"
+    let list_group_item_warning = "list-group-item-warning"
+    let list_group_item_danger = "list-group-item-danger"
+    let list_group_item_primary = "list-group-item-primary"
+    let list_group_item_dark = "list-group-item-dark"
+    let list_group_item_light = "list-group-item-light"
+  end
 end
