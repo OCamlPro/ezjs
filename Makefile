@@ -23,4 +23,7 @@ clean: ocp-build-clean $(PROJECT_CLEAN)
 distclean: clean ocp-distclean $(PROJECT_DISTCLEAN)
 	find . -name '*~' -exec rm -f {} \;
 
+test: build
+	cp _obuild/main/main.js test
+
 include autoconf/Makefile.rules
