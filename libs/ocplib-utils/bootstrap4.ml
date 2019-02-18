@@ -832,7 +832,10 @@ module Items = struct
   module Breadcrumb = struct
     let breadcrumb = "breadcrumb"
     let breadcrumb_item = "breadcrumb-item"
-    let make_breadcrumb l =
+    let make_breadcrumb ?link l =
+      let link = match link with
+        | None -> fun (name, url) -> a ~a:[ a_href url ] [ txt name ]
+        | Some link -> link in
       let rec f = function
         | [] -> []
         | [ name, _url ] ->
@@ -840,7 +843,7 @@ module Items = struct
                     Utils.Attribute.a_aria "current" "page"] [ txt name ] ]
         | (name, url) :: t ->
           (li ~a:[ a_class [breadcrumb_item] ] [
-              a ~a:[ a_href url ] [ txt name ] ]) :: (f t) in
+              link (name, url) ]) :: (f t) in
       nav ~a:[ Utils.Attribute.a_aria "label" breadcrumb ] [
         ol ~a:[ a_class [breadcrumb] ] (f l)
       ]
