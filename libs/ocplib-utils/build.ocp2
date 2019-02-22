@@ -12,7 +12,6 @@ OCaml.library("ocplib-utils-js",  ocaml+ {
     "xhr.ml", pp_js;
     "jsbind.ml", pp_js;
     "bootstrap_helpers.ml", pp_js;
-    "bootstrap4.ml", pp_js;
     "jsloc.ml", pp_js;
     "jsStorage.ml", pp_js;
     "cookie", pp_js;
