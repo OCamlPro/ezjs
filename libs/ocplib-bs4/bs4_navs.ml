@@ -1,23 +1,25 @@
 open Ocp_js
 open Html
 open Js_utils
-open Base.Utils
+open Bs4.Utils
 open BMisc
-open Base.Items
+open Bs4.Items
 
 type kind = Tab | Pill | Empty
 type state = Active | Disabled | Inactive | Hidden
 type t = {
   id: string;
   title: int option -> Html_types.flow5_without_interactive Ocp_js.elt;
+  classes: string list;
   kind: kind;
   onshow: unit -> unit;
   mutable state: state;
   mutable first: bool;
 }
 
-let make ?(kind=Tab) ?(state=Inactive) ?(onshow=fun () -> ()) id title =
-  {id; title; kind; state; onshow; first = true}
+let make ?(kind=Tab) ?(state=Inactive) ?(onshow=fun () -> ()) ?(classes=[])
+    id title =
+  {id; title; kind; state; onshow; classes; first = true}
 
 let current_nav = ref (make "" (fun _ -> div []))
 
@@ -71,7 +73,7 @@ let deactivate_nav nav =
     Manip.addClass (find_component ("nav-content-" ^ nav.id)) fade
 
 let change_arg nav =
-   Jsloc.set_args ["tab", nav.id]
+   Jsloc.set_args ["nav", nav.id]
 
 let change_nav nav =
   deactivate_nav !current_nav;
@@ -80,7 +82,7 @@ let change_nav nav =
   change_arg nav
 
 let init navs =
-  match Jsloc.find_arg "tab" with
+  match Jsloc.find_arg "nav" with
   | None -> ()
   | Some value ->
     List.iter (fun nav -> if nav.id = value then change_nav nav) navs
@@ -97,11 +99,12 @@ let make_nav ?nb ?once nav =
       [ a_user_data "toggle" (kind_str nav.kind); a_href ("#nav-content-" ^ nav.id) ] in
   let is_hidden_attr =
     if nav.state <> Hidden then [] else [ a_style "display:none" ] in
-  li ~a:([ a_class [Nav.nav_item];
+  li ~a:([ a_class (Nav.nav_item :: nav.classes);
            a_id ("li-nav-" ^ nav.id);
            a_onshow (fun _e -> update_nav ?once nav; true)]
          @ is_hidden_attr) [
-    a ~a:([ a_id nav.id; a_class (Nav.nav_link :: make_state_class nav.state);
+    a ~a:([ a_id ("nav-" ^ nav.id);
+            a_class (Nav.nav_link :: nav.classes @ make_state_class nav.state);
             Attribute.a_role (kind_str nav.kind);
             Attribute.a_aria "controls" ("nav-content-" ^ nav.id);
             Attribute.a_aria "selected" "true"

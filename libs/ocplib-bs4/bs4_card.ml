@@ -1,11 +1,11 @@
 open Ocp_js
 open Html
-open Base.Utils
+open Bs4.Utils
 open Flex
 open Display
 open Spacing
 open Attribute
-open Base.Items
+open Bs4.Items
 open BCard
 open Table
 open Dropdown
@@ -152,6 +152,9 @@ let table_maker table_class theads = function
     else
       make_table ~table_class theads rows
 
+let replace_opt def = function
+  | None -> Some def
+  | x -> x
 
 (* Card Module Maker *)
 
@@ -160,7 +163,7 @@ module MakeCardTable(M: sig
     val name : string
     val title_span : int -> [> Html_types.span ] Ocp_js.elt
     val page_size : int
-    val table_class : string
+    val table_class : string list
     val card_classes : string list
     val heads : [> Html_types.th_content_fun ] Ocp_js.elt list
     val to_row : t -> [> Html_types.tr ] Ocp_js.elt
@@ -192,7 +195,12 @@ module MakeCardTable(M: sig
         Some [ div ~a:[ a_class [d_flex] ] [
             div ~a:[ a_id (footer_id ^ suf_id) ; a_class [ mla ] ] []
           ]
-        ] in
+          ] in
+    let card_class = replace_opt M.card_classes card_class in
+    let card_header_class = replace_opt M.card_classes card_header_class in
+    let card_title_class = replace_opt M.card_classes card_title_class in
+    let card_body_class = replace_opt M.card_classes card_body_class in
+    let card_footer_class = replace_opt M.card_classes card_footer_class in
     make_card
       ?card_class ?card_id
       ?card_header_class ?card_header_id ?card_title_class
@@ -210,7 +218,7 @@ module MakeCardTable(M: sig
         ])
       ~card_body_content:
         ([ div
-             (before @ [ table_maker [M.table_class] theads
+             (before @ [ table_maker M.table_class theads
                            (Loading (table_id ^ suf_id))] @ after) ])
       ?card_footer_content ()
 
@@ -224,7 +232,7 @@ module MakeCardTable(M: sig
   let update_table rows =
     let container = Js_utils.find_component (table_id ^ !suffix) in
     Js_utils.Manip.replaceChildren container
-      [table_maker [] theads (Ready (rows, M.empty, ncolumns))]
+      [table_maker M.table_class theads (Ready (rows, M.empty, ncolumns))]
 
   let update ?(title=true) ?page_sizer nrows xhr =
     let f page page_size =

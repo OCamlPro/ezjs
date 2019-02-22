@@ -1,13 +1,13 @@
 open Ocp_js.Html
 open Js_utils
 
-open Base.Utils
+open Bs4.Utils
 open Spacing
 open Grid
 open Display
 open Flex
 
-open Base.Items
+open Bs4.Items
 open BForm
 open Alert
 open Button
@@ -70,7 +70,9 @@ module ROW = struct
 end
 
 module Make(S : sig
-    val styles : string list
+    val group_classes : string list
+    val input_classes : string list
+    val prepend_classes : string list
   end) = struct
 
   let select ?(width=180) ?selected ?(a=[])
@@ -84,45 +86,36 @@ module Make(S : sig
              | Some t when t = tag -> a_selected () :: a
              | Some _ -> a
            in
-           option
-             ~a
-           @@ txt (Format.sprintf "%s" name)
-        )options
+           option ~a @@ txt (Format.sprintf "%s" name)
+        ) options
     in
-    div
-      ~a:[ a_class (input_group :: S.styles); a_id (id ^ "-form") ]
-      [
-        div
-          ~a:[ a_class [input_group_prepend] ]
-          [
-            span
-              ~a:[ a_class [input_group_text];
-                   Printf.kprintf a_style "width:%dpx;" width ]
-              [ txt title ]
-          ];
+    div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] [
+      div ~a:[ a_class [input_group_prepend] ] [
+        span ~a:[ a_class (input_group_text :: S.prepend_classes);
+                  Printf.kprintf a_style "width:%dpx;" width ] [ txt title ]
+      ];
 
-        Ocp_js.Html.select
-          ~a:( a_id (id ^ "-input") ::
-               a_class [form_control] ::
-               a_onchange (fun _e ->
-                   let input_elt = find_component @@ id ^ "-input" in
-                   let v = Manip.value input_elt in
-                   onselect v; true) ::
-               a
-             )
-          options
-      ]
+      Ocp_js.Html.select
+        ~a:( a_id (id ^ "-input") ::
+             a_class (form_control :: S.input_classes) ::
+             a_onchange (fun _e ->
+                 let input_elt = find_component @@ id ^ "-input" in
+                 let v = Manip.value input_elt in
+                 onselect v; true) ::
+             a)
+        options
+    ]
 
   let field ?(input_type=`Text) ?(placeholder="") ?(width=220)
       ?(a=[])
       id ~onchange title =
-    div ~a:[ a_class (input_group :: S.styles); a_id (id ^ "-form") ] [
+    div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] [
       div ~a:[ a_class [input_group_prepend] ] [
-        span ~a:[ a_class [input_group_text];
+        span ~a:[ a_class (input_group_text :: S.prepend_classes);
                   Printf.kprintf a_style "width:%dpx;" width ] [ txt title ] ];
       Ocp_js.Html.input ~a:( a_input_type input_type ::
                  a_id (id ^ "-input") ::
-                 a_class [form_control] ::
+                 a_class (form_control :: S.input_classes) ::
                  a_placeholder placeholder ::
                  a_onchange (fun _e -> onchange id; true) ::
                a) ()
@@ -130,14 +123,14 @@ module Make(S : sig
 
 
   let textarea ?(placeholder="") ?(rows=3) ?(width=180) id ~onchange title =
-    div ~a:[ a_class (input_group :: S.styles); a_id (id ^ "-form") ] [
+    div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] [
       div ~a:[ a_class [input_group_prepend] ] [
-        span ~a:[ a_class [input_group_text];
+        span ~a:[ a_class (input_group_text :: S.prepend_classes);
                   Printf.kprintf a_style "width:%dpx;" width
                 ] [ txt title ] ];
       textarea ~a:[
         a_id (id ^ "-input");
-        a_class [form_control];
+        a_class (form_control :: S.input_classes);
         a_placeholder placeholder;
         a_onchange (fun _e -> onchange id; true);
         a_rows rows;
@@ -145,6 +138,13 @@ module Make(S : sig
         (txt "")
     ]
 end
+
+include Make(struct
+    let group_classes = [ my2 ]
+    let input_classes = []
+    let prepend_classes = []
+  end)
+
 
 let check checkers id =
   let check =
@@ -188,10 +188,6 @@ let onchange checkers id =
     Manip.appendChild container
       (div ~a:[ a_class [input_group_append]; a_id (id ^ "-help") ]
          [ span ~a:[ a_class [input_group_text]] [ txt msg ] ])
-
-module MB1 = Make(struct let styles = [ mb1 ] end)
-
-include Make(struct let styles = [ mb3 ] end)
 
 let set ~id v = Manip.set_value (find_component (id ^ "-input")) v
 let get id = Manip.value (find_component (id ^ "-input"))
