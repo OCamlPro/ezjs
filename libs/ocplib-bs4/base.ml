@@ -78,6 +78,7 @@ module Utils = struct
     let col12 = "col-12"
     let colauto = "col-auto"
 
+    let csm = "col-sm"
     let csm1 = "col-sm-1"
     let csm2 = "col-sm-2"
     let csm3 = "col-sm-3"
@@ -92,6 +93,7 @@ module Utils = struct
     let csm12 = "col-sm-12"
     let csmauto = "col-sm-auto"
 
+    let cmd = "col-md"
     let cmd1 = "col-md-1"
     let cmd2 = "col-md-2"
     let cmd3 = "col-md-3"
@@ -106,6 +108,7 @@ module Utils = struct
     let cmd12 = "col-md-12"
     let cmdauto = "col-md-auto"
 
+    let clg = "col-lg"
     let clg1 = "col-lg-1"
     let clg2 = "col-lg-2"
     let clg3 = "col-lg-3"
@@ -120,6 +123,7 @@ module Utils = struct
     let clg12 = "col-lg-12"
     let clgauto = "col-lg-auto"
 
+    let cxl = "col-xl"
     let cxl1 = "col-xl-1"
     let cxl2 = "col-xl-2"
     let cxl3 = "col-xl-3"
@@ -412,17 +416,6 @@ module Utils = struct
   end
 
   module Flex = struct
-    let d_flex = "d-flex"
-    let d_flex_sm = "d-sm-flex"
-    let d_flex_md = "d-md-flex"
-    let d_flex_lg = "d-lg-flex"
-    let d_flex_xl = "d-xl-flex"
-    let d_inline_flex = "d-inline-flex"
-    let d_inline_flex_sm = "d-sm-inline-flex"
-    let d_inline_flex_md = "d-md-inline-flex"
-    let d_inline_flex_lg = "d-lg-inline-flex"
-    let d_inline_flex_xl = "d-xl-inline-flex"
-
     let flex_column = "flex-column"
     let flex_column_rev = "flex-column-reverse"
     let flex_row = "flex-row"
@@ -1049,11 +1042,14 @@ module Items = struct
     let modal = "modal"
     let modal_body = "modal-body"
     let modal_content = "modal-content"
-    let modal_dialog = "modal-dialog-centered"
+    let modal_dialog = "modal-dialog"
+    let modal_dialog_centered = "modal-dialog-centered"
     let modal_header = "modal-header"
     let modal_footer = "modal-footer"
+    let modal_title = "modal-title"
     let modal_lg = "modal-lg"
     let modal_sm = "modal-sm"
+    let modal_xl = "modal-xl"
   end
 
   module Nav = struct
