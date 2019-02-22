@@ -2,11 +2,10 @@ OCaml.library(
   "ocplib-bs4",
   ocaml + {
     files = [
-      "base.ml";
-      "card.ml";
-      "navs.ml";
-      "form.ml";
       "bs4.ml";
+      "bs4_card.ml";
+      "bs4_navs.ml";
+      "bs4_form.ml";
     ];
     requires = [
       "ocplib-utils-js";
