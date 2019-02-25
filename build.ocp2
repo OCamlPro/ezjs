@@ -18,5 +18,10 @@ ocaml.asmcomp = oflags;
 include "autoconf/config.ocp2gen";
 ocaml.version = autoconf.package_version;
 
+base64_3 = false;
+
 filename_ocp2 = "ocp-autoconf.d/build.ocp2inc";
+if( Sys.file_exists(dirname + "/" + filename_ocp2) ){ include filename_ocp2; }
+
+filename_ocp2 = "ocp-autoconf.d/config.ocp2inc";
 if( Sys.file_exists(dirname + "/" + filename_ocp2) ){ include filename_ocp2; }

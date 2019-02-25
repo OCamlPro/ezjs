@@ -25,10 +25,17 @@ OCaml.library("ocplib-utils-js",  ocaml+ {
   ];
   });
 
+if ( base64_3 ) {
+  xor_file = "xor3.ml";
+  }
+else {
+  xor_file = "xor.ml";
+}
+
 OCaml.library("ocplib-xor", ocaml+ {
   has_asm = true;
   files = [
-    "xor.ml"
+    xor_file
   ];
   requires = [
     "base64"
