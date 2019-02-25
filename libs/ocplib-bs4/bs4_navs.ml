@@ -7,9 +7,9 @@ open Bs4.Items
 
 type kind = Tab | Pill | Empty
 type state = Active | Disabled | Inactive | Hidden
-type t = {
+type 'a tnav = {
   id: string;
-  title: int option -> Html_types.flow5_without_interactive Ocp_js.elt;
+  title: 'a option -> Html_types.flow5_without_interactive Ocp_js.elt;
   classes: string list;
   kind: kind;
   onshow: unit -> unit;
@@ -20,8 +20,6 @@ type t = {
 let make ?(kind=Tab) ?(state=Inactive) ?(onshow=fun () -> ()) ?(classes=[])
     id title =
   {id; title; kind; state; onshow; classes; first = true}
-
-let current_nav = ref (make "" (fun _ -> div []))
 
 let make_state_class = function
   | Active -> [ active; bshow ]
@@ -75,57 +73,65 @@ let deactivate_nav nav =
 let change_arg nav =
    Jsloc.set_args ["nav", nav.id]
 
-let change_nav nav =
-  deactivate_nav !current_nav;
-  activate_nav nav;
-  current_nav:= nav;
-  change_arg nav
-
-let init navs =
-  match Jsloc.find_arg "nav" with
-  | None -> ()
-  | Some value ->
-    List.iter (fun nav -> if nav.id = value then change_nav nav) navs
-
-let update_nav ?(once=true) nav =
-  change_nav nav;
-  if (nav.first || not once) then (
-    nav.first <- false;
-    nav.onshow ())
-
-let make_nav ?nb ?once nav =
-  let is_active_class =
-    if nav.state = Disabled then [] else
-      [ a_user_data "toggle" (kind_str nav.kind); a_href ("#nav-content-" ^ nav.id) ] in
-  let is_hidden_attr =
-    if nav.state <> Hidden then [] else [ a_style "display:none" ] in
-  li ~a:([ a_class (Nav.nav_item :: nav.classes);
-           a_id ("li-nav-" ^ nav.id);
-           a_onshow (fun _e -> update_nav ?once nav; true)]
-         @ is_hidden_attr) [
-    a ~a:([ a_id ("nav-" ^ nav.id);
-            a_class (Nav.nav_link :: nav.classes @ make_state_class nav.state);
-            Attribute.a_role (kind_str nav.kind);
-            Attribute.a_aria "controls" ("nav-content-" ^ nav.id);
-            Attribute.a_aria "selected" "true"
-          ] @ is_active_class) [
-      nav.title nb
-    ]
-  ]
-
-let update_nav_title nav nb =
-  Manip.replaceChildren (find_component ("nav-" ^ nav.id)) [ nav.title (Some nb) ]
-
-let make_navs ?(kind=Tab) ?(classes=[]) ?once navs =
-  let classes = match kind with
-    | Tab -> Nav.nav_tabs :: classes
-    | Pill -> Nav.nav_pills :: classes
-    | Empty -> classes in
-  ul ~a:[ a_class (Nav.nav :: classes) ] @@
-  List.map (fun nav -> if nav.state = Active then current_nav := nav;
-             make_nav ?once nav) navs
-
 let make_tab_content nav content =
   div ~a:[ a_id ("nav-content-" ^ nav.id);
            a_class ([ Nav.tab_pane ] @ make_state_content_class nav.state)]
     [ content ]
+
+let update_nav_title nav param =
+  Manip.replaceChildren (find_component ("nav-" ^ nav.id)) [ nav.title (Some param) ]
+
+
+module Make(S : sig type t end) = struct
+
+  let current_nav : S.t tnav ref = ref (make "" (fun _ -> div []))
+
+  let change_nav nav =
+    deactivate_nav !current_nav;
+    activate_nav nav;
+    current_nav:= nav;
+    change_arg nav
+
+  let init ?value navs =
+    let f value = List.iter (fun nav -> if nav.id = value then change_nav nav) navs in
+    match Jsloc.find_arg "nav", value with
+    | None, None -> ()
+    | _, Some value -> f value
+    | Some value, _ -> f value
+
+  let update_nav ?(once=true) nav =
+    change_nav nav;
+    if (nav.first || not once) then (
+      nav.first <- false;
+      nav.onshow ())
+
+  let make_nav ?(link=fun id -> a_href ("#nav-content-" ^ id)) ?param ?once nav =
+    let is_active_class =
+      if nav.state = Disabled then [] else
+        [ a_user_data "toggle" (kind_str nav.kind); link nav.id] in
+    let is_hidden_attr =
+      if nav.state <> Hidden then [] else [ a_style "display:none" ] in
+    li ~a:([ a_class (Nav.nav_item :: nav.classes);
+             a_id ("li-nav-" ^ nav.id);
+             a_onshow (fun _e -> update_nav ?once nav; true)]
+           @ is_hidden_attr) [
+      a ~a:([ a_id ("nav-" ^ nav.id);
+              a_class (Nav.nav_link :: nav.classes @ make_state_class nav.state);
+              Attribute.a_role (kind_str nav.kind);
+              Attribute.a_aria "controls" ("nav-content-" ^ nav.id);
+              Attribute.a_aria "selected" "true"
+            ] @ is_active_class) [
+        nav.title param
+      ]
+    ]
+
+  let make_navs ?(kind=Tab) ?(classes=[]) ?once navs =
+    let classes = match kind with
+      | Tab -> Nav.nav_tabs :: classes
+      | Pill -> Nav.nav_pills :: classes
+      | Empty -> classes in
+    ul ~a:[ a_class (Nav.nav :: classes) ] @@
+    List.map (fun nav -> if nav.state = Active then current_nav := nav;
+               make_nav ?once nav) navs
+
+end
