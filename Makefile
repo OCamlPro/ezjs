@@ -14,7 +14,7 @@ all: build
 
 -include ocp-autoconf.d/Makefile
 
-build: ocp-build-build $(PROJECT_BUILD)
+build: conf ocp-build-build $(PROJECT_BUILD)
 
 install: ocp-build-install $(PROJECT_INSTALL)
 
