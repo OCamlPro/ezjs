@@ -8,13 +8,15 @@
 #
 #############################################################################
 
+BASE64_3:=false
+
 include autoconf/Makefile.config
 
 all: build
 
 -include ocp-autoconf.d/Makefile
 
-build: conf ocp-build-build $(PROJECT_BUILD)
+build: base64-conf ocp-build-build $(PROJECT_BUILD)
 
 install: ocp-build-install $(PROJECT_INSTALL)
 
