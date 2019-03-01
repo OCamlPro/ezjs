@@ -19,4 +19,4 @@ _olint
 *.annot
 
 # content of file ocp-autoconf.d/gitignore
-
+ocp-autoconf.d/config.ocp2inc

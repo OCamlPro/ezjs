@@ -125,6 +125,7 @@ module Pie = struct
       method titleField : string_field (* do not modify *)
       method valueField : string_field (* do not modify *)
       method addClassNames: bool_field
+      method colors : Js.js_string Js.t Js.js_array Js.t Js.prop
     end
 
 end
