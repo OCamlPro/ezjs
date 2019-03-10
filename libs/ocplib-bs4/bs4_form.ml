@@ -121,6 +121,18 @@ module Make(S : sig
                a) ()
     ]
 
+  let text ?(width=220) ?(a=[]) id title content =
+    div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] [
+      div ~a:[ a_class [input_group_prepend] ] [
+        span ~a:[ a_class (input_group_text :: S.prepend_classes);
+                  Printf.kprintf a_style "width:%dpx;" width ] [ txt title ] ];
+
+      div ~a:[ a_class (input_group_text :: input_group_prepend ::
+               form_control :: S.input_classes)] [
+        span ~a:[ a_class (S.prepend_classes)]
+          [ content ] ]
+    ]
+
 
   let textarea ?(placeholder="") ?(rows=3) ?(width=180) id ~onchange title =
     div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] [
