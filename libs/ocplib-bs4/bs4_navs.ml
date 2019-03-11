@@ -85,6 +85,7 @@ let update_nav_title nav param =
 module Make(S : sig type t end) = struct
 
   let current_nav : S.t tnav ref = ref (make "" (fun _ -> div []))
+  let navs_list : S.t tnav list ref = ref []
 
   let change_nav nav =
     deactivate_nav !current_nav;
@@ -92,18 +93,19 @@ module Make(S : sig type t end) = struct
     current_nav:= nav;
     change_arg nav
 
-  let init ?value navs =
-    let f value = List.iter (fun nav -> if nav.id = value then change_nav nav) navs in
-    match Jsloc.find_arg "nav", value with
-    | None, None -> ()
-    | _, Some value -> f value
-    | Some value, _ -> f value
-
   let update_nav ?(once=true) nav =
     change_nav nav;
     if (nav.first || not once) then (
       nav.first <- false;
       nav.onshow ())
+
+  let init ?value () =
+    let f value =
+      List.iter (fun nav -> if nav.id = value then update_nav nav) !navs_list in
+    match Jsloc.find_arg "nav", value with
+    | None, None -> ()
+    | _, Some value -> f value
+    | Some value, _ -> f value
 
   let make_nav ?(link=fun id -> a_href ("#nav-content-" ^ id)) ?param ?once nav =
     let is_active_class =
@@ -126,6 +128,7 @@ module Make(S : sig type t end) = struct
     ]
 
   let make_navs ?(kind=Tab) ?(classes=[]) ?once navs =
+    navs_list := navs;
     let classes = match kind with
       | Tab -> Nav.nav_tabs :: classes
       | Pill -> Nav.nav_pills :: classes
