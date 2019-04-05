@@ -89,9 +89,6 @@ let check_or_fail checkers id =
 let set ~id v = Manip.set_value (find_component (id ^ "-input")) v
 let get id = Manip.value (find_component (id ^ "-input"))
 
-let get_values id l =
-  List.map
-
 type status =
   | Danger
   | Success
@@ -103,7 +100,7 @@ module Make(S : sig
     val error_classes : string list
   end) = struct
 
-  let select ?(width=180) ?selected ?(a=[])
+  let select ?(width=220) ?selected ?(a=[])
       id ?(onselect=(fun _ -> ())) title options =
     let options =
       List.map

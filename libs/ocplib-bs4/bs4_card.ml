@@ -115,7 +115,16 @@ let make_page_sizer ?(page_sizer=true) ?(classes=[]) page page_size f =
         txt @@ Printf.sprintf "Rows: %d" page_size ] in
     make_dropdown button items
 
-let rec make_pagination_elts ?classes ?page_sizer id n seps current_page current_size f =
+let make_refresh ?(refresh=true) ?(classes=[]) page page_size f =
+  let onclick _ = f page page_size; false in
+  if not refresh then span ~a:[a_class ["hidden"]] []
+  else
+    button ~a:[ a_button_type `Button; a_class ([btn; btn_sm] @ classes);
+                a_onclick onclick] [
+      span ~a:[ a_class ["fas"; "fa-redo"] ] [] ]
+
+let rec make_pagination_elts
+    ?classes ?refresh ?page_sizer id n seps current_page current_size f =
   let onclick page page_size =
     current_page := page;
     current_size := page_size;
@@ -124,7 +133,9 @@ let rec make_pagination_elts ?classes ?page_sizer id n seps current_page current
   [
     make_page_sizer ?classes ?page_sizer !current_page !current_size onclick;
     span ~a:[ a_class [px1] ] [];
-    make_paginate ?classes !current_page !current_size n seps onclick
+    make_paginate ?classes !current_page !current_size n seps onclick;
+    span ~a:[ a_class [px1] ] [];
+    make_refresh ?refresh ?classes !current_page !current_size onclick
   ]
 
 and replace_pagination ?classes ?page_sizer id n seps current_page current_size f =
@@ -177,7 +188,6 @@ module MakeCardTable(M: sig
 
   let current_page = ref 0
   let current_size = ref M.page_size
-  let suffix = ref ""
 
   let theads = make_heads M.heads
   let ncolumns = List.length M.heads
@@ -188,7 +198,6 @@ module MakeCardTable(M: sig
       ?card_body_class ?card_body_id
       ?card_footer_id ?card_footer_class
       () =
-    suffix := suf_id;
     let card_footer_content =
       if not footer then None
       else
@@ -222,39 +231,49 @@ module MakeCardTable(M: sig
                            (Loading (table_id ^ suf_id))] @ after) ])
       ?card_footer_content ()
 
-  let update_title ?title_elt ?(nrows=0) () =
-    let title_container = Js_utils.find_component (title_id ^ !suffix) in
+  let update_title ?title_elt ?(nrows=0) ?(suf_id="") () =
+    let title_container = Js_utils.find_component (title_id ^ suf_id) in
     let title_elt = match title_elt with
       | None -> M.title_span nrows
       | Some title_elt -> title_elt in
     Js_utils.Manip.replaceChildren title_container [ title_elt ]
 
-  let update_table rows =
-    let container = Js_utils.find_component (table_id ^ !suffix) in
+  let update_table ?(suf_id="") rows =
+    let container = Js_utils.find_component (table_id ^ suf_id) in
     Js_utils.Manip.replaceChildren container
       [table_maker M.table_class theads (Ready (rows, M.empty, ncolumns))]
 
-  let update ?(title=true) ?page_sizer nrows xhr =
+  let update ?(title=true) ?(suf_id="") ?page_sizer nrows xhr =
     let f page page_size =
       xhr page page_size (fun datas ->
-          if title then update_title ~nrows ();
-          update_table @@ List.map M.to_row datas) in
+          if title then update_title ~suf_id ~nrows ();
+          update_table ~suf_id @@ List.map M.to_row datas) in
     replace_pagination ~classes:M.card_classes ?page_sizer
-      (loading_id ^ !suffix) nrows (ref []) current_page current_size f
+      (loading_id ^ suf_id) nrows (ref []) current_page current_size f
 
-  let update_from_all ?(title=true) ?page_sizer xhr =
+  let update_result ?(title=true) ?(suf_id="") ?page_sizer nrows xhr =
+    let f page page_size : unit =
+      xhr page page_size (function
+          | Error msg -> Js_utils.log "%s" msg
+          | Ok datas ->
+            if title then update_title ~suf_id ~nrows ();
+            update_table ~suf_id @@ List.map M.to_row datas) in
+    replace_pagination ~classes:M.card_classes ?page_sizer
+      (loading_id ^ suf_id) nrows (ref []) current_page current_size f
+
+  let update_from_all ?(title=true) ?(suf_id="") ?page_sizer xhr =
     let nrows = ref 0 in
     let f page page_size =
       xhr (fun datas ->
           nrows := List.length datas;
-          if title then update_title ~nrows:!nrows ();
+          if title then update_title ~suf_id ~nrows:!nrows ();
           let pos = page * page_size in
           let next_pos = min (pos + page_size) !nrows in
           let rows = List.map M.to_row @@
             Array.to_list @@ Array.sub (Array.of_list datas) pos (next_pos-pos) in
-          update_table rows) in
+          update_table ~suf_id rows) in
     replace_pagination ~classes:M.card_classes ?page_sizer
-      (loading_id ^ !suffix) !nrows (ref []) current_page current_size f
+      (loading_id ^ suf_id) !nrows (ref []) current_page current_size f
 
 
 
