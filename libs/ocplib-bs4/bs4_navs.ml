@@ -103,9 +103,11 @@ module Make(S : sig type t end) = struct
     let f value =
       List.iter (fun nav -> if nav.id = value then update_nav nav) !navs_list in
     match Jsloc.find_arg "nav", value with
-    | None, None -> ()
-    | _, Some value -> f value
-    | Some value, _ -> f value
+      | _, Some value -> f value
+      | Some value, _ -> f value
+      | None, None ->
+        List.iter (fun nav -> if nav.state = Active then update_nav nav) !navs_list
+
 
   let make_nav ?(link=fun id -> a_href ("#nav-content-" ^ id)) ?param ?once nav =
     let is_active_class =
