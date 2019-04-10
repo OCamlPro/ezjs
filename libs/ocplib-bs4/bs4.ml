@@ -1103,6 +1103,26 @@ module Items = struct
     let progress_bar_animated = "progress-bar-animated"
     let progress_bar_striped = "progress-bar-striped"
     let progress_role = Utils.Attribute.a_role "progressbar"
+
+    let make_progress_bar ?(classes=[]) ?percent ?text id =
+      let text = match text with
+        | Some text -> [ txt text ]
+        | None -> [] in
+      let style = match percent with
+        | Some percent -> [ a_style (Printf.sprintf "width:%d%%" percent) ]
+        | None -> [] in
+      div ~a:[ a_class [ progress ] ] [
+        div ~a:( a_id id :: a_class (progress_bar :: classes) :: style)
+          text ]
+
+    let update_progress_bar ?text percent id =
+      match Js_utils.Manip.by_id id with
+      | None -> Js_utils.log "progress bar %S not found id" id
+      | Some bar ->
+        Js_utils.Manip.SetCss.width bar (Printf.sprintf "%d%%" percent);
+        match text with
+        | None -> ()
+        | Some text -> Js_utils.Manip.setInnerHtml bar text
   end
 
   module Spinner = struct
