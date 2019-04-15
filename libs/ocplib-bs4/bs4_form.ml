@@ -69,23 +69,6 @@ module ROW = struct
 
 end
 
-let check checkers id =
-  let check =
-    try List.assoc id checkers with
-    |  Not_found ->
-      (fun _v -> Some (Printf.sprintf "No checker for %S" id))
-  in
-  let input_elt = find_component @@ id ^ "-input" in
-  let value = Manip.value input_elt in
-  match check value with
-  | None -> Ok value
-  | Some msg -> Error msg
-
-let check_or_fail checkers id =
-  match check checkers id with
-  | Ok value -> value
-  | Error msg -> failwith msg
-
 let set ~id v = Manip.set_value (find_component (id ^ "-input")) v
 let get id = Manip.value (find_component (id ^ "-input"))
 
@@ -93,12 +76,73 @@ type status =
   | Danger
   | Success
 
+type field = {
+  id : string;
+  cleave_option : string option;
+  maker : (string -> Cleave.cleave Js.t) option;
+  checker : (string -> string option) option;
+  mutable getter : string -> string;
+}
+
 module Make(S : sig
     val group_classes : string list
     val input_classes : string list
     val prepend_classes : string list
     val error_classes : string list
   end) = struct
+
+  let fields : field list ref = ref []
+
+  let check id0 =
+    match List.find_opt (fun {id; _} -> id = id0) !fields with
+    | None -> Js_utils.log "field %S not taken into account" id0; Error "not found"
+    | Some {checker; getter; _} ->
+      let value = getter id0 in
+      match checker with
+      | None -> Ok value
+      | Some check ->
+        match check value with
+        | None -> Ok value
+        | Some msg -> Error msg
+
+  let check_or_fail id =
+    match check id with
+    | Ok value -> value
+    | Error msg -> failwith msg
+
+  let onchange id =
+    let v = check id in
+    let input_elt = find_component @@ id ^ "-input" in
+    let help = Manip.by_id @@ id ^ "-help" in
+    let container = find_component @@ id ^ "-form" in
+    match v with
+    | Ok _value ->
+      (try
+         Manip.removeClass input_elt is_invalid;
+         Manip.addClass input_elt is_valid;
+       with _ -> ());
+      (match help with
+       | Some help -> Manip.removeChild container help;
+       | _ -> ())
+    | Error msg ->
+      (try
+         Manip.removeClass input_elt is_valid;
+         Manip.addClass input_elt is_invalid;
+       with _ -> ());
+      (match help with
+       | Some help -> Manip.removeChild container help;
+       | _ -> ());
+      Manip.appendChild container
+        (div ~a:[ a_class [input_group_append];
+                  a_id (id ^ "-help") ]
+           [ span ~a:[ a_class (input_group_text ::
+                                S.prepend_classes @ S.error_classes)] [ txt msg ] ])
+
+  let get_value id0 =
+    match List.find_opt (fun {id; _} -> id = id0) !fields with
+    | None -> ""
+    | Some {getter; _} -> getter id0
+
 
   let select ?(width=220) ?selected ?(a=[])
       id ?(onselect=(fun _ -> ())) title options =
@@ -132,8 +176,9 @@ module Make(S : sig
     ]
 
   let field ?(input_type=`Text) ?(placeholder="") ?(width=220)
-      ?(a=[])
+      ?(a=[]) ?maker ?(getter=get) ?checker ?cleave_option
       id ~onchange title =
+    fields := {id; maker; getter; checker; cleave_option} :: !fields;
     div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] [
       div ~a:[ a_class [input_group_prepend] ] [
         span ~a:[ a_class (input_group_text :: S.prepend_classes);
@@ -174,33 +219,16 @@ module Make(S : sig
         (txt "")
     ]
 
-  let onchange checkers id =
-    let v = check checkers id in
-    let input_elt = find_component @@ id ^ "-input" in
-    let help = Manip.by_id @@ id ^ "-help" in
-    let container = find_component @@ id ^ "-form" in
-    match v with
-    | Ok _value ->
-      (try
-         Manip.removeClass input_elt is_invalid;
-         Manip.addClass input_elt is_valid;
-       with _ -> ());
-      (match help with
-       | Some help -> Manip.removeChild container help;
-       | _ -> ())
-    | Error msg ->
-      (try
-         Manip.removeClass input_elt is_valid;
-         Manip.addClass input_elt is_invalid;
-       with _ -> ());
-      (match help with
-       | Some help -> Manip.removeChild container help;
-       | _ -> ());
-      Manip.appendChild container
-        (div ~a:[ a_class [input_group_append];
-                  a_id (id ^ "-help") ]
-           [ span ~a:[ a_class (input_group_text ::
-                                S.prepend_classes @ S.error_classes)] [ txt msg ] ])
+  let make_cleaves () =
+    List.iter (function
+        | {id; cleave_option = Some s; maker = Some make; _} as field ->
+          let cleave = make ("#" ^ id ^ "-input") in
+          if s = "date" then
+            field.getter <- fun _ -> Cleave.iso_date cleave;
+          else
+            field.getter <- fun _ -> Cleave.value cleave
+        | _ -> ()) !fields
+
 
 end
 
