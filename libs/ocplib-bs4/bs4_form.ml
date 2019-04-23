@@ -1,4 +1,5 @@
-open Ocp_js.Html
+open Ocp_js
+open Html
 open Js_utils
 
 open Bs4.Utils

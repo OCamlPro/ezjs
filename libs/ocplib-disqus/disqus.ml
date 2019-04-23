@@ -40,8 +40,8 @@ let init ?lang ?title url identifier name =
   s##setAttribute(Js.string "data-timestamp", (jsnew Js.date_now ())##toLocaleString());
   s##setAttribute(Js.string "async", Js.string "true");
   Js_utils.Manip.appendChild
-    (Tyxml_js.Of_dom.of_body doc##body)
-    (Tyxml_js.Of_dom.of_element s)
+    (Ocp_js.Of_dom.of_body doc##body)
+    (Ocp_js.Of_dom.of_element s)
 
 let reset ?lang ?title url identifier =
   let disqus : disqus Js.t = Js.Unsafe.variable "DISQUS" in
