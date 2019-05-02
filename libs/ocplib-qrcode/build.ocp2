@@ -1,0 +1,8 @@
+OCaml.library("ocplib-qrcode", ocaml + {
+  files = [
+    "qrcode.ml", { pp = camlp4_js };
+  ];
+  requires = [
+    "js_of_ocaml.tyxml";
+  ];
+  });
