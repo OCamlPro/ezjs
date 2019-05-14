@@ -1054,6 +1054,35 @@ module Items = struct
     let modal_lg = "modal-lg"
     let modal_sm = "modal-sm"
     let modal_xl = "modal-xl"
+
+    let make_modal ?(modal_class=[]) ?(header_class=[])
+        ?(title_class=[]) ?title_content
+        ?(body_class=[]) ?(footer_class=[]) ?footer_content id content =
+      let header = match title_content with
+        | None -> []
+        | Some content -> [
+            div ~a:[ a_class (modal_header :: header_class) ] [
+              div ~a:[ a_class (modal_title :: title_class) ] content;
+              button ~a:[ a_button_type `Button; a_class [Utils.BMisc.close];
+                          Alert.a_data_dismiss modal] [ entity "times" ] ] ] in
+      let footer = match footer_content with
+        | None -> []
+        | Some content -> [
+            div ~a:[ a_class (modal_footer :: footer_class) ] [
+              div content;
+              button ~a:[a_button_type `Button; a_class Button.[btn; btn_danger];
+                         Alert.a_data_dismiss modal] [ txt "Close" ] ] ] in
+
+      div ~a:[a_id id; a_class (modal :: modal_class)] [
+        div ~a:[ a_class [modal_content] ]
+          (header @ [
+              div ~a:[ a_class (modal_body :: body_class) ] content ] @
+           footer) ]
+
+    let make_modal_button ?(button_class=[]) id text =
+      button ~a:[a_class (Button.btn :: button_class);
+                 Utils.Attribute.a_data_toggle modal;
+                 Utils.Attribute.a_data_custom "target" ("#" ^ id)] [txt text]
   end
 
   module Nav = struct
@@ -1133,27 +1162,60 @@ module Items = struct
   end
 
   module Popover = struct
+    let popover_show = "show.bs.popover"
+    let popover_shown = "shown.bs.popover"
+    let popober_hide = "hide.bs.popover"
+    let popover_hidden = "hidden.bs.popover"
+    let popover_inserted = "inserted.bs.popover"
+    let popover_selector = "[data-toggle=\"popover\"]"
+
     module Attr = Utils.Attribute
+
     let make_popover ?(placement=`Top) ?classes id value =
       let aclass = Attr.unopt_class classes in
       a ~a:([Attr.a_data_toggle "popover"; Attr.a_data_html true;
              Attr.a_data_placement placement;
              Attr.a_data_content
-               (Printf.sprintf "<div id=\"%s\" class=\"\"></div>" id);
+               (Printf.sprintf "<div id=\"%s\"></div>" id);
              a_id ("link-" ^ id)] @ aclass) [ txt value ]
 
     let init_popovers () =
-      ignore (Js.Unsafe.eval_string "jQuery('[data-toggle=\"popover\"]').popover();")
+      Jquery.jQ popover_selector |> Jquery.popover_opt |> ignore
 
     let fill_popover id pop_elt =
-      let base_elt = Js.Unsafe.eval_string @@
-        Printf.sprintf "jQuery(\'#%s\')" ("link" ^ id) in
-      Js.Unsafe.meth_call base_elt "on"
-        [| Js.Unsafe.inject (Js.string "inserted.bs.popover");
-           Js.Unsafe.inject (fun _ ->
-               let target_elt = Js_utils.find_component id in
-               Js_utils.Manip.replaceChildren target_elt pop_elt;
-               Js._true) |]
+      Jquery.jQ ("#link-" ^ id) |>
+      Jquery.on_fun popover_inserted (fun _e ->
+          let elt = Js_utils.find_component id in
+          Js_utils.Manip.replaceChildren elt pop_elt;
+          true) |>
+      ignore
+  end
+
+  module Tooltip = struct
+    let tooltip = "tooltip"
+    let tooltip_selector = "[data-toggle=\"tooltip\"]"
+
+    let make_tooltip ?id text =
+      a ~a:(Utils.Attribute.a_data_toggle tooltip ::
+            (Utils.Attribute.unopt_attr a_id id)) [txt text]
+
+    let init_tooltips () =
+      Jquery.jQ tooltip_selector |> Jquery.tooltip_opt |> ignore
+  end
+
+  module Toast = struct
+    let toast = "toast"
+    let toast_header = "toast-header"
+    let toast_body = "toast-body"
+
+    let make_toast header body =
+      div ~a:[ a_class [toast] ] [
+        div ~a:[ a_class [toast_header] ] header;
+        div ~a:[ a_class [toast_body] ] body
+      ]
+
+    let show_toast () =
+      Jquery.jQ ("." ^ toast) |> Jquery.toast "show"
   end
 
   module List_group = struct
@@ -1169,5 +1231,9 @@ module Items = struct
     let list_group_item_primary = "list-group-item-primary"
     let list_group_item_dark = "list-group-item-dark"
     let list_group_item_light = "list-group-item-light"
+  end
+
+  module Scrollspy = struct
+
   end
 end

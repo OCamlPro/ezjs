@@ -9,6 +9,7 @@ OCaml.library(
     ];
     requires = [
       "ocplib-utils-js";
-      "cleave-js"
+      "cleave-js";
+      "ocplib-jquery"
     ];
   });
