@@ -49,6 +49,13 @@ let xor ?prefix str =
   done;
   Bytes.to_string str'
 
-let alphabet = Bytes.to_string alphabet
-let decode ?prefix str = xor ?prefix @@ B64.decode ~alphabet str
-let encode ?prefix str = B64.encode ~alphabet ( xor ?prefix str )
+let alphabet = Base64.make_alphabet @@ Bytes.to_string alphabet
+let decode ?prefix str =
+  match Base64.decode ~alphabet str with
+    Ok s -> xor ?prefix s
+  | Error (`Msg s) -> failwith (Format.sprintf "Decode error : %s" s)
+
+let encode ?prefix str =
+  match Base64.encode ~alphabet ( xor ?prefix str ) with
+    Ok s -> s
+  | Error (`Msg s) -> failwith (Format.sprintf "Encode error : %s" s)
