@@ -772,13 +772,16 @@ module Items = struct
       thead ~a:[ a_class head_class] [
         tr (List.map (fun elt -> th ~a:[ a_scope `Col ] [ elt ]) l) ]
 
-    let make_table ?(responsive=[]) ?(table_class=[]) ?table_id thead ltr =
+    let make_table ?(responsive=[]) ?(table_class=[]) ?table_id ?body_id thead ltr =
       let aid = match table_id with
+        | None -> []
+        | Some id -> [ a_id id ] in
+      let a_body_id = match body_id with
         | None -> []
         | Some id -> [ a_id id ] in
       let t =
         tablex ~a:[ a_class (btable :: table_class)] ~thead [
-          tbody ltr ] in
+          tbody ~a:a_body_id ltr ] in
       if responsive = [] then t
       else div ~a:(a_class responsive :: aid) [ t ]
   end
@@ -887,7 +890,7 @@ module Items = struct
     let card_img_overlay = "card-img-overlay"
     let card_group = "card-group"
     let card_deck = "card-deck"
-    let card_colums = "card-columns"
+    let card_columns = "card-columns"
 
     let make_card
         ?(card_class=[]) ?card_id (* card info *)
@@ -1040,6 +1043,20 @@ module Items = struct
     let input_group_sm = "input-group-sm"
     let input_group_lg = "input-group-lg"
     let input_group_text = "input-group-text"
+    let custom_control = "custom-control"
+    let custom_checkbox = "custom-checkbox"
+    let custom_control_input = "custom-control-input"
+    let custom_control_label = "custom-control-label"
+    let custom_switch = "custom-switch"
+    let custom_radio = "custom-radio"
+    let custom_control_inline = "custom-control-inline"
+    let custom_select = "custom-select"
+    let custom_select_sm = "custom-select-sm"
+    let custom_select_lg = "custom-select-lg"
+    let custom_range = "custom-range"
+    let custom_file = "custom-file"
+    let custom_file_input = "custom-file-input"
+    let custom_file_label = "custom-file-label"
   end
 
   module Modal = struct

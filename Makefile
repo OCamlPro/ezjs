@@ -8,7 +8,7 @@
 #
 #############################################################################
 
-BASE64_3:=false
+BASE64_3:=true
 
 include autoconf/Makefile.config
 
