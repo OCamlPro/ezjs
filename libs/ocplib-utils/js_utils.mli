@@ -73,6 +73,7 @@ module Manip : sig
 
   val addClass: 'a elt -> string -> unit
   val removeClass: 'a elt -> string -> unit
+  val containsClass: 'a elt -> string -> bool
 
   val setAttribute: 'a elt -> string -> string -> unit
   val removeAttribute: 'a elt -> string -> unit
@@ -81,7 +82,7 @@ module Manip : sig
   val blur: 'a elt -> unit
 
   val files: 'a elt -> File.file Js.t list
-  val upload_input: 'a elt -> (string -> unit) -> bool
+  val upload_input: ?btoa:bool -> 'a elt -> (string -> unit) -> bool
 
   val scrollIntoView : ?bottom:bool -> 'a Html.elt -> unit
 

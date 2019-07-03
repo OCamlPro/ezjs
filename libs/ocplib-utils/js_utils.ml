@@ -112,9 +112,14 @@ module Manip = struct
   let addClass elt s =
     let elt = get_elt "addClass" elt in
     elt##classList##add(Js.string s)
+
   let removeClass elt s =
     let elt = get_elt "removeClass" elt in
     elt##classList##remove(Js.string s)
+
+  let containsClass elt s =
+    let elt = get_elt "containsClass" elt in
+    Js.to_bool elt##classList##contains(Js.string s)
 
   let setAttribute elt key value =
     let elt = get_elt "setAttribute" elt in
@@ -378,7 +383,7 @@ module Manip = struct
                (fun () -> acc)
                (fun file -> file :: acc)) [] l)
 
-  let upload_input elt post =
+  let upload_input ?(btoa=true) elt post =
     let files = files elt in
     List.iter (fun file ->
         let reader = jsnew File.fileReader () in
@@ -388,8 +393,10 @@ module Manip = struct
                 Js.Opt.case (File.CoerceTo.string (reader##result))
                   (fun () -> assert false)
                   (fun s ->
-                     let s = Js.to_string (Dom_html.window##btoa(s)) in
-                     post s);
+                     if not btoa then post (Js.to_string s)
+                     else
+                       let s = Js.to_string (Dom_html.window##btoa(s)) in
+                       post s);
               Js._true
             );
         reader##readAsBinaryString (file);) files;

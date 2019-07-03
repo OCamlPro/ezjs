@@ -150,18 +150,20 @@ and replace_pagination ?classes ?page_sizer id n seps current_page current_size 
 
 type table_type =
   | Loading of string
-  | Ready of (Html_types.tr Ocp_js.elt list * string * int)
+  | Ready of (Html_types.tr Ocp_js.elt list * string option * int)
 
-let table_maker table_class theads = function
+let table_maker ?body_id table_class theads = function
   | Loading table_id ->
     make_table ~responsive:[ btable_responsive ] ~table_class ~table_id
       theads []
   | Ready (rows, empty, ncolumns) ->
     if rows = [] then
-      make_table ~table_class theads
-        [ tr [ td ~a:[ a_colspan ncolumns ] [ txt empty ] ] ]
+      let l = match empty with
+        | None -> []
+        | Some empty -> [ tr [ td ~a:[ a_colspan ncolumns ] [ txt empty ] ] ] in
+      make_table ?body_id ~table_class theads l
     else
-      make_table ~table_class theads rows
+      make_table ?body_id ~table_class theads rows
 
 let replace_opt def = function
   | None -> Some def
@@ -178,7 +180,7 @@ module MakeCardTable(M: sig
     val card_classes : string list
     val heads : [> Html_types.th_content_fun ] Ocp_js.elt list
     val to_row : t -> [> Html_types.tr ] Ocp_js.elt
-    val empty: string
+    val empty: string option
   end) = struct
 
   let title_id = Printf.sprintf "%s-title" M.name
@@ -239,9 +241,11 @@ module MakeCardTable(M: sig
     Js_utils.Manip.replaceChildren title_container [ title_elt ]
 
   let update_table ?(suf_id="") rows =
-    let container = Js_utils.find_component (table_id ^ suf_id) in
+    let id = table_id ^ suf_id in
+    let body_id = id ^ "-body" in
+    let container = Js_utils.find_component id in
     Js_utils.Manip.replaceChildren container
-      [table_maker M.table_class theads (Ready (rows, M.empty, ncolumns))]
+      [table_maker ~body_id M.table_class theads (Ready (rows, M.empty, ncolumns))]
 
   let update ?(title=true) ?(suf_id="") ?page_sizer nrows xhr =
     let f page page_size =
@@ -275,6 +279,8 @@ module MakeCardTable(M: sig
     replace_pagination ~classes:M.card_classes ?page_sizer
       (loading_id ^ suf_id) !nrows (ref []) current_page current_size f
 
-
-
+  let append_row ?(suf_id="") row =
+    let id = table_id ^ suf_id ^ "-body" in
+    let body_container = Js_utils.find_component id in
+    Js_utils.Manip.appendChild body_container row
 end
