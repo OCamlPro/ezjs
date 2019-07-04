@@ -23,18 +23,23 @@ module Make(M: sig
       Html_types.nmtoken list * (* body classes *)
       Html_types.nmtoken list * (* footer classes *)
       Html_types.nmtoken list (* buttons classes *)
+    val hide_main : string option
   end) = struct
 
   let ht_info : (M.id, M.info) Hashtbl.t = Hashtbl.create 100
   let ht : (M.id, Html_types.div Ocp_js.elt) Hashtbl.t = Hashtbl.create 100
   let container : Html_types.div Ocp_js.elt ref = ref (div [])
+  let hidden = ref (M.hide_main <> None)
 
   let make ?(card_class=[]) ?(card_header_class=[])
       ?(card_title_class=[]) ?(card_title_content=[]) () =
     container := div ~a:[ a_class card_class ] [];
     if card_title_content = [] then !container
     else
-      div ~a:[ a_class [card; Border.border0] ] [
+      let attrs = match M.hide_main with
+        | None -> []
+        | Some id -> [ a_style "display: none"; a_id id ] in
+      div ~a:((a_class [card; Border.border0]) :: attrs) [
         div ~a:[a_class (card_header :: card_header_class)] [
           div ~a:[ a_class (card_title :: card_title_class) ] card_title_content ];
         div ~a:[ a_class [card_body; Border.border0]] [ !container ] ]
@@ -44,7 +49,10 @@ module Make(M: sig
   let clear () =
     Hashtbl.clear ht;
     Hashtbl.clear ht_info;
-    Js_utils.Manip.removeChildren !container
+    Js_utils.Manip.removeChildren !container;
+    match M.hide_main with
+    | None -> ()
+    | Some id -> hidden := true; Js_utils.hide (find_component id)
 
   let hide id = match Hashtbl.find_opt ht id with
     | None -> ()
@@ -60,7 +68,10 @@ module Make(M: sig
     | Some elt ->
       Hashtbl.remove ht_info id;
       Hashtbl.remove ht id;
-      Js_utils.Manip.removeChild !container elt
+      Js_utils.Manip.removeChild !container elt;
+      match M.hide_main, Js_utils.Manip.childLength !container with
+      | Some id, 0 -> hidden := true; Js_utils.hide (find_component id)
+      | _ -> ()
 
   let update_card card info =
     let _title, body, footer, header_class, _, body_class,
@@ -90,24 +101,31 @@ module Make(M: sig
       | None -> []
       | Some close ->
         [ button ~a:[a_onclick (fun _ -> remove id; close id; true);
-                     a_class (btn :: btn_sm :: Spacing.p0 :: button_class) ] [
+                     a_class ([btn; btn_sm; Spacing.py0] @ button_class) ] [
             entity "times"] ] in
     let minimize_button = match minimize with
       | None -> []
       | Some minimize ->
         [ button ~a:[a_onclick (fun _ -> hide id; minimize id; true);
-                     a_class (btn :: btn_sm :: Spacing.p0 :: button_class) ] [
+                     a_class ([btn; btn_sm; Spacing.py0] @ button_class) ] [
             entity "minus"] ] in
+    let buttons = match minimize_button, close_button with
+      | [], [] -> []
+      | _ -> [ div (minimize_button @ close_button) ] in
     let header =
       div ~a:[ a_class [Display.d_flex; Flex.justify_between] ]
-        (title @ minimize_button @ close_button ) in
+        (title @  buttons) in
     let card = make_card ~card_header_class ~card_title_class ~card_body_class
         ~card_title_content:header ~card_body_content ?card_footer_content
         ?card_footer_id
         ~card_footer_class () in
     Hashtbl.add ht_info id info;
     Hashtbl.add ht id card;
-    Js_utils.Manip.appendChild !container card
+    Js_utils.Manip.appendChild !container card;
+    if !hidden then
+      match M.hide_main with
+      | Some id -> hidden := false; Js_utils.show (find_component id)
+      | _ -> ()
 
   let update_or_append ?card_footer_id ?close ?minimize id info =
     match Hashtbl.find_opt ht id with
