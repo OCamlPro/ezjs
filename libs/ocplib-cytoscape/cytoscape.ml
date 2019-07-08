@@ -93,7 +93,6 @@ let default_style =
   node_style##style <- Js.Unsafe.obj [|"label", ((Js.Unsafe.coerce @@ Js.string "data(id)") : Ocp_js.Js.Unsafe.any) |];
   let edge_style : style Js.t = Js.Unsafe.obj [||] in
   edge_style##selector <- Js.string "edge";
-  edge_style##style <- Js.string "line-color:#ccc";
   Js.array [| node_style; edge_style |]
 
 let position x y =
@@ -127,12 +126,15 @@ let mk_graph ?(style= default_style) d : props Js.t =
   g
 
 let display (props : props Js.t) =
-  let props : Ocp_js.Js.Unsafe.top Js_of_ocaml.Js.t =
-    Js.Unsafe.coerce props in
+  Js_utils.log "Casting props";
+  let props = Js.Unsafe.inject props in
+  Js_utils.log "Calling cytoscape";
   let g : cytoscape Js.t =
     Js.Unsafe.fun_call
       (Js.Unsafe.js_expr "cytoscape") [|props|] in
+  Js_utils.log "Resizing the graph";
   ignore @@ g##resize ();
+  Js_utils.log "Returning the graph";
   g
 
 let add_node g nodename  =
