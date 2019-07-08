@@ -17,6 +17,7 @@ OCaml.library("ocplib-utils-js",  ocaml+ {
     "cookie", pp_js;
     "jslang.ml", pp_js;
     "onload.ml", pp_js;
+    "jsdate.ml", pp_js
   ];
   requires = [
     "lwt";
