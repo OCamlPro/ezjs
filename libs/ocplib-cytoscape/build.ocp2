@@ -1,0 +1,8 @@
+OCaml.library("ocplib-cytoscape", ocaml + {
+  files = [
+    "cytoscape.ml", { pp = camlp4_js };
+  ];
+  requires = [
+    "ocplib-utils-js";
+  ];
+  });
