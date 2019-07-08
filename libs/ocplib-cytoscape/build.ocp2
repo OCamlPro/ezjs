@@ -3,8 +3,6 @@ OCaml.library("ocplib-cytoscape", ocaml + {
     "cytoscape.ml", { pp = camlp4_js };
   ];
   requires = [
-    "lwt";
     "ocplib-utils-js";
-    "js_of_ocaml.tyxml";
   ];
   });
