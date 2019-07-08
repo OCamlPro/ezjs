@@ -56,7 +56,7 @@ let raw_options () : options Js.t = Js.Unsafe.obj [||]
 let general_options ?(blocks=[]) ?(delimiter=" ") ?(delimiters=[])
     ?(delimiter_lazy=false) ?(prefix=None) ?(no_immediate_prefix=false)
     ?(raw_value_trim_prefix=false) ?(numeric=false)
-    ?(uppercase=false) ?(lowercase=false) ?(onchange=(fun _ -> ()) options =
+    ?(uppercase=false) ?(lowercase=false) ?(onchange=(fun _ -> ())) options =
   options##blocks <- Js.array (Array.of_list blocks);
   options##delimiter <- Js.string delimiter;
   options##delimieters <- Js.array (Array.of_list @@ List.map Js.string delimiters);

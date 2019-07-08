@@ -231,18 +231,17 @@ module Make(S : sig
         | _ -> ()) !fields
 
   let update_cleave ~id ~maker ~cleave_option =
-    List.iter (function field ->
-      match field with
+    List.iter (function
       | f when f.id = id ->
         let cleave = maker ("#" ^ id ^ "-input") in
         begin
-        if cleave_option = "date" then
-          field.getter <- fun _ -> Cleave.iso_date cleave;
-        else
-          field.getter <- fun _ -> Cleave.value cleave
-      end;
-        field.maker <- Some maker;
-        field.cleave_option <- Some cleave_option
+          if cleave_option = "date" then
+            f.getter <- fun _ -> Cleave.iso_date cleave
+          else
+            f.getter <- fun _ -> Cleave.value cleave
+        end;
+        f.maker <- Some maker;
+        f.cleave_option <- Some cleave_option
 
       | _ -> ()) !fields
 
