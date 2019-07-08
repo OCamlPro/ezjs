@@ -4,6 +4,7 @@ type string_field = Js.js_string Js.t Js.prop
 type int_field = int Js.prop
 type bool_field = bool Js.prop
 type string_array_field = Js.js_string Js.t Js.js_array Js.t Js.prop
+type int_array_field = int Js.js_array Js.t Js.prop
 type string_meth = Js.js_string Js.t Js.meth
 type unit_meth = unit Js.meth
 
@@ -25,7 +26,7 @@ class type options = object
   method numeralDecimalMark : string_field
   method numeralPositiveOnly : bool_field
   method stripLeadingZeroes : bool_field
-  method blocks : int_field
+  method blocks : int_array_field
   method delimiter : string_field
   method delimiters : string_array_field
   method delimiterlazyshow : bool_field
@@ -53,9 +54,9 @@ let cleave : (Js.js_string Js.t -> options Js.t -> cleave Js.t) Js.constr =
 let raw_options () : options Js.t = Js.Unsafe.obj [||]
 
 let general_options ?(blocks=[]) ?(delimiter=" ") ?(delimiters=[])
-    ?(delimiter_lazy) ?prefix ?(no_immediate_prefix=false)
+    ?(delimiter_lazy=false) ?(prefix=None) ?(no_immediate_prefix=false)
     ?(raw_value_trim_prefix=false) ?(numeric=false)
-    ?(uppercase=false) ?(lowercase=false) ?onchange options =
+    ?(uppercase=false) ?(lowercase=false) ?(onchange=(fun _ -> ())) options =
   options##blocks <- Js.array (Array.of_list blocks);
   options##delimiter <- Js.string delimiter;
   options##delimieters <- Js.array (Array.of_list @@ List.map Js.string delimiters);
@@ -68,7 +69,7 @@ let general_options ?(blocks=[]) ?(delimiter=" ") ?(delimiters=[])
   options##onValueChanged <- onchange;
   match prefix with
   | None -> ()
-  | Some prefix -> options##prefix <- prefix
+  | Some prefix -> options##prefix <- Js.string prefix
 
 let make_card ?(strict_mode=false) ?onchange ?gen_opt selector =
   let options = raw_options () in

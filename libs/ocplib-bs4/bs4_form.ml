@@ -79,8 +79,8 @@ type status =
 
 type field = {
   id : string;
-  cleave_option : string option;
-  maker : (string -> Cleave.cleave Js.t) option;
+  mutable cleave_option : string option;
+  mutable maker : (string -> Cleave.cleave Js.t) option;
   checker : (string -> string option) option;
   mutable getter : string -> string;
 }
@@ -229,6 +229,22 @@ module Make(S : sig
           else
             field.getter <- fun _ -> Cleave.value cleave
         | _ -> ()) !fields
+
+  let update_cleave ~id ~maker ~cleave_option =
+    List.iter (function
+      | f when f.id = id ->
+        let cleave = maker ("#" ^ id ^ "-input") in
+        begin
+          if cleave_option = "date" then
+            f.getter <- fun _ -> Cleave.iso_date cleave
+          else
+            f.getter <- fun _ -> Cleave.value cleave
+        end;
+        f.maker <- Some maker;
+        f.cleave_option <- Some cleave_option
+
+      | _ -> ()) !fields
+
 
 
 end
