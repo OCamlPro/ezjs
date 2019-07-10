@@ -71,6 +71,8 @@ module Manip : sig
   val value: 'a elt -> string
   val set_value: 'a elt -> string -> unit
 
+  val checked: 'a elt -> bool
+
   val addClass: 'a elt -> string -> unit
   val removeClass: 'a elt -> string -> unit
   val containsClass: 'a elt -> string -> bool
