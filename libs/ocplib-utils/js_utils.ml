@@ -360,6 +360,18 @@ module Manip = struct
     let elt = get_value_elt "value" elt in
     elt##value <- (Js.string s)
 
+  type checked = < checked: bool Js.prop >
+  let get_checked_elt name elt : checked Js.t =
+    if Js.undefined == (Js.Unsafe.coerce @@ Html.toelt elt)##checked then
+      manip_error
+        "Cannot call %s on a node without a 'checked' property"
+        name;
+    Js.Unsafe.coerce @@ Html.toelt elt
+
+  let checked elt =
+    let elt = get_checked_elt "checked" elt in
+    elt##checked
+
   type files = < files: File.fileList Js.t Js.optdef Js.readonly_prop >
   let get_files_elt name elt : files Js.t =
     if Js.undefined == (Js.Unsafe.coerce @@ Html.toelt elt)##files then
