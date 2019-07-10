@@ -176,6 +176,21 @@ module Make(S : sig
         options
     ]
 
+  let checkbox ?(a=[]) ?(boxheight=17) id title =
+    div ~a:[a_class (input_group :: S.group_classes);
+            a_id (id ^ "-form")] [
+      span ~a:[Printf.kprintf a_style "margin:auto" ] [txt title];
+      Ocp_js.Html.input
+        ~a:(a_input_type `Checkbox :: a_id (id ^ "-input") ::
+            a_class (form_control :: S.input_classes) ::
+            Printf.kprintf a_style "height:%dpx; margin:auto" boxheight ::
+            a_onchange (fun _e -> true) ::
+            a) ()
+    ]
+
+
+
+
   let field ?(input_type=`Text) ?(placeholder="") ?(width=220)
       ?(a=[]) ?maker ?(getter=get) ?checker ?cleave_option
       id ~onchange title =
