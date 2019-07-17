@@ -6,7 +6,10 @@ let jsdeps = ref [
                  "/amcharts/pie.js";
                  "/amcharts/serial.js";
                  "/amcharts/plugins/export/export.js";
-                 "/amcharts/themes/light.js"
+                 "/amcharts/themes/light.js";
+                 "/amcharts/themes/chalk.js";
+                 "/amcharts/themes/dark.js";
+                 "/amcharts/themes/black.js"
                ]
 
 class type export =
@@ -85,6 +88,37 @@ class type titleObj = object
   method tabIndex : int_field
 end
 
+module AmBalloon = struct
+  class type t = object
+    method adjustBorderColor : bool_field
+    method animationDuration : float_field
+    method borderAlpha : float_field
+    method borderColor : string_field
+    method border_thickness : float_field
+    method color : string_field
+    method cornerRadius : float_field
+    method disableMouseEvents : bool_field
+    method drop : bool_field
+    method enabled : bool_field
+    method fadeOutDuration : float_field
+    method fillAlpha : float_field
+    method fillColor : string_field
+    method fixedPosition : bool_field
+    method fontSize : int_field
+    method horizontalPadding : int_field
+    method maxWidth : int_field
+    method offsetX : int_field
+    method offsetY : int_field
+    method pointerOrientation : string_field
+    method pointerWidth : int_field
+    method shadowAlpha : float_field
+    method shadowColor : string_field
+    method showBullet : bool_field
+    method textAlign : string_field
+    method verticalPadding : int_field
+  end
+end
+
 module Pie = struct
   class type dataItem =
     object
@@ -107,6 +141,7 @@ module Pie = struct
     object
       method dataProvider : dataItem Js.t array_field
       method outlineColor : string_field
+      method balloon : AmBalloon.t Js.t Js.prop
       method balloonText : string_field
       method outlineAlpha : float_field
       method outlineThickness : int_field
@@ -116,6 +151,7 @@ module Pie = struct
       method legend : legend Js.t Js.prop
       method titles : titleObj Js.t Js.js_array Js.t Js.prop
       method theme : string_field
+      method fontFamily : string_field
 
       method depth3D : int_field (* makes it 3D *)
       method angle : int_field   (* makes it 3D *)
@@ -126,6 +162,9 @@ module Pie = struct
       method valueField : string_field (* do not modify *)
       method addClassNames: bool_field
       method colors : Js.js_string Js.t Js.js_array Js.t Js.prop
+
+      method radius : string_field
+      method innerRadius : string_field
     end
 
 end
