@@ -126,7 +126,6 @@ module Responsive = struct
     end
 end
 
-
 module Pie = struct
   class type dataItem =
     object
@@ -177,6 +176,7 @@ module Pie = struct
       method startDuration : float_field
       method startEffect : string_field
       method responsiev : Responsive.t Js.t Js.prop
+ object
     end
 
 end
