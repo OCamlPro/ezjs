@@ -175,7 +175,7 @@ module Pie = struct
       method sequencedAnimation : bool_field
       method startDuration : float_field
       method startEffect : string_field
-      method responsiev : Responsive.t Js.t Js.prop
+      method responsive : Responsive.t Js.t Js.prop
  object
     end
 
