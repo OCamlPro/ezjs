@@ -165,6 +165,9 @@ module Pie = struct
 
       method radius : string_field
       method innerRadius : string_field
+      method sequencedAnimation : bool_field
+      method startDuration : float_field
+      method startEffect : string_field
     end
 
 end
@@ -204,7 +207,7 @@ module AxisBase =
         method labelFrequency : int_field
         method labelOffset : int_field
         method labelRotation : int_field
-        method labelsEnables : bool_field
+        method labelsEnabled : bool_field
         (* method listeners : object array_field TODO *)
         method markPeriodChange : bool_field
         method minHorizontalGap : int_field
@@ -386,6 +389,7 @@ module Serial = struct
       method categoryField : string_field
       method legend : legend Js.t Js.prop
       method addClassNames : bool_field
+      method fontFamily : string_field
     end
 
 end
