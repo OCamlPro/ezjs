@@ -119,6 +119,14 @@ module AmBalloon = struct
   end
 end
 
+module Responsive = struct
+  class type t =
+    object
+      method enabled : bool_field
+    end
+end
+
+
 module Pie = struct
   class type dataItem =
     object
@@ -168,6 +176,7 @@ module Pie = struct
       method sequencedAnimation : bool_field
       method startDuration : float_field
       method startEffect : string_field
+      method responsiev : Responsive.t Js.t Js.prop
     end
 
 end
@@ -390,6 +399,7 @@ module Serial = struct
       method legend : legend Js.t Js.prop
       method addClassNames : bool_field
       method fontFamily : string_field
+      method responsive : Responsive.t Js.t Js.prop
     end
 
 end
@@ -431,6 +441,11 @@ let legend () =
   let legend : legend Js.t = Js.Unsafe.obj [||] in
   legend##enabled <- true ;
   legend
+
+let responsive () =
+  let responsive : Responsive.t Js.t = Js.Unsafe.obj [||] in
+  responsive##enabled <- true;
+  responsive
 
 let title () =
   let title : titleObj Js.t = Js.Unsafe.obj [||] in
