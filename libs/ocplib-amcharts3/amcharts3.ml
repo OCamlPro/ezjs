@@ -177,7 +177,6 @@ module Pie = struct
       method startDuration : float_field
       method startEffect : string_field
       method responsive : Responsive.t Js.t Js.prop
- object
     end
 
 end

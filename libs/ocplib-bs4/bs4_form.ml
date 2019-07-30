@@ -139,6 +139,41 @@ module Make(S : sig
            [ span ~a:[ a_class (input_group_text ::
                                 S.prepend_classes @ S.error_classes)] [ txt msg ] ])
 
+  let onchange2 id =
+    let err_div msg =
+        [div ~a:[ a_class [input_group_append]]
+           [ span ~a:[ a_class (input_group_text ::
+                                S.prepend_classes @ S.error_classes)] [
+               txt msg ]
+           ]
+        ]
+    in
+    let ok_div = err_div "" in
+    let v = check id in
+    let input_elt = find_component @@ id ^ "-input" in
+    let help_elt = find_component @@ id ^ "-help" in
+    (*let help = Manip.by_id @@ id ^ "-help" in
+      let container = find_component @@ id ^ "-form" in*)
+    match v with
+    | Ok _value ->
+      (try
+         Manip.removeClass input_elt is_invalid;
+         Manip.addClass input_elt is_valid;
+         Manip.replaceChildren help_elt ok_div
+       with _ -> ());
+      (*(match help with
+       | Some help -> Manip.removeChild container help;
+        | _ -> ())*)
+    | Error msg ->
+      (try
+         Manip.removeClass input_elt is_valid;
+         Manip.addClass input_elt is_invalid;
+       with _ -> ());
+      (*match help with
+       | Some help -> Manip.removeChild container help;
+        | _ -> ());*)
+      Manip.replaceChildren (find_component (id ^ "-help")) (err_div msg)
+
   let get_value id0 =
     match List.find_opt (fun {id; _} -> id = id0) !fields with
     | None -> ""
@@ -205,6 +240,43 @@ module Make(S : sig
             a_placeholder placeholder ::
             a_onchange (fun _e -> onchange id; true) :: a) ()
     ]
+
+  let field2 ?(input_type=`Text) ?(placeholder="")
+      ?(label_width="100%") ?(label_a=[]) ?(label_class=[])
+      ?(input_width="100%") ?(input_a=[]) ?(input_class=[])
+      ?(suffix="") ?(suffix_a=[]) ?(suffix_class=[])
+      ?(error_width="100%") ?(error_a=[]) ?(error_class=[])
+      ?maker ?(getter=get) ?checker ?cleave_option
+      id ~onchange title =
+    fields := {id; maker; getter; checker; cleave_option} :: !fields;
+    div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] [
+      div ~a:[a_class [input_group_prepend]] [
+        span ~a:([ a_class ((input_group_text :: S.prepend_classes)@label_class);
+                   Printf.kprintf a_style "width:%s" label_width ]@label_a) [
+          txt title
+        ]
+      ];
+      Ocp_js.Html.input
+        ~a:([a_input_type input_type; a_id (id ^ "-input");
+            a_class ([form_control] @ S.input_classes @ input_class);
+             a_placeholder placeholder;
+             Printf.kprintf a_style "width:%s" input_width;
+             a_onchange (fun _e -> onchange2 id; true)] @ input_a) ();
+      span ~a:[a_class ([input_group_append; Border.border0] @
+                        S.input_classes @
+                        suffix_class)] [
+        txt suffix];
+      div ~a:[a_id (id ^ "-help"); a_style ("width:"^error_width)] [
+        div ~a:[ a_class ([input_group_append]@error_class)]
+           [ span ~a:([ a_class (input_group_text ::
+                                 S.prepend_classes @
+                                 S.error_classes)]
+                      @error_a) [
+               txt " " ]
+           ]
+      ]
+    ]
+
 
   let text ?(width=220) ?(a=[]) id title content =
     div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] [
