@@ -28,4 +28,10 @@ distclean: clean ocp-distclean $(PROJECT_DISTCLEAN)
 test: build
 	cp _obuild/main/main.js test
 
+chrome-extension-example: build
+	cp _obuild/background/background.js examples/chrome-extension
+	cp _obuild/popup/popup.js examples/chrome-extension
+	cp _obuild/options/options.js examples/chrome-extension
+	cp _obuild/chrome_example/chrome_example.js examples/chrome-extension
+
 include autoconf/Makefile.rules

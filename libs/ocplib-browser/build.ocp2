@@ -1,0 +1,34 @@
+pp_js = { pp = camlp4_js };
+
+OCaml.library("ocplib-chrome", ocaml + {
+  files = [
+    "browser_utils.ml", pp_js;
+    "tabs_utils.ml", pp_js;
+    "runtime_utils.ml", pp_js;
+    "tabs_chrome.ml", pp_js;
+    "runtime_chrome.ml", pp_js;
+    "declarative_content.ml", pp_js;
+    "storage_chrome.ml", pp_js;
+    "chrome.ml", pp_js;
+  ];
+  requires = [
+    "ocplib-js-min";
+  ];
+  });
+
+
+OCaml.library("ocplib-browser", ocaml + {
+  files = [
+    "browser_utils.ml", pp_js;
+    "tabs_utils.ml", pp_js;
+    "runtime_utils.ml", pp_js;
+    "tabs_browser.ml", pp_js;
+    "runtime_browser.ml", pp_js;
+    "declarative_content.ml", pp_js;
+    "storage_browser.ml", pp_js;
+    "browser.ml", pp_js;
+  ];
+  requires = [
+    "ocplib-js-min";
+  ];
+  });

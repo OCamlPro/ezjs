@@ -11,7 +11,7 @@ OCaml.library("ocplib-utils-js", ocaml + {
     "cookie", pp_js;
     "jslang.ml";
     "onload.ml", pp_js;
-    "jsdate.ml", pp_js
+    "jsdate.ml", pp_js;
   ];
   requires = [
     "js_of_ocaml";
@@ -32,5 +32,14 @@ OCaml.library("ocplib-xor", ocaml + {
   ];
   requires = [
     "base64"
+  ];
+});
+
+OCaml.library("ocplib-js-min",  ocaml+ {
+  files = [
+    "js_min.ml", pp_js;
+  ];
+  requires = [
+    "js_of_ocaml";
   ];
 });

@@ -1,0 +1,3 @@
+S libs/**
+B _obuild/**
+PKG js_of_ocaml
