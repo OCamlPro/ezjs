@@ -1,11 +1,8 @@
-
-pp_js = { pp = [ "camlp4o"; "%{js_of_ocaml-camlp4_SRC_DIR}%/pa_js.cma" ] };
-
 OCaml.library(
   "test-lib",
   ocaml + {
     files = [
-      "test.ml", pp_js;
+      "test.ml"
     ];
     requires = [
       "ocplib-utils-js"
@@ -14,19 +11,23 @@ OCaml.library(
 
 OCaml.program(
   "main",
-  ocaml+ {
-    requires = [ "test-lib" ];
-    files = [ "main.ml" ];
+  ocaml + {
+    requires = [
+      "test-lib"
+    ];
+    files = [
+      "main.ml"
+    ];
     build_rules = [
-      "%{main_FULL_DST_DIR}%/main.js", {
+      "%{main_FULL_DST_DIR}%/main.byte.js", {
         build_target = true;
-        sources = "%{main_FULL_DST_DIR}%/main.byte";
+        sources = "%{main_FULL_DST_DIR}%/main.byte.exe";
         commands = [
           OCaml.system([
             "js_of_ocaml";
-            "%{main_FULL_DST_DIR}%/main.byte";
+            "%{main_FULL_DST_DIR}%/main.byte.exe";
           ])
         ]
       }
-   ]
-});
+    ]
+  });

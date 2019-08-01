@@ -1,9 +1,9 @@
 OCaml.library("ocplib-disqus", ocaml + {
   files = [
-    "disqus.ml", { pp = camlp4_js };
+    "disqus.ml", pp_js
   ];
   requires = [
     "ocplib-utils-js";
-    "js_of_ocaml.tyxml";
+    "js_of_ocaml-ppx"
   ];
-  });
+});

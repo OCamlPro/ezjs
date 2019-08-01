@@ -17,16 +17,16 @@
 (*  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE      *)
 (*  SOFTWARE.                                                             *)
 (**************************************************************************)
-
-OCaml.library( "ocplib-d3pie-js",
-  ocaml + {
-      link = [ "-linkall" ];
-      files = [
-          "d3pie_types.mli";
-          "d3pie.ml", { pp = camlp4_js };
-      ];
-      requires = [
-        "js_of_ocaml";
-        "js_of_ocaml.tyxml";
-        ];
-    });
+OCaml.library("ocplib-d3pie-js", ocaml + {
+  link = [
+    "-linkall"
+  ];
+  files = [
+    "d3pie_types.mli";
+    "d3pie.ml", pp_js
+  ];
+  requires = [
+    "js_of_ocaml";
+    "js_of_ocaml-ppx"
+  ];
+});

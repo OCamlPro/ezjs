@@ -1,39 +1,31 @@
-
-
-(* `camlp4_js` is inherited from ../build.ocp2 *)
-
-pp_js = { pp = camlp4_js };
-
-OCaml.library("ocplib-utils-js",  ocaml+ {
+OCaml.library("ocplib-utils-js", ocaml + {
   files = [
     "ocp_js.ml";
     "js_utils.ml", pp_js;
     "lwt_request.ml", pp_js;
     "xhr.ml", pp_js;
-    "jsbind.ml", pp_js;
-    "bootstrap_helpers.ml", pp_js;
+    "jsbind.ml";
+    "bootstrap_helpers.ml";
     "jsloc.ml", pp_js;
     "jsStorage.ml", pp_js;
     "cookie", pp_js;
-    "jslang.ml", pp_js;
+    "jslang.ml";
     "onload.ml", pp_js;
     "jsdate.ml", pp_js
   ];
   requires = [
-    "lwt";
-    "js_of_ocaml.tyxml";
-    "ocplib-compat";
+    "js_of_ocaml";
+    "js_of_ocaml-tyxml";
+    "js_of_ocaml-ppx";
+    "lwt"
   ];
-  });
-
-if ( base64_3 ) {
+});
+if (base64_3) {
   xor_file = "xor3.ml";
-  }
-else {
+} else {
   xor_file = "xor.ml";
 }
-
-OCaml.library("ocplib-xor", ocaml+ {
+OCaml.library("ocplib-xor", ocaml + {
   has_asm = true;
   files = [
     xor_file
@@ -41,4 +33,4 @@ OCaml.library("ocplib-xor", ocaml+ {
   requires = [
     "base64"
   ];
-  });
+});

@@ -1,12 +1,11 @@
 OCaml.library("ocplib-ammap3-js", ocaml + {
   files = [
-    "ammap3.ml", { pp = camlp4_js };
-    "amcharts3.ml", { pp = camlp4_js };
-    "amcharts3_bis.ml", { pp = camlp4_js };
+    "ammap3.ml", pp_js;
+    "amcharts3.ml", pp_js;
+    "amcharts3_bis.ml", pp_js
   ];
   requires = [
-    "lwt";
     "ocplib-utils-js";
-    "js_of_ocaml.tyxml";
+    "js_of_ocaml-ppx"
   ];
-  });
+});
