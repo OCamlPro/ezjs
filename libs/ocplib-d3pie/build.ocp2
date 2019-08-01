@@ -22,7 +22,7 @@ OCaml.library("ocplib-d3pie-js", ocaml + {
     "-linkall"
   ];
   files = [
-    "d3pie_types.mli";
+    "d3pie_types.ml";
     "d3pie.ml", pp_js
   ];
   requires = [
