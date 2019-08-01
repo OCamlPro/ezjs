@@ -19,12 +19,12 @@ class type areaItem =
 
 let item title id ?customData value =
   let obj : areaItem Js.t = Js.Unsafe.obj [||] in
-  obj##title <- Js.string title;
-  obj##id <- Js.string id;
-  obj##customData <- Js.string (match customData with
+  obj##.title := Js.string title;
+  obj##.id := Js.string id;
+  obj##.customData := Js.string (match customData with
                                 | None ->  string_of_int value
                                 | Some value -> value);
-  obj##value <- value;
+  obj##.value := value;
   obj
 
 class type map_kind =
@@ -126,18 +126,21 @@ let amCharts() =
   in
   amCharts
 
-let create () = jsnew ((amCharts())##_AmMap)()
+let create () =
+  let a = (amCharts())##._AmMap in
+  new%js a
+
 let ready baseurl f =
   resolve_deps jsdeps baseurl (fun () ->
                  let amCharts = amCharts() in
-                 if amCharts##isReady then
+                 if amCharts##.isReady then
                    f ()
                  else
-                   amCharts##ready (Js.wrap_callback f))
+                   amCharts##(ready (Js.wrap_callback f)))
 
 let dataProvider mapVar =
   let obj : dataProvider Js.t = Js.Unsafe.obj [||] in
-  obj##mapVar <- mapVar;
+  obj##.mapVar := mapVar;
   obj
 
 let areasSettings () =
@@ -154,6 +157,6 @@ let valueLegend () =
 
 let legendDataItem ?color title =
   let obj : legendDataItem Js.t = Js.Unsafe.obj [||] in
-  obj##title <- Js.string title;
-  (match color with None -> () | Some color -> obj##color <- Js.string color);
+  obj##.title := Js.string title;
+  (match color with None -> () | Some color -> obj##.color := Js.string color);
   obj

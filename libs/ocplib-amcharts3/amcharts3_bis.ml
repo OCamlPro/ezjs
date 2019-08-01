@@ -599,8 +599,10 @@ let amCharts () =
 
 let export ?divId () =
   let obj : export Js.t = Js.Unsafe.obj [||] in
-  obj##enabled <- true;
-  obj##divId <- Js.Opt.option divId;
+  obj##.enabled := true;
+  obj##.divId := Js.Opt.option divId;
   obj
 
-let create_chart () = jsnew ((amCharts ())##_AmSerialChart) ()
+let create_chart () =
+  let a = (amCharts ())##._AmSerialChart in
+  new%js a

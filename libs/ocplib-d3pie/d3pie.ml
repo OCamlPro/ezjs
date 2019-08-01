@@ -30,7 +30,7 @@ type d3pie_title = {
 
 let create_title text =
   let title : title Js.t = Js.Unsafe.obj [| |] in
-  title##text <- text;
+  title##.text := text;
   title
 
 let class_of_title title =
@@ -46,7 +46,7 @@ type d3pie_header = {
 
 let create_header title =
   let header : header Js.t = Js.Unsafe.obj [| |] in
-  header##title <- title;
+  header##.title := title;
   header
 
 let class_of_header header =
@@ -86,10 +86,10 @@ let create_size_outer_radius = function
 
 let create_size canvas_height canvas_width pie_inner_radius pie_outer_radius =
   let size : size Js.t = Js.Unsafe.obj [| |] in
-  size##canvasHeight <- canvas_height;
-  size##canvasWidth <- canvas_width;
-  size##pieInnerRadius <- pie_inner_radius;
-  size##pieOuterRadius <- pie_outer_radius;
+  size##.canvasHeight := canvas_height;
+  size##.canvasWidth := canvas_width;
+  size##.pieInnerRadius := pie_inner_radius;
+  size##.pieOuterRadius := pie_outer_radius;
   size
 
 let class_of_size size =
@@ -132,11 +132,11 @@ include Small_segment_grouping
 
 let create_small_segment_grouping enabled value value_type label color =
   let segment_grouping : smallSegmentGrouping Js.t = Js.Unsafe.obj [| |] in
-  segment_grouping##enabled <- enabled;
-  segment_grouping##value <- value;
-  segment_grouping##valueType <- value_type;
-  segment_grouping##label <- label;
-  segment_grouping##color <- color;
+  segment_grouping##.enabled := enabled;
+  segment_grouping##.value := value;
+  segment_grouping##.valueType := value_type;
+  segment_grouping##.label := label;
+  segment_grouping##.color := color;
   segment_grouping
 
 let class_of_small_segment_grouping segment_grouping =
@@ -169,9 +169,9 @@ include Data_content
 
 let create_data_content label value caption =
   let data_content : dataContent Js.t = Js.Unsafe.obj [| |] in
-  data_content##label <- label;
-  data_content##value <- value;
-  data_content##caption <- caption;
+  data_content##.label := label;
+  data_content##.value := value;
+  data_content##.caption := caption;
   data_content
 
 let class_of_data_content data_content =
@@ -210,9 +210,9 @@ type d3pie_data = {
 
 let create_data content sort_order small_segment_grouping =
   let data : data Js.t = Js.Unsafe.obj [| |] in
-  data##content <- content;
-  data##sortOrder <- sort_order;
-  data##smallSegmentGrouping <- small_segment_grouping;
+  data##.content := content;
+  data##.sortOrder := sort_order;
+  data##.smallSegmentGrouping := small_segment_grouping;
   data
 
 let class_of_data data =
@@ -259,9 +259,9 @@ let create_inner_labels_descriptor format hide_when_less_than_percentage =
   let inner_labels_descriptor : innerLabelsDescriptor Js.t =
     Js.Unsafe.obj [| |]
   in
-  inner_labels_descriptor##format <-
+  inner_labels_descriptor##.format :=
     format;
-  inner_labels_descriptor##hideWhenLessThanPercentage <-
+  inner_labels_descriptor##.hideWhenLessThanPercentage :=
     hide_when_less_than_percentage;
   inner_labels_descriptor
 
@@ -292,11 +292,11 @@ let create_outer_labels_descriptor
   let outer_labels_descriptor : outerLabelsDescriptor Js.t =
     Js.Unsafe.obj [| |]
   in
-  outer_labels_descriptor##format <-
+  outer_labels_descriptor##.format :=
     format;
-  outer_labels_descriptor##hideWhenLessThanPercentage <-
+  outer_labels_descriptor##.hideWhenLessThanPercentage :=
     hide_when_less_than_percentage;
-  outer_labels_descriptor##pieDistance <-
+  outer_labels_descriptor##.pieDistance :=
     pie_distance;
   outer_labels_descriptor
 
@@ -321,8 +321,8 @@ let create_labels outer inner =
   let labels : labels Js.t =
     Js.Unsafe.obj [| |]
   in
-  labels##outer <- outer;
-  labels##inner <- inner;
+  labels##.outer := outer;
+  labels##.inner := inner;
   labels
 
 let class_of_labels labels =
@@ -343,8 +343,8 @@ let create_load_effect effect speed =
   let load_effect : loadEffect Js.t =
     Js.Unsafe.obj [| |]
   in
-  load_effect##effect <- effect;
-  load_effect##speed <- speed;
+  load_effect##.effect := effect;
+  load_effect##.speed := speed;
   load_effect
 
 let class_of_load_effect load_effect =
@@ -373,9 +373,9 @@ let create_segment_on_click_effect effect speed size =
   let segment_on_click_effect : pullOutSegmentOnClickEffect Js.t =
     Js.Unsafe.obj [| |]
   in
-  segment_on_click_effect##effect <- effect;
-  segment_on_click_effect##speed <- speed;
-  segment_on_click_effect##size <- size;
+  segment_on_click_effect##.effect := effect;
+  segment_on_click_effect##.speed := speed;
+  segment_on_click_effect##.size := size;
   segment_on_click_effect
 
 let class_of_segment_on_click_effect segment_on_click_effect =
@@ -409,8 +409,8 @@ let create_effects load pull_out_segment_on_click =
   let effects : effects Js.t =
     Js.Unsafe.obj [| |]
   in
-  effects##load <- load;
-  effects##pullOutSegmentOnClick <- pull_out_segment_on_click;
+  effects##.load := load;
+  effects##.pullOutSegmentOnClick := pull_out_segment_on_click;
   effects
 
 let class_of_effects effects =
@@ -449,8 +449,8 @@ let create_tooltips enabled type_ =
   let tooltips : tooltips Js.t =
     Js.Unsafe.obj [| |]
   in
-  tooltips##enabled <- enabled;
-  tooltips##type_ <- type_;
+  tooltips##.enabled := enabled;
+  tooltips##.type_ := type_;
   tooltips
 
 let class_of_tooltips tooltips =
@@ -472,8 +472,8 @@ let create_misc_colors segments segment_stroke =
   let colors : miscColors Js.t =
     Js.Unsafe.obj [| |]
   in
-  colors##segments <- segments;
-  colors##segmentStroke <- segment_stroke;
+  colors##.segments := segments;
+  colors##.segmentStroke := segment_stroke;
   colors
 
 let class_of_misc_colors misc_colors =
@@ -506,7 +506,7 @@ let create_misc colors =
   let misc : misc Js.t =
     Js.Unsafe.obj [| |]
   in
-  misc##colors <- colors;
+  misc##.colors := colors;
   misc
 
 let class_of_misc misc =
@@ -525,9 +525,9 @@ type d3pie_callback_argument_data = {
 
 let callback_argument_data_of_class callbackArgumentData =
   {
-    is_grouped = Js.to_bool (callbackArgumentData##isGrouped);
-    label = Js.to_string (callbackArgumentData##label);
-    value = callbackArgumentData##value;
+    is_grouped = Js.to_bool (callbackArgumentData##.isGrouped);
+    label = Js.to_string (callbackArgumentData##.label);
+    value = callbackArgumentData##.value;
   }
 
 type d3pie_callback_argument = {
@@ -540,11 +540,11 @@ type d3pie_callback_argument = {
 
 let callback_argument_of_class callbackArgument =
   {
-    segment = callbackArgument##segment;
-    index = callbackArgument##index;
-    expanded = Js.to_bool (callbackArgument##expanded);
-    data = callback_argument_data_of_class (callbackArgument##data);
-    color = Js.to_string callbackArgument##segment##style##fill;
+    segment = callbackArgument##.segment;
+    index = callbackArgument##.index;
+    expanded = Js.to_bool (callbackArgument##.expanded);
+    data = callback_argument_data_of_class (callbackArgument##.data);
+    color = Js.to_string callbackArgument##.segment##.style##.fill;
   }
 
 type d3pie_callbacks = {
@@ -559,9 +559,9 @@ let create_callbacks on_click_segment on_mouseover_segment on_mouseout_segment =
   let callbacks : callbacks Js.t =
     Js.Unsafe.obj [| |]
   in
-  callbacks##onClickSegment <- on_click_segment;
-  callbacks##onMouseoverSegment <- on_mouseover_segment;
-  callbacks##onMouseoutSegment <- on_mouseout_segment;
+  callbacks##.onClickSegment := on_click_segment;
+  callbacks##.onMouseoverSegment := on_mouseover_segment;
+  callbacks##.onMouseoutSegment := on_mouseout_segment;
   callbacks
 
 let class_of_callbacks callbacks =
@@ -602,14 +602,14 @@ include Settings
 
 let create_settings data header size labels effects tooltips misc callbacks =
   let settings : settings Js.t = Js.Unsafe.obj [||] in
-  settings##data <- data;
-  settings##header <- header;
-  settings##size <- size;
-  settings##labels <- labels;
-  settings##effects <- effects;
-  settings##tooltips <- tooltips;
-  settings##misc <- misc;
-  settings##callbacks <- callbacks;
+  settings##.data := data;
+  settings##.header := header;
+  settings##.size := size;
+  settings##.labels := labels;
+  settings##.effects := effects;
+  settings##.tooltips := tooltips;
+  settings##.misc := misc;
+  settings##.callbacks := callbacks;
   settings
 
 let class_of_settings settings =
@@ -816,12 +816,12 @@ let set_segment_stroke_color color settings =
   }
 
 let d3pie div settings =
-  let d3pie_cstr = Js.Unsafe.global##_d3pie in
+  let d3pie_cstr = Js.Unsafe.global##._d3pie in
   let pie : pie Js.t =
     Js.Unsafe.new_obj d3pie_cstr [|
       Js.Unsafe.inject div;
       Js.Unsafe.inject (class_of_settings settings);
     |]
   in
-  Js.Unsafe.global##pie <- pie; (* todo remove when lib correct *)
+  Js.Unsafe.global##.pie := pie; (* todo remove when lib correct *)
   pie
