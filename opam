@@ -31,15 +31,12 @@ install: [
 remove: [
 ]
 depends: [
+     "base64"
      "js_of_ocaml"
-     "js_of_ocaml-camlp4"
      "js_of_ocaml-ppx"
      "js_of_ocaml-tyxml"
      "lwt"
      "ocamlfind"
      "ocp-build" {>= "1.99.19-beta" }
-     "omd"
-     "tyxml"
-     "yojson"
 ]
 available: [ocaml-version >= "4.02.3"]

@@ -113,10 +113,6 @@ AC_SUBST(OCAMLBIN)
 if test "$OCAMLFIND" = "no"; then
    AC_MSG_ERROR([You must install OCaml package 'ocamlfind'])
 fi
-AC_CHECK_TOOL([OCAML_TOOL_ocp_build],[ocp-build],[no])
-if test "$OCAML_TOOL_ocp_build" = "no"; then
-   AC_MSG_ERROR([Please install OCaml tool 'ocp-build'.])
-fi
 AC_CHECK_OCAML_PKG(ocp-build)
 if test "$OCAML_PKG_ocp_build" = "no"; then
    AC_MSG_ERROR([Please install OCaml package 'ocp-build'.])
@@ -127,29 +123,9 @@ AC_CHECK_OCAML_PKG(js_of_ocaml)
 if test "$OCAML_PKG_js_of_ocaml" = "no"; then
    AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml'.])
 fi
-AC_CHECK_OCAML_PKG(tyxml)
-if test "$OCAML_PKG_tyxml" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'tyxml'.])
-fi
-AC_CHECK_OCAML_PKG(lwt)
-if test "$OCAML_PKG_lwt" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'lwt'.])
-fi
-AC_CHECK_OCAML_PKG(omd)
-if test "$OCAML_PKG_omd" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'omd'.])
-fi
-AC_CHECK_OCAML_PKG(yojson)
-if test "$OCAML_PKG_yojson" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'yojson'.])
-fi
 AC_CHECK_OCAML_PKG(js_of_ocaml-ppx)
 if test "$OCAML_PKG_js_of_ocaml_ppx" = "no"; then
    AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml-ppx'.])
-fi
-AC_CHECK_OCAML_PKG(js_of_ocaml-camlp4)
-if test "$OCAML_PKG_js_of_ocaml_camlp4" = "no"; then
-   AC_MSG_ERROR([Please install OCaml package 'js_of_ocaml-camlp4'.])
 fi
 AC_CHECK_OCAML_PKG(js_of_ocaml-tyxml)
 if test "$OCAML_PKG_js_of_ocaml_tyxml" = "no"; then
@@ -158,6 +134,14 @@ fi
 OPAM_REPO=/home/lefessan/GIT/ocp-public/opam-repository
 OPAM_REPO_OFFICIAL_REMOTE=ocaml
 OPAM_REPO_FORK_REMOTE=origin
+AC_CHECK_OCAML_PKG(base64)
+if test "$OCAML_PKG_base64" = "no"; then
+   AC_MSG_ERROR([Please install OCaml package 'base64'.])
+fi
+AC_CHECK_OCAML_PKG(lwt)
+if test "$OCAML_PKG_lwt" = "no"; then
+   AC_MSG_ERROR([Please install OCaml package 'lwt'.])
+fi
 DOWNLOAD_URL_PREFIX=http://github.com/OCamlPro/ocplib-jsutils/archive/
 
 ###############################################################
