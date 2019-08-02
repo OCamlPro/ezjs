@@ -6,6 +6,8 @@ module Firebug = Js_of_ocaml.Firebug
 open Js
 
 let log obj = Firebug.console##log(obj)
+let log2 o1 o2 = Firebug.console##log_2(o1, o2)
+let log3 o1 o2 o3 = Firebug.console##log_3(o1, o2, o3)
 let log_str s = Firebug.console##log(string s)
 
 let setInnerHtml elt s = elt##innerHTML <- string s
