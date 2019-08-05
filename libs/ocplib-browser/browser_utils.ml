@@ -63,6 +63,10 @@ let optdef f = function
   | None -> undefined
   | Some x -> def (f x)
 let optdef_wrap callback = optdef wrap_callback callback
+let opt f = function
+  | None -> null
+  | Some x -> some (f x)
+let opt_wrap callback = opt wrap_callback callback
 let unopt_callback = function
   | None -> fun _ -> ()
   | Some callback -> callback

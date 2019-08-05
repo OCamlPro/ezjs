@@ -6,6 +6,7 @@ OCaml.library("ocplib-chrome", ocaml + {
     "tabs_utils.ml", pp_js;
     "runtime_utils.ml", pp_js;
     "tabs_chrome.ml", pp_js;
+    "windows_chrome.ml", pp_js;
     "runtime_chrome.ml", pp_js;
     "declarative_content.ml", pp_js;
     "storage_chrome.ml", pp_js;
@@ -23,6 +24,7 @@ OCaml.library("ocplib-browser", ocaml + {
     "tabs_utils.ml", pp_js;
     "runtime_utils.ml", pp_js;
     "tabs_browser.ml", pp_js;
+    "windows_browser.ml", pp_js;
     "runtime_browser.ml", pp_js;
     "declarative_content.ml", pp_js;
     "storage_browser.ml", pp_js;
