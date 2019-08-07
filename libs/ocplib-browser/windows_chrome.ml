@@ -63,8 +63,11 @@ end
 let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
     ?state ?selfOpener () =
   let data : createData t = Unsafe.obj [||] in
-  data##url <- optdef string url;
-  data##url_arr <- optdef array_of_list_str url_l;
+  (match url, url_l with
+   | Some _, None -> data##url <- optdef string url
+   | None, Some _ ->   data##url_arr <- optdef array_of_list_str url_l
+   | None, None -> ()
+   | _ -> Js_min.log_str "cannot define both url and url_l for window creation");
   data##tabId <- Optdef.option tabId;
   data##left <- Optdef.option left;
   data##top <- Optdef.option top;

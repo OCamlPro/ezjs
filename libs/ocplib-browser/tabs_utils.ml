@@ -177,3 +177,14 @@ let make_query
   query##windowId <- Optdef.option windowId;
   query##windowType <- optdef string windowType;
   query
+
+let make_create ?active ?index ?openerTabId ?pinned ?selected ?url ?windowId () =
+  let tab : createProperties t = Unsafe.obj [||] in
+  tab##active <- optdef bool active;
+  tab##index <- Optdef.option index;
+  tab##openerTabId <- Optdef.option openerTabId;
+  tab##pinned <- optdef bool pinned;
+  tab##selected <- optdef bool selected;
+  tab##url <- optdef string url;
+  tab##windowId <- Optdef.option windowId;
+  tab
