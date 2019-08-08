@@ -35,7 +35,7 @@ class type tabs = object
   method remove_arr : int js_array t -> unit promise t meth
   method removeCSS : int optdef -> details t -> unit promise t meth
   method saveAsPDF : pageSettings t -> js_string t promise t meth
-  method sendMessage : int -> 'a t -> details t optdef -> json t promise t meth
+  method sendMessage : int -> 'a t -> details t optdef -> 'b t promise t meth
   method setZoom : int optdef -> number t -> unit promise t meth
   method setZoomSettings : int optdef -> zoomSettings t -> unit promise t meth
   method show : int -> unit promise t meth

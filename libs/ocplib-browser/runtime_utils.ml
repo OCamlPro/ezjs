@@ -4,7 +4,7 @@ open Tabs_utils
 
 class type requestCheckResponse = object
   method status : js_string t prop
-  method details : json t prop
+  method details : 'a t prop
 end
 
 class type messageSender = object

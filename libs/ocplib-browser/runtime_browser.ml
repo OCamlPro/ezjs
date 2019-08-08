@@ -15,14 +15,14 @@ class type runtime = object
   method id : js_string t prop
   method getBackgroundPage : Dom_html.window t promise t meth
   method openOptionsPage : unit promise t meth
-  method getManifest : json t meth
+  method getManifest : 'a t meth
   method getURL : js_string t -> js_string t meth
   method setUninstallURL : js_string t -> unit promise t meth
   method reload : unit meth
   method requestUpdateCheck : requestCheckResponse t prop promise t meth
   method connect : js_string t opt -> 'a t opt -> port t meth
-  method sendMessage : js_string t opt -> 'a t -> 'b t opt -> json t promise t meth
-  method sendNativeMessage : js_string t -> 'a t -> json t promise t meth
+  method sendMessage : js_string t opt -> 'a t -> connectInfo t opt -> 'b t promise t meth
+  method sendNativeMessage : js_string t -> 'a t -> 'b t promise t meth
   method getPlatformInfo : platformInfo t promise t meth
   method getBrowserInfo : browserInfo t promise t meth
   method getPackageDirectoryEntry : 'a t meth

@@ -14,7 +14,7 @@ class type runtime = object
   method id : js_string t prop
   method getBackgroundPage : (Dom_html.window t -> unit) callback -> unit meth
   method openOptionsPage : (unit -> unit) callback optdef -> unit meth
-  method getManifest : json t meth
+  method getManifest : 'a t meth
   method getURL : js_string t -> js_string t meth
   method setUninstallURL : js_string t -> (unit -> unit) callback optdef -> unit meth
   method reload : unit meth
@@ -23,8 +23,8 @@ class type runtime = object
   method restartAfterDelay : int -> (unit -> unit) callback optdef -> unit meth
   method connect : js_string t optdef -> connectInfo t optdef -> port t meth
   method connectNative : js_string t -> port t meth
-  method sendMessage : js_string t optdef -> 'a t -> connectInfo t optdef -> (json t -> unit) callback optdef -> unit meth
-  method sendNativeMessage : js_string t -> 'a t -> (json t -> unit) callback optdef -> unit meth
+  method sendMessage : js_string t optdef -> 'a t -> connectInfo t optdef -> ('b t -> unit) callback optdef -> unit meth
+  method sendNativeMessage : js_string t -> 'a t -> ('b t -> unit) callback optdef -> unit meth
   method getPlatformInfo : (platformInfo t -> unit) callback -> unit meth
   method getPackageDirectoryEntry : ('a t -> unit) callback -> unit meth
   method onStartup : unit event t prop

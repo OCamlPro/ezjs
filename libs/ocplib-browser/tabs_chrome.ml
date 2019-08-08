@@ -27,7 +27,7 @@ class type tabs = object
   method reload : int optdef -> reloadProperties t optdef -> (unit -> unit) callback optdef -> unit meth
   method remove : int -> (unit -> unit) callback optdef -> unit meth
   method remove_arr : int js_array t -> (unit -> unit) callback optdef -> unit meth
-  method sendMessage : int -> 'a t -> details t optdef -> (json t -> unit) callback optdef -> unit meth
+  method sendMessage : int -> 'a t -> details t optdef -> ('b t -> unit) callback optdef -> unit meth
   method setZoom : int optdef -> number t -> (unit -> unit) callback optdef -> unit meth
   method setZoomSettings : int optdef -> zoomSettings t -> (unit -> unit) callback -> unit meth
   method update : int optdef -> updateProperties t -> (tab t -> unit) callback optdef -> unit meth
