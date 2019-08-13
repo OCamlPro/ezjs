@@ -10,6 +10,7 @@ OCaml.library("ocplib-chrome", ocaml + {
     "runtime_chrome.ml", pp_js;
     "declarative_content.ml", pp_js;
     "storage_chrome.ml", pp_js;
+    "i18n_chrome.ml", pp_js;
     "chrome.ml", pp_js;
   ];
   requires = [
@@ -28,6 +29,7 @@ OCaml.library("ocplib-browser", ocaml + {
     "runtime_browser.ml", pp_js;
     "declarative_content.ml", pp_js;
     "storage_browser.ml", pp_js;
+    "i18n_browser.ml", pp_js;
     "browser.ml", pp_js;
   ];
   requires = [
