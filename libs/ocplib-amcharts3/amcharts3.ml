@@ -7,9 +7,6 @@ let jsdeps = ref [
                  "/amcharts/serial.js";
                  "/amcharts/plugins/export/export.js";
                  "/amcharts/themes/light.js";
-                 "/amcharts/themes/chalk.js";
-                 "/amcharts/themes/dark.js";
-                 "/amcharts/themes/black.js"
                ]
 
 class type export =
