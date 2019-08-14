@@ -131,16 +131,23 @@ module Pie = struct
       method value : int_field
     end
 
+  class type dataItem2 =
+    object
+      method title : string_field
+      method value : float_field
+    end
+
   let dataProvider array =
     let array =
       Array.map (fun (title, value) ->
-          let obj : dataItem Js.t = Js.Unsafe.obj [||] in
+          let obj = Js.Unsafe.obj [||] in
           obj##title <- Js.string title;
           obj##value <- value;
           obj
         ) array
     in
     Js.array array
+
 
   class type t =
     object
