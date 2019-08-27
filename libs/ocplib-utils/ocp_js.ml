@@ -7,6 +7,7 @@ module Dom = Js_of_ocaml.Dom
 module Regexp = Js_of_ocaml.Regexp
 module Json = Js_of_ocaml.Json
 module XmlHttpRequest = Js_of_ocaml.XmlHttpRequest
+module Typed_array = Js_of_ocaml.Typed_array
 
 module Html = Js_of_ocaml_tyxml.Tyxml_js.Html5
 module Of_dom = Js_of_ocaml_tyxml.Tyxml_js.Of_dom

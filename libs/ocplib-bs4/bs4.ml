@@ -1074,7 +1074,8 @@ module Items = struct
 
     let make_modal ?(modal_class=[]) ?(header_class=[])
         ?(title_class=[]) ?title_content
-        ?(body_class=[]) ?(footer_class=[]) ?footer_content id content =
+        ?(body_class=[]) ?(dialog_class=[])
+        ?(footer_class=[]) ?footer_content id content =
       let header = match title_content with
         | None -> []
         | Some content -> [
@@ -1091,10 +1092,11 @@ module Items = struct
                          Alert.a_data_dismiss modal] [ txt "Close" ] ] ] in
 
       div ~a:[a_id id; a_class (modal :: modal_class)] [
-        div ~a:[ a_class [modal_content] ]
-          (header @ [
-              div ~a:[ a_class (modal_body :: body_class) ] content ] @
-           footer) ]
+        div ~a:[ a_class (modal_dialog :: dialog_class) ] [
+          div ~a:[ a_class [modal_content] ]
+            (header @ [
+                div ~a:[ a_class (modal_body :: body_class) ] content ] @
+             footer) ] ]
 
     let make_modal_button ?(button_class=[]) id text =
       button ~a:[a_class (Button.btn :: button_class);
