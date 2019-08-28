@@ -1108,6 +1108,7 @@ module Items = struct
     let nav_link = "nav-link"
     let nav_tabs = "nav-tabs"
     let nav_pills = "nav-pills"
+    let nav_fill = "nav-fill"
     let nav_justified = "nav-justified"
     let navbar = "navbar"
     let navbar_nav = "navbar-nav"
