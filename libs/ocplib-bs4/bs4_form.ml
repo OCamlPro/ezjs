@@ -244,19 +244,10 @@ module Make(S : sig
   let field2 ?(input_type=`Text) ?(placeholder="")
       ?(label_width="100%") ?(label_a=[]) ?(label_class=[])
       ?(input_width="100%") ?(input_a=[]) ?(input_class=[])
-      ?(suffix="") ?(suffix_a=[]) ?(suffix_class=[])
+      ?(left_input_class=[])
       ?(error_width="100%") ?(error_a=[]) ?(error_class=[])
-      ?maker ?(getter=get) ?checker ?cleave_option
+      ?maker ?(getter=get) ?checker ?cleave_option ?(suffix=[])
       id ~onchange title =
-    let suffix_span =
-      if String.length suffix <> 0 then
-        [span ~a:[a_class ([input_group_append; Border.border0] @
-                           S.input_classes @
-                           suffix_class)] [
-           txt suffix]]
-      else
-        []
-    in
     fields := {id; maker; getter; checker; cleave_option} :: !fields;
     div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] @@ [
       div ~a:[a_class [input_group_prepend]] [
@@ -265,13 +256,15 @@ module Make(S : sig
           txt title
         ]
       ];
-      Ocp_js.Html.input
-        ~a:([a_input_type input_type; a_id (id ^ "-input");
-             a_class ([form_control] @ S.input_classes @ input_class);
-             a_placeholder placeholder;
-             Printf.kprintf a_style "width:%s" input_width;
-             a_onchange (fun _e -> onchange2 id; true)] @ input_a) ()]
-      @ suffix_span
+      div ~a:[ a_class ([form_control;Display.d_inline_flex] @  S.input_classes
+                        @ input_class)] @@ [
+        input
+          ~a:([a_input_type input_type; a_id (id ^ "-input");
+               a_placeholder placeholder;
+               a_class left_input_class;
+               Printf.kprintf a_style "width:%s" input_width;
+               a_onchange (fun _e -> onchange2 id; true)] @ input_a) ()]
+        @ suffix]
       @ [
         div ~a:[a_id (id ^ "-help"); a_style ("width:"^error_width)] [
           div ~a:[ a_class ([input_group_append]@error_class)]
