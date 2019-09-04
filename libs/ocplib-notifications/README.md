@@ -2,9 +2,9 @@
 
 This library is based on the Twilio SMS API. To use this library, you will need a Twilio account.
 
-
 ## Example
 
+/!\ Phone numbers must be in country code format without the '+' prepended, otherwise the message will not be sent.
 Beforehand, you exported Twilio account SID, auth token and the default Twilio phone number you want to use in the following environment variables (name can be arbitrary) :
 	- `NOTIFICATIONS_DEFAULT_FROM`
 	- `NOTIFICATIONS_ACCOUNT_SID`
