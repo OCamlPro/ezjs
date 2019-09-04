@@ -1,0 +1,19 @@
+OCaml.library(
+  "ocplib-notifications",
+  ocaml + {
+    files = [
+      "notifications_types.mli";
+      "notifications_types.ml";
+      "notifications_encoding.mli";
+      "notifications_encoding.ml";
+      "notifications_config.mli";
+      "notifications_config.ml";
+      "notifications_curl.mli";
+      "notifications_curl.ml";
+      "notifications.mli";
+      "notifications.ml";
+      ];
+    requires = [
+      "ez-api-curl";
+];
+});

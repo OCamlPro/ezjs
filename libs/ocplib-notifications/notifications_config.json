@@ -1,0 +1,5 @@
+{
+	"default_from" : "NOTIFICATIONS_DEFAULT_FROM",
+	"account_sid": "NOTIFICATIONS_ACCOUNT_SID",
+	"auth_token" : "NOTIFICATIONS_AUTH_TOKEN"
+}
