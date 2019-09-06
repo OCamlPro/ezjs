@@ -151,6 +151,7 @@ module Make(S : sig
     let ok_div = err_div "" in
     let v = check id in
     let input_elt = find_component @@ id ^ "-input" in
+    let input_cont_elt = find_component @@ id ^ "-input-container" in
     let help_elt = find_component @@ id ^ "-help" in
     (*let help = Manip.by_id @@ id ^ "-help" in
       let container = find_component @@ id ^ "-form" in*)
@@ -159,6 +160,8 @@ module Make(S : sig
       (try
          Manip.removeClass input_elt is_invalid;
          Manip.addClass input_elt is_valid;
+         Manip.removeClass input_cont_elt is_invalid;
+         Manip.addClass input_cont_elt is_valid;
          Manip.replaceChildren help_elt ok_div
        with _ -> ());
       (*(match help with
@@ -168,6 +171,8 @@ module Make(S : sig
       (try
          Manip.removeClass input_elt is_valid;
          Manip.addClass input_elt is_invalid;
+         Manip.removeClass input_cont_elt is_valid;
+         Manip.addClass input_cont_elt is_invalid;
        with _ -> ());
       (*match help with
        | Some help -> Manip.removeChild container help;
@@ -256,8 +261,10 @@ module Make(S : sig
           txt title
         ]
       ];
-      div ~a:[ a_class ([form_control;Display.d_inline_flex] @  S.input_classes
-                        @ input_class)] @@ [
+      div ~a:[
+        a_id (id ^ "-input-container");
+        a_class ([form_control;Display.d_inline_flex] @  S.input_classes
+                 @ input_class)] @@ [
         input
           ~a:([a_input_type input_type; a_id (id ^ "-input");
                a_placeholder placeholder;
