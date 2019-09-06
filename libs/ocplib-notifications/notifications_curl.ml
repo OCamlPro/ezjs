@@ -22,20 +22,19 @@ let error_callback url res_ref encodings httpc s_opt =
 
   | Some ans ->
     try
-      if httpc > 200 && httpc <= 226 then
+      if httpc >= 200 && httpc <= 226 then
         begin
-        (* In ezCurl, 2xx codes, with xx > 0 are interpreted as errors *)
-        Format.eprintf
-          "debug me: error_callback with HTTP RET code %d when sending \
-           a request with URL %s!@." httpc url;
-        res_ref := Some (Ok (encodings.T.ok_output ans))
-      end
-      else if httpc <> 200 then
+          if httpc > 201 then Format.eprintf "debug me: error_callback with \
+                                              HTTP RET code %d when sending \
+                                              a request with URL %s" httpc url;
+          res_ref := Some (Ok (encodings.T.ok_output ans))
+        end
+      else
         begin
           Format.eprintf
             "error %d when sending a request with URL %s!@." httpc url;
           res_ref := Some (Error (encodings.T.ko_output ans))
-      end;
+        end;
     with e ->
       destruct_request_failed ~http_code:httpc ans e
 
@@ -44,8 +43,8 @@ let error_callback url res_ref encodings httpc s_opt =
 let pp_header headers =
   List.fold_left
     (fun acc (a,b) ->
-      let header = Format.sprintf " -H '%s:%s'" a b in
-      acc ^ header) "" headers
+       let header = Format.sprintf " -H '%s:%s'" a b in
+       acc ^ header) "" headers
 
 let post ~endpoint ~content ~encodings =
   let content_type = "application/x-www-form-urlencoded" in
