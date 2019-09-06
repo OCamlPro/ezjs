@@ -51,8 +51,6 @@ let post ~endpoint ~content ~encodings =
   let headers = [("Content-Type", content_type)] in
   let res_ref = ref None in
   let content = encodings.T.input content in
-  Format.eprintf "curl -X POST %s d '%s' %s\n@."
-    endpoint content (pp_header headers);
   EzCurl.post encodings.T.name ~headers ~content_type ~content
     (EzAPI.TYPES.URL endpoint)
     ~error:(error_callback endpoint res_ref encodings)
