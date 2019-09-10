@@ -216,16 +216,61 @@ module Make(S : sig
         options
     ]
 
-  let checkbox ?(a=[]) ?(boxheight=17) id title =
-    div ~a:[a_class (input_group :: S.group_classes);
-            a_id (id ^ "-form")] [
-      span ~a:[Printf.kprintf a_style "margin:auto" ] [txt title];
+  let select2 ?selected
+      ?(input_a=[]) ?(input_class=[])
+      ?(error_a=[]) ?(error_class=[])
+      id ?(onselect=(fun _ -> ())) title options =
+    let options =
+      List.map
+        (fun (name, tag) ->
+           let a = [a_id tag; a_value tag] in
+           let a = match selected with
+             | None -> a
+             | Some t when t = tag -> a_selected () :: a
+             | Some _ -> a
+           in
+           option ~a @@ txt (Format.sprintf "%s" name)
+        ) options
+    in
+    div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] [
+      div ~a:[ a_class [input_group_prepend] ] [
+        span ~a:[ a_class (input_group_text :: S.prepend_classes)] [ txt title ]
+      ];
+
+      Ocp_js.Html.select
+        ~a:( a_id (id ^ "-input") ::
+             a_class ((form_control :: S.input_classes) @ input_class) ::
+             a_onchange (fun _e ->
+                 let input_elt = find_component @@ id ^ "-input" in
+                 let v = Manip.value input_elt in
+                 onselect v; true) ::
+             input_a)
+        options;
+      div ~a:[a_id (id ^ "-help")] [
+        div ~a:[ a_class ([input_group_append]@error_class)]
+          [ span ~a:([ a_class (input_group_text ::
+                                S.prepend_classes @
+                                S.error_classes)]
+                     @error_a) [
+              txt " " ]
+          ]
+      ]
+    ]
+
+
+  let checkbox
+      ?(div_a=[]) ?(div_class=[])
+      ?(label_a=[]) ?(label_class=[])
+      ?(box_a=[]) ?(box_class=[])
+      id title =
+    div ~a:([a_class div_class;
+            a_id (id ^ "-form")] @ div_a) [
+      div ~a:([a_class label_class] @ label_a) [txt title];
       Ocp_js.Html.input
         ~a:(a_input_type `Checkbox :: a_id (id ^ "-input") ::
-            a_class (form_control :: S.input_classes) ::
-            Printf.kprintf a_style "height:%dpx; margin:auto" boxheight ::
+            a_class (form_control :: box_class) ::
             a_onchange (fun _e -> true) ::
-            a) ()
+            box_a) ()
     ]
 
 
@@ -254,9 +299,10 @@ module Make(S : sig
       ?maker ?(getter=get) ?checker ?cleave_option ?(suffix=[])
       id ~onchange title =
     fields := {id; maker; getter; checker; cleave_option} :: !fields;
-    div ~a:[ a_class (input_group :: S.group_classes); a_id (id ^ "-form") ] @@ [
+    div ~a:[ a_class (input_group :: S.group_classes);
+             a_id (id ^ "-form") ] @@ [
       div ~a:[a_class [input_group_prepend]] [
-        span ~a:([ a_class ((input_group_text :: S.prepend_classes)@label_class);
+        span ~a:([ a_class ((input_group_text :: S.prepend_classes) @ label_class);
                    Printf.kprintf a_style "width:%s" label_width ]@label_a) [
           txt title
         ]
