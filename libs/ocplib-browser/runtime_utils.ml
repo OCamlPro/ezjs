@@ -61,3 +61,8 @@ let to_platform_info (o:platformInfo t) = {
   platform_arch = to_string o##arch;
   platform_nacl_arch = to_string o##nacl_arch
 }
+
+let mk_connection_info name =
+  let i : connectInfo t = Unsafe.obj [||] in
+  i##name <- string name ;
+  i
