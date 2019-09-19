@@ -137,18 +137,23 @@ class type deferred = object
     -> (unit -> bool t) callback opt -> promise t meth
 end
 
+class type delay = object
+  method show : int prop
+  method hide : int prop
+end
+
 (* options for bootstrap *)
 class type pop_options = object
    method animation : bool t prop
    method container : js_string t prop
    method content : js_string t prop
-   method delay_val : int prop
+   method delay : delay t prop
    method html : bool t prop
    method placement : js_string t prop
    method selector : js_string t prop
    method template : js_string t prop
    method title : js_string t prop
-   method trigger_val : js_string t prop
+   method trigger : js_string t prop
    method offset_val : int prop
    method fallbackPlacement : js_string t prop
    method boundary : js_string t prop
