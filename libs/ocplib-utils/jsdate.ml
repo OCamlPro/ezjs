@@ -25,7 +25,7 @@ let getTime d = d##getTime
 let getFullYear ?(utc=false) d =
   if not utc then d##getFullYear else d##getUTCFullYear
 let getMonth ?(utc=false) d =
-  if not utc then d = d##getMonth else d##getUTCMonth
+  if not utc then d##getMonth else d##getUTCMonth
 let getDate ?(utc=false) d =
   if not utc then d##getDate else d##getUTCDate
 let getDay ?(utc=false) d =

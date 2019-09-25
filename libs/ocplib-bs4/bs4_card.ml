@@ -173,14 +173,16 @@ let replace_opt def = function
 
 module MakeCardTable(M: sig
     type t
+    type state
     val name : string
     val title_span : int -> [> Html_types.span ] Ocp_js.elt
     val page_size : int
     val table_class : string list
     val card_classes : string list
     val heads : [> Html_types.th_content_fun ] Ocp_js.elt list
-    val to_row : t -> [> Html_types.tr ] Ocp_js.elt
+    val to_row : state option -> t -> [> Html_types.tr ] Ocp_js.elt
     val empty: string option
+    val head_class : string list
   end) = struct
 
   let title_id = Printf.sprintf "%s-title" M.name
@@ -191,7 +193,7 @@ module MakeCardTable(M: sig
   let current_page = ref 0
   let current_size = ref M.page_size
 
-  let theads = make_heads M.heads
+  let theads = make_heads ~head_class:M.head_class M.heads
   let ncolumns = List.length M.heads
 
   let make ?(footer=false) ?(suf_id="") ?(before=[]) ?(after=[])
@@ -247,25 +249,25 @@ module MakeCardTable(M: sig
     Js_utils.Manip.replaceChildren container
       [table_maker ~body_id M.table_class theads (Ready (rows, M.empty, ncolumns))]
 
-  let update ?(title=true) ?(suf_id="") ?page_sizer nrows xhr =
+  let update ?(title=true) ?(suf_id="") ?page_sizer ?state nrows xhr =
     let f page page_size =
       xhr page page_size (fun datas ->
           if title then update_title ~suf_id ~nrows ();
-          update_table ~suf_id @@ List.map M.to_row datas) in
+          update_table ~suf_id @@ List.map (M.to_row state) datas) in
     replace_pagination ~classes:M.card_classes ?page_sizer
       (loading_id ^ suf_id) nrows (ref []) current_page current_size f
 
-  let update_result ?(title=true) ?(suf_id="") ?page_sizer nrows xhr =
+  let update_result ?(title=true) ?(suf_id="") ?page_sizer ?state nrows xhr =
     let f page page_size : unit =
       xhr page page_size (function
           | Error msg -> Js_utils.log "%s" msg
           | Ok datas ->
             if title then update_title ~suf_id ~nrows ();
-            update_table ~suf_id @@ List.map M.to_row datas) in
+            update_table ~suf_id @@ List.map (M.to_row state) datas) in
     replace_pagination ~classes:M.card_classes ?page_sizer
       (loading_id ^ suf_id) nrows (ref []) current_page current_size f
 
-  let update_from_all ?(title=true) ?(suf_id="") ?page_sizer xhr =
+  let update_from_all ?(title=true) ?(suf_id="") ?page_sizer ?state xhr =
     let nrows = ref 0 in
     let f page page_size =
       xhr (fun datas ->
@@ -273,7 +275,7 @@ module MakeCardTable(M: sig
           if title then update_title ~suf_id ~nrows:!nrows ();
           let pos = page * page_size in
           let next_pos = min (pos + page_size) !nrows in
-          let rows = List.map M.to_row @@
+          let rows = List.map (M.to_row state) @@
             Array.to_list @@ Array.sub (Array.of_list datas) pos (next_pos-pos) in
           update_table ~suf_id rows) in
     replace_pagination ~classes:M.card_classes ?page_sizer

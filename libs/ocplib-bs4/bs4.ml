@@ -648,6 +648,11 @@ module Utils = struct
     let my4 = "my-4"
     let my5 = "my-5"
 
+    let ma = "m-auto"
+    let ma_sm = "m-sm-auto"
+    let ma_md = "m-md-auto"
+    let ma_lg = "m-lg-auto"
+    let ma_xl = "m-xl-auto"
     let mra = "mr-auto"
     let mra_sm = "mr-sm-auto"
     let mra_md = "mr-md-auto"
