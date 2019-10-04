@@ -54,66 +54,76 @@ class type tabs = object
   method onZoomChanged : 'a t event t prop
 end
 let tabs : tabs t = Unsafe.variable "browser.tabs"
-let tab_id_none () = tabs##._TAB_ID_NONE
+let tab_id_none () = tabs##_TAB_ID_NONE
 
 let captureTab ?id ?options f =
-  jthen (tabs##captureTab (Optdef.option id) (Optdef.option options))
+  jthen tabs##captureTab(Optdef.option id, Optdef.option options)
     (fun s -> f (to_string s))
 let captureVisibleTab ?id ?options f =
-  jthen (tabs##captureVisibleTab (Optdef.option id) (Optdef.option options))
+  jthen tabs##captureVisibleTab(Optdef.option id, Optdef.option options)
     (fun s -> f (to_string s))
-let connect ?info id = tabs##connect id (Optdef.option info)
-let create ?callback tab = jthen_opt (tabs##create tab) callback
+let connect ?info id = tabs##connect(id, Optdef.option info)
+let create ?callback tab = jthen_opt tabs##create(tab) callback
 let detectLanguage ?id f =
-  jthen (tabs##detectLanguage (Optdef.option id) (wrap_callback (fun s -> f (to_string s))))
+  jthen tabs##detectLanguage(Optdef.option id, wrap_callback (fun s -> f (to_string s)))
     (fun s -> f (to_string s))
-let discard ?callback id = jthen_opt (tabs##discard id) callback
+let discard ?callback id = jthen_opt tabs##discard(id) callback
 let discard_list ?callback ids =
-  jthen_opt (tabs##discard_arr (array_of_list ids)) callback
-let duplicate ?callback id = jthen_opt (tabs##duplicate id) callback
+  jthen_opt tabs##discard_arr(array_of_list ids) callback
+let duplicate ?callback id = jthen_opt tabs##duplicate(id) callback
 let executeScript ?id ?callback details =
-  jthen_opt (tabs##executeScript (Optdef.option id) details) callback
-let get id f = jthen (tabs##get id) f
-let getCurrent f = jthen tabs##getCurrent f
-let getZoom ?id f = jthen (tabs##getZoom (Optdef.option id)) (fun x -> f (float_of_number x))
-let getZoomSettings ?id f = jthen (tabs##getZoomSettings (Optdef.option id)) f
-let hide id = tabs##hide id
-let hide_list ids = tabs##hide_arr (array_of_list ids)
-let highlight ?callback info = jthen_opt (tabs##highlight info) callback
-let insertCSS ?id () = tabs##insertCSS (Optdef.option id)
-let move ?callback id props = jthen_opt (tabs##move id props) callback
+  jthen_opt tabs##executeScript(Optdef.option id, details) callback
+let get id f = jthen tabs##get(id) f
+let getCurrent f = jthen tabs##getCurrent() f
+let getZoom ?id f = jthen tabs##getZoom(Optdef.option id) (fun x -> f (float_of_number x))
+let getZoomSettings ?id f = jthen tabs##getZoomSettings(Optdef.option id) f
+let hide id = tabs##hide(id)
+let hide_list ids = tabs##hide_arr(array_of_list ids)
+let highlight ?callback info = jthen_opt tabs##highlight(info) callback
+let insertCSS ?id () = tabs##insertCSS(Optdef.option id)
+let move ?callback id props = jthen_opt tabs##move(id, props) callback
 let move_list ?callback ids props =
-  jthen_opt (tabs##move_arr (array_of_list ids) props) callback
+  jthen_opt tabs##move_arr(array_of_list ids, props) callback
 let moveInSuccession ?id ?options ids =
-  tabs##moveInSuccession (array_of_list ids) (Optdef.option id) (Optdef.option options)
-let print () = tabs##print
-let printPreview () = tabs##printPreview
-let query info f = jthen (tabs##query info) f
+  tabs##moveInSuccession(array_of_list ids, Optdef.option id, Optdef.option options)
+let print () = tabs##print()
+let printPreview () = tabs##printPreview()
+let query info f = jthen tabs##query(info) f
 let reload ?id ?props ?callback () =
-  jthen_opt (tabs##reload (Optdef.option id) (Optdef.option props)) callback
-let remove ?callback id = jthen_opt (tabs##remove id) callback
-let removeCSS ?id details = tabs##removeCSS (Optdef.option id) details
-let saveAsPDF settings f = jthen (tabs##saveAsPDF settings) (fun s -> f (to_string s))
-let remove_list ?callback id = jthen_opt (tabs##remove_arr (array_of_list id)) callback
+  jthen_opt tabs##reload(Optdef.option id, Optdef.option props) callback
+let remove ?callback id = jthen_opt tabs##remove(id) callback
+let removeCSS ?id details = tabs##removeCSS(Optdef.option id, details)
+let saveAsPDF settings f = jthen tabs##saveAsPDF(settings) (fun s -> f (to_string s))
+let remove_list ?callback id = jthen_opt tabs##remove_arr(array_of_list id) callback
 let sendMessage ?details ?callback id message =
-  jthen_opt (tabs##sendMessage id message (Optdef.option details)) callback
+  jthen_opt tabs##sendMessage(id, message, Optdef.option details) callback
 let setZoom ?id ?callback factor =
-  jthen_opt (tabs##setZoom (Optdef.option id) (number_of_float factor)) callback
+  jthen_opt tabs##setZoom(Optdef.option id, number_of_float factor) callback
 let setZoomSettings ?id props f =
-  jthen (tabs##setZoomSettings (Optdef.option id) props) f
-let show id = tabs##show id
-let show_list ids = tabs##show_arr (array_of_list ids)
-let toggleReaderMode ?id () = tabs##toggleReaderMode (Optdef.option id)
+  jthen tabs##setZoomSettings(Optdef.option id, props) f
+let show id = tabs##show(id)
+let show_list ids = tabs##show_arr(array_of_list ids)
+let toggleReaderMode ?id () = tabs##toggleReaderMode(Optdef.option id)
 let update ?id ?callback props =
-  jthen_opt (tabs##update (Optdef.option id) props) callback
+  jthen_opt tabs##update(Optdef.option id, props) callback
 
-let onActivated f = addListener tabs##.onActivated f
-let onAttached f = addListener2 tabs##.onAttached f
-let onCreated f = addListener tabs##.onCreated f
-let onDetached f = addListener2 tabs##.onDetached f
-let onHighLighted f = addListener tabs##.onHighlighted f
-let onMoved f = addListener2 tabs##.onMoved f
-let onRemoved f = addListener2 tabs##.onRemoved f
-let onReplaced f = addListener2 tabs##.onReplaced f
-let onUpdated f = addListener3 tabs##.onUpdated f
-let onZoomChanged f = addListener tabs##.onZoomChanged f
+let onActivated handler =
+  tabs##onActivated##addListener(wrap_callback handler)
+let onAttached handler =
+  tabs##onAttached##addListener(wrap_callback handler)
+let onCreated handler =
+  tabs##onCreated##addListener(wrap_callback handler)
+let onDetached handler =
+  tabs##onDetached##addListener(wrap_callback handler)
+let onHighLighted handler =
+  tabs##onHighlighted##addListener(wrap_callback handler)
+let onMmoved handler =
+  tabs##onMoved##addListener(wrap_callback handler)
+let onRemoved handler =
+  tabs##onRemoved##addListener(wrap_callback handler)
+let onReplaced handler =
+  tabs##onReplaced##addListener(wrap_callback handler)
+let onUpdated handler =
+  tabs##onUpdated##addListener(wrap_callback handler)
+let onZoomChanged handler =
+  tabs##onZoomChanged##addListener(wrap_callback handler)

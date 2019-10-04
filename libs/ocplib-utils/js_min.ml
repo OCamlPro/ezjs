@@ -82,6 +82,8 @@ module El = struct
     create ?classes ?styles ?listen ?attr ?text Dom_html.createSelect children
   let input ?classes ?styles ?listen ?attr ?text () =
     create ?classes ?styles ?listen ?attr ?text Dom_html.createInput []
+  let iframe ?classes ?styles ?listen ?attr ?text children =
+    create ?classes ?styles ?listen ?attr ?text Dom_html.createIframe children
   let label ?classes ?styles ?listen ?attr ?text children =
     create ?classes ?styles ?listen ?attr ?text Dom_html.createLabel children
   let ul ?classes ?styles ?listen ?attr ?text children =

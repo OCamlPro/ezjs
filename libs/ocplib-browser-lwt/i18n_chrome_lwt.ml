@@ -1,6 +1,5 @@
-open Js_of_ocaml
-open Js
-open Browser_utils
+open Js_types
+open Promise
 
 class type language_percent = object
   method language : js_string t prop
@@ -19,11 +18,12 @@ class type i18n = object
   method detectLanguage : js_string t -> (language_detection t -> unit) callback -> unit meth
 end
 
-let i18n = Unsafe.variable "chrome.i18n"
+let i18n = variable "chrome.i18n"
 
-let getAcceptLanguages f =
-  i18n##getAcceptLanguages (wrap_callback (fun a -> f (array_to_list_str a)))
+let getAcceptLanguages () =
+  to_lwt_cb_tr array_to_list_str i18n##getAcceptLanguages
 let getMessage ?substitutions message =
   to_string @@ i18n##getMessage (string message) (optdef array_of_list_str substitutions)
-let getUILanguage () = i18n##getUILanguage
-let detectLanguage text f = i18n##detectLanguage (string text) (wrap_callback f)
+let getUILanguage () = i18n##getUILanguage()
+let detectLanguage text =
+  to_lwt_cb (fun cb -> i18n##detectLanguage (string text) cb)

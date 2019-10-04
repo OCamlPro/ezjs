@@ -1,0 +1,21 @@
+pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };
+
+OCaml.library("ocplib-chrome-lwt", ocaml + {
+  files = [
+    "js_types.ml";
+    "promise.ml", pp_js;
+    "browser_utils_lwt.ml", pp_js;
+    "tabs_utils_lwt.ml", pp_js;
+    "runtime_utils_lwt.ml", pp_js;
+    "tabs_chrome_lwt.ml", pp_js;
+    "windows_chrome_lwt.ml", pp_js;
+    "runtime_chrome_lwt.ml", pp_js;
+    "declarative_content_lwt.ml", pp_js;
+    "storage_chrome_lwt.ml", pp_js;
+    "i18n_chrome_lwt.ml", pp_js;
+    "chrome_lwt.ml", pp_js;
+  ];
+  requires = [
+    "ocplib-js-min"; "lwt"
+  ];
+  });

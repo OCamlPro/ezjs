@@ -1,6 +1,5 @@
-open Js_of_ocaml
-open Js
-open Browser_utils
+open Js_types
+open Promise
 
 class type storageChange = object
   method oldValue : 'a prop
@@ -24,21 +23,26 @@ class type storage = object
   method managed : storageArea t prop
 end
 
-let storage : storage t = Unsafe.variable "chrome.storage"
+let storage : storage t = variable "chrome.storage"
 let local = storage##.local
 let sync = storage##.sync
 let managed = storage##.managed
 
-let get ?key (st:storageArea t) f = st##get (opt string key) (wrap_callback f)
-let get_arr ?keys (st:storageArea t) f =
+let get ?key (st:storageArea t) =
+  to_lwt_cb (fun cb -> st##get (opt string key) cb)
+let get_arr ?keys (st:storageArea t) =
   let keys = opt array_of_list_str keys in
-  st##get_arr keys (wrap_callback f)
-let get_o ?obj (st:storageArea t) f = st##get (Opt.option obj) (wrap_callback f)
-let getBytesInUse ?key (st:storageArea t) f =
-  st##getBytesInUse (opt string key) (wrap_callback f)
-let getBytesInUse_list ?keys (st:storageArea t) f =
+  to_lwt_cb (fun cb -> st##get_arr keys cb)
+let get_o ?obj (st:storageArea t) =
+  to_lwt_cb (fun cb -> st##get (option obj) cb)
+let getBytesInUse ?key (st:storageArea t) =
+  to_lwt_cb (fun cb -> st##getBytesInUse (opt string key) cb)
+let getBytesInUse_list ?keys (st:storageArea t) =
   let keys = opt array_of_list_str keys in
-  st##getBytesInUse_arr keys (wrap_callback f)
-let set ?callback (st:storageArea t) o = st##set o (optdef_wrap callback)
-let remove ?callback (st:storageArea t) s = st##remove (string s) (optdef_wrap callback)
-let clear ?callback (st:storageArea t) = st##clear (optdef_wrap callback)
+  to_lwt_cb (fun cb -> st##getBytesInUse_arr keys cb)
+let set ?callback (st:storageArea t) o =
+  to_lwt_cb_opt callback (fun cb -> st##set o cb)
+let remove ?callback (st:storageArea t) s =
+  to_lwt_cb_opt callback (fun cb -> st##remove (string s) cb)
+let clear ?callback (st:storageArea t) =
+  to_lwt_cb_opt callback (fun cb -> st##clear cb)

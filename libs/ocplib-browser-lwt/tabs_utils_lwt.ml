@@ -1,6 +1,4 @@
-open Js_of_ocaml
-open Js
-open Browser_utils
+open Js_types
 
 class type mutedInfo = object
   method extensionId : js_string t optdef prop
@@ -146,12 +144,12 @@ end
 
 let make_script_details
     ?allFrames ?code ?cssOrigin ?file ?frameId ?matchAboutBlank ?runAt () =
-  let details : details t = Unsafe.obj [||] in
+  let details : details t = obj [||] in
   details##.allFrames := optdef bool allFrames;
   details##.code := optdef string code;
   details##.cssOrigin := optdef string cssOrigin;
   details##.file := optdef string file;
-  details##.frameId := Optdef.option frameId;
+  details##.frameId := def_option frameId;
   details##.matchAboutBlank := optdef bool matchAboutBlank;
   details##.runAt := optdef string runAt;
   details
@@ -160,31 +158,31 @@ let make_query
     ?active ?audible ?autoDiscardable ?currentWindow ?discarded ?highlighted
     ?index ?lastFocusedWindow ?muted ?pinned ?status ?title ?url ?windowId
     ?windowType () =
-  let query : queryInfo t = Unsafe.obj [||] in
+  let query : queryInfo t = obj [||] in
   query##.active := optdef bool active;
   query##.audible := optdef bool audible;
   query##.autoDiscardable := optdef bool autoDiscardable;
   query##.currentWindow := optdef bool currentWindow;
   query##.discarded := optdef bool discarded;
   query##.highlighted := optdef bool highlighted;
-  query##.index := Optdef.option index;
+  query##.index := def_option index;
   query##.lastFocusedWindow := optdef bool lastFocusedWindow;
   query##.muted := optdef bool muted;
   query##.pinned := optdef bool pinned;
   query##.status := optdef string status;
   query##.title := optdef string title;
   query##.url := optdef string url;
-  query##.windowId := Optdef.option windowId;
+  query##.windowId := def_option windowId;
   query##.windowType := optdef string windowType;
   query
 
 let make_create ?active ?index ?openerTabId ?pinned ?selected ?url ?windowId () =
-  let tab : createProperties t = Unsafe.obj [||] in
+  let tab : createProperties t = obj [||] in
   tab##.active := optdef bool active;
-  tab##.index := Optdef.option index;
-  tab##.openerTabId := Optdef.option openerTabId;
+  tab##.index := def_option index;
+  tab##.openerTabId := def_option openerTabId;
   tab##.pinned := optdef bool pinned;
   tab##.selected := optdef bool selected;
   tab##.url := optdef string url;
-  tab##.windowId := Optdef.option windowId;
+  tab##.windowId := def_option windowId;
   tab

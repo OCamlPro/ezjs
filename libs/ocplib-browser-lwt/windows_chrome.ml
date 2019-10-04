@@ -1,6 +1,6 @@
-open Js_of_ocaml
-open Js
-open Browser_utils
+open Js_types
+open Promise
+open Browser_utils_lwt
 
 class type window = object
   method id : int optdef prop
@@ -62,17 +62,17 @@ end
 
 let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
     ?state ?selfOpener () =
-  let data : createData t = Unsafe.obj [||] in
+  let data : createData t = obj [||] in
   (match url, url_l with
    | Some _, None -> data##.url := optdef string url
    | None, Some _ ->   data##.url_arr := optdef array_of_list_str url_l
    | None, None -> ()
    | _ -> Js_min.log_str "cannot define both url and url_l for window creation");
-  data##.tabId := Optdef.option tabId;
-  data##.left := Optdef.option left;
-  data##.top := Optdef.option top;
-  data##.width := Optdef.option width;
-  data##.height := Optdef.option height;
+  data##.tabId := def_option tabId;
+  data##.left := def_option left;
+  data##.top := def_option top;
+  data##.width := def_option width;
+  data##.height := def_option height;
   data##.focused := optdef bool focused;
   data##._type := optdef string typ;
   data##.state := optdef string state;
@@ -80,32 +80,36 @@ let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
   data
 
 let make_updateInfo ?left ?top ?width ?height ?focused ?drawAttention ?state () =
-  let data : updateInfo t = Unsafe.obj [||] in
-  data##.left := Optdef.option left;
-  data##.top := Optdef.option top;
-  data##.width := Optdef.option width;
-  data##.height := Optdef.option height;
+  let data : updateInfo t = obj [||] in
+  data##.left := def_option left;
+  data##.top := def_option top;
+  data##.width := def_option width;
+  data##.height := def_option height;
   data##.focused := optdef bool focused;
   data##.drawAttention := optdef bool drawAttention;
   data##.state := optdef string state;
   data
 
-let windows : windows t = Unsafe.variable "chrome.windows"
+let windows : windows t = variable "chrome.windows"
 
-let get ?info id f = windows##get id (Optdef.option info) (wrap_callback f)
-let getCurrent ?info f = windows##getCurrent (Optdef.option info) (wrap_callback f)
-let getLastFocused ?info f = windows##getLastFocused (Optdef.option info) (wrap_callback f)
-let getAll ?info f =
-  windows##getAll (Optdef.option info) (wrap_callback (fun a -> f (array_to_list a)))
+let get ?info id =
+  to_lwt_cb (fun cb -> windows##get id (def_option info) cb)
+let getCurrent ?info () =
+  to_lwt_cb (fun cb -> windows##getCurrent (def_option info) cb)
+let getLastFocused ?info () =
+  to_lwt_cb (fun cb -> windows##getLastFocused (def_option info) cb)
+let getAll ?info () =
+  to_lwt_cb (fun cb -> windows##getAll (def_option info) cb)
 let create ?info ?callback () =
-  windows##create (Optdef.option info) (optdef_wrap callback)
+  to_lwt_cb_opt callback (fun cb -> windows##create (def_option info) cb)
 let update ?callback id info =
-  windows##update id info (optdef_wrap callback)
-let remove ?callback id = windows##remove id (optdef_wrap callback)
+  to_lwt_cb_opt callback (fun cb -> windows##update id info cb)
+let remove ?callback id =
+  to_lwt_cb_opt callback (fun cb -> windows##remove id cb)
 
 let onCreated handler =
-  windows##.onCreated##addListener handler
+  windows##.onCreated##addListener (wrap_callback handler)
 let onRemoved handler =
-  windows##.onRemoved##addListener handler
+  windows##.onRemoved##addListener (wrap_callback handler)
 let onFocusChanged handler =
-  windows##.onFocusChanged##addListener handler
+  windows##.onFocusChanged##addListener (wrap_callback handler)

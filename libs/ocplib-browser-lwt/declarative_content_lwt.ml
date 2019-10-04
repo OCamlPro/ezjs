@@ -1,6 +1,5 @@
-open Js_of_ocaml
-open Js
-open Browser_utils
+open Js_types
+open Promise
 
 class type condition = object end
 class type action = object end
@@ -56,14 +55,14 @@ class type declarativeContent = object
   method onPageChanged : declarativeEvent t prop
 end
 
-let declarativeContent : declarativeContent t = Unsafe.variable "chrome.declarativeContent"
+let declarativeContent : declarativeContent t = variable "chrome.declarativeContent"
 
 let make_pageUrl
     ?hostContains ?hostEquals ?hostPrefix ?hostSuffix ?pathContains ?pathPrefix
     ?pathSuffix ?queryContains ?queryEquals ?queryPrefix ?querySuffix ?urlContains
     ?urlEquals ?urlMatches ?originAndPathMatches ?urlPrefix ?urlSuffix ?schemes
     ?ports () =
-  let url : pageUrl t = Unsafe.obj [||] in
+  let url : pageUrl t = obj [||] in
   url##.hostContains := optdef string hostContains;
   url##.hostEquals := optdef string hostEquals;
   url##.hostPrefix := optdef string hostPrefix;
@@ -82,12 +81,12 @@ let make_pageUrl
   url##.urlPrefix := optdef string urlPrefix;
   url##.urlSuffix := optdef string urlSuffix;
   url##.schemes := optdef array_of_list_str schemes;
-  url##.ports := Optdef.option ports;
+  url##.ports := def_option ports;
   url
 
 let make_pageStateMatcher ?pageUrl ?css ?isBookmarked () =
-  let state_matcher : pageStateMatcher t = Unsafe.obj [||] in
-  state_matcher##.pageUrl := Optdef.option pageUrl;
+  let state_matcher : pageStateMatcher t = obj [||] in
+  state_matcher##.pageUrl := def_option pageUrl;
   state_matcher##.css := optdef array_of_list_str css;
   state_matcher##.isBookmarked := optdef bool isBookmarked;
   state_matcher
@@ -110,24 +109,25 @@ let make_condition ?hostContains ?hostEquals ?hostPrefix ?hostSuffix ?pathContai
 let showPageAction () =
   let cst = declarativeContent##._ShowPageAction in new%js cst
 let setIcon path =
-  let cst = declarativeContent##._SetIcon in
-  new%js cst (string path)
+  let cst = declarativeContent##._SetIcon in new%js cst (string path)
 let requestContentScript ?css ?js ?allFrames ?matchAboutBlank () =
   let cst = declarativeContent##._RequestContentScript in
   new%js cst (optdef array_of_list_str css) (optdef array_of_list_str js)
     (optdef bool allFrames) (optdef bool matchAboutBlank)
 
 let make_rule ?id ?priority conditions actions =
-  let rule : rule t = Unsafe.obj [||] in
+  let rule : rule t = obj [||] in
   rule##.conditions := array_of_list conditions;
   rule##.actions := array_of_list actions;
-  rule##.priority := Optdef.option priority;
+  rule##.priority := def_option priority;
   rule##.id := optdef string id;
   rule
 
-let addRules rules f =
-  declarativeContent##.onPageChanged##addRules (array_of_list rules) (wrap_callback f)
+let addRules rules =
+  to_lwt_cb (fun cb ->
+      declarativeContent##.onPageChanged##addRules (array_of_list rules) cb)
 
-let removeRules ?ids f =
-  declarativeContent##.onPageChanged##removeRules
-    (optdef array_of_list_str ids) (wrap_callback f)
+let removeRules ?ids () =
+  to_lwt_cb (fun cb ->
+      declarativeContent##.onPageChanged##removeRules
+        (optdef array_of_list_str ids) cb)

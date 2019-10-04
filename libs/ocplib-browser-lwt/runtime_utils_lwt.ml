@@ -1,6 +1,5 @@
-open Js_of_ocaml
-open Js
-open Tabs_utils
+open Js_types
+open Tabs_utils_lwt
 
 class type requestCheckResponse = object
   method status : js_string t prop
@@ -19,8 +18,8 @@ end
 class type port = object
   method name : js_string t prop
   method disconnect : unit meth
-  method onDisconnect : port t Browser_utils.event t prop
-  method onMessage : 'a t Browser_utils.event t prop
+  method onDisconnect : port t Browser_utils_lwt.event t prop
+  method onMessage : 'a t Browser_utils_lwt.event t prop
   method postMessage : 'a t -> unit meth
   method sender : messageSender t optdef prop
 end
@@ -50,7 +49,7 @@ type platform_info = {
 }
 
 let of_platform_info {platform_os; platform_arch; platform_nacl_arch} =
-  let r : platformInfo t = Unsafe.obj [||] in
+  let r : platformInfo t = obj [||] in
   r##.os := string platform_os;
   r##.arch := string platform_arch;
   r##.nacl_arch := string platform_nacl_arch;
@@ -63,6 +62,6 @@ let to_platform_info (o:platformInfo t) = {
 }
 
 let mk_connection_info name =
-  let i : connectInfo t = Unsafe.obj [||] in
+  let i : connectInfo t = obj [||] in
   i##.name := string name ;
   i

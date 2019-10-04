@@ -1,4 +1,4 @@
-pp_js = { pp = camlp4_js };
+pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };
 
 OCaml.library("ocplib-chrome", ocaml + {
   files = [

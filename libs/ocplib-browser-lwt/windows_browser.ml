@@ -1,6 +1,6 @@
-open Js_of_ocaml
-open Js
-open Browser_utils
+open Js_types
+open Promise
+open Browser_utils_lwt
 
 class type window = object
   method alwaysOnTop : bool t prop
@@ -70,52 +70,52 @@ let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
     ?state ?allowScriptsToClose ?cookieStoreId ?titlePreface () =
   let data : createData t = Unsafe.obj [||] in
   (match url, url_l with
-   | Some _, None -> data##.url := optdef string url
-   | None, Some _ ->   data##.url_arr := optdef array_of_list_str url_l
+   | Some _, None -> data##url <- optdef string url
+   | None, Some _ ->   data##url_arr <- optdef array_of_list_str url_l
    | None, None -> ()
    | _ -> Js_min.log_str "cannot define both url and url_l for window creation");
-  data##.tabId := Optdef.option tabId;
-  data##.left := Optdef.option left;
-  data##.top := Optdef.option top;
-  data##.width := Optdef.option width;
-  data##.height := Optdef.option height;
-  data##.focused := optdef bool focused;
-  data##._type := optdef string typ;
-  data##.state := optdef string state;
-  data##.allowScriptsToClose := optdef bool allowScriptsToClose;
-  data##.cookieStoreId := Optdef.option cookieStoreId;
-  data##.titlePreface := optdef string titlePreface;
+  data##tabId <- Optdef.option tabId;
+  data##left <- Optdef.option left;
+  data##top <- Optdef.option top;
+  data##width <- Optdef.option width;
+  data##height <- Optdef.option height;
+  data##focused <- optdef bool focused;
+  data##_type <- optdef string typ;
+  data##state <- optdef string state;
+  data##allowScriptsToClose <- optdef bool allowScriptsToClose;
+  data##cookieStoreId <- Optdef.option cookieStoreId;
+  data##titlePreface <- optdef string titlePreface;
   data
 
 let make_updateInfo ?left ?top ?width ?height ?focused ?drawAttention ?state
     ?titlePreface () =
   let data : updateInfo t = Unsafe.obj [||] in
-  data##.left := Optdef.option left;
-  data##.top := Optdef.option top;
-  data##.width := Optdef.option width;
-  data##.height := Optdef.option height;
-  data##.focused := optdef bool focused;
-  data##.drawAttention := optdef bool drawAttention;
-  data##.state := optdef string state;
-  data##.titlePreface := optdef string titlePreface;
+  data##left <- Optdef.option left;
+  data##top <- Optdef.option top;
+  data##width <- Optdef.option width;
+  data##height <- Optdef.option height;
+  data##focused <- optdef bool focused;
+  data##drawAttention <- optdef bool drawAttention;
+  data##state <- optdef string state;
+  data##titlePreface <- optdef string titlePreface;
   data
 
 let windows : windows t = Unsafe.variable "browser.windows"
 
-let get ?info id f = jthen (windows##get id (Optdef.option info)) f
-let getCurrent ?info f = jthen (windows##getCurrent (Optdef.option info)) f
-let getLastFocused ?info f = jthen (windows##getLastFocused (Optdef.option info)) f
+let get ?info id f = jthen windows##get(id, Optdef.option info) f
+let getCurrent ?info f = jthen windows##getCurrent(Optdef.option info) f
+let getLastFocused ?info f = jthen windows##getLastFocused(Optdef.option info) f
 let getAll ?info f =
-  jthen (windows##getAll (Optdef.option info)) (fun a -> f (array_to_list a))
+  jthen windows##getAll(Optdef.option info) (fun a -> f (array_to_list a))
 let create ?info ?callback () =
-  jthen_opt (windows##create (Optdef.option info)) callback
+  jthen_opt windows##create(Optdef.option info) callback
 let update ?callback id info =
-  jthen_opt (windows##update id info) callback
-let remove ?callback id = jthen_opt (windows##remove id) callback
+  jthen_opt windows##update(id, info) callback
+let remove ?callback id = jthen_opt windows##remove(id) callback
 
 let onCreated handler =
-  windows##.onCreated##addListener handler
+  windows##onCreated##addListener(wrap_callback handler)
 let onRemoved handler =
-  windows##.onRemoved##addListener handler
+  windows##onRemoved##addListener(wrap_callback handler)
 let onFocusChanged handler =
-  windows##.onFocusChanged##addListener handler
+  windows##onFocusChanged##addListener(wrap_callback handler)

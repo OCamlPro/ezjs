@@ -40,40 +40,34 @@ class type runtime = object
 end
 
 let runtime : runtime t = Unsafe.variable "browser.runtime"
+let onStartup : unit event t = runtime##onStartup
+let onInstalled : onInstalledEvent t event t = runtime##onInstalled
+let onSuspend : unit event t = runtime##onSuspend
+let onSuspendCanceled : unit event t = runtime##onSuspendCanceled
+let onConnect : port t event t = runtime##onConnect
+let onConnectExternal : port t event t = runtime##onConnectExternal
+let onRestartRequired : js_string t event t = runtime##onRestartRequired
 
-let last_error () = runtime##.lastError
-let id () = runtime##.id
-let getBackgroundPage f = jthen runtime##getBackgroundPage f
-let openOptionsPage ?callback () =
-  jthen runtime##openOptionsPage (unopt_callback callback)
-let getManifest () = runtime##getManifest
-let gerURL s = to_string @@ runtime##getURL (string s)
-let setUninstallURL ?callback s =
-  jthen (runtime##setUninstallURL s) (unopt_callback callback)
-let reload () = runtime##reload
-let requestUpdateCheck f = jthen runtime##requestUpdateCheck f
+let last_error () = runtime##lastError
+let id () = runtime##id
+let getBackgroundPage () = to_lwt runtime##getBackgroundPage()
+let openOptionsPage () = to_lwt runtime##openOptionsPage()
+let getManifest () = runtime##getManifest()
+let gerURL s = to_string runtime##getURL(string s)
+let setUninstallURL s = to_lwt runtime##setUninstallURL(s)
+let reload () = runtime##reload()
+let requestUpdateCheck () = to_lwt runtime##requestUpdateCheck()
 let connect ?id ?info () =
   let id = Opt.option id in
   let info = Opt.option info in
-  runtime##connect id info
-let sendMessage ?id ?options ?callback message =
-  jthen (runtime##sendMessage (Opt.option id) message (Opt.option options))
-    (unopt_callback callback)
-let sendNativeMessage ?callback application message =
-  jthen (runtime##sendNativeMessage (string application) message)
-    (unopt_callback callback)
-let getPlatformInfo f =
-  jthen runtime##getPlatformInfo (fun o -> f (to_platform_info o))
-let getPackageDirectoryEntry f =
-  jthen runtime##getPackageDirectoryEntry f
-
-let onStartup f = addListener runtime##.onStartup f
-let onInstalled f = addListener runtime##.onInstalled f
-let onSuspend f = addListener runtime##.onSuspend f
-let onSuspendCanceled f = addListener runtime##.onSuspendCanceled f
-let onUpdateAvailabale f = addListener runtime##.onUpdateAvailable f
-let onConnect f = addListener runtime##.onConnect f
-let onConnectExternal f = addListener runtime##.onConnectExternal f
-let onMessage f = addListener3 runtime##.onMessage f
-let onMessageExternal f = addListener3 runtime##.onMessageExternal f
-let onRestartRequired f = addListener runtime##.onRestartRequired f
+  runtime##connect(id, info)
+let sendMessage ?id ?options message =
+  to_lwt runtime##sendMessage(Opt.option id, message, Opt.option options)
+let sendNativeMessage application message =
+  to_lwt runtime##sendNativeMessage(string application, message)
+let getPlatformInfo () =
+  runtime##getPlatformInfo() >>= function
+  | Ok o -> return @@ Ok (to_platform_info o)
+  | e -> e
+let getPackageDirectoryEntry () =
+  to_lwt runtime##getPackageDirectoryEntry()
