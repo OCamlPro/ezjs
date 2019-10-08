@@ -1,10 +1,9 @@
-
-pp_js = { pp = [ "camlp4o"; "%{js_of_ocaml-camlp4_SRC_DIR}%/pa_js.cma" ] };
+pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };
 
 OCaml.program(
   "chrome_example",
   ocaml+ {
-    requires = [ "ocplib-chrome" ];
+    requires = [ "ocplib-chrome"; "ocplib-js-min" ];
     files = [ "chrome_example.ml", pp_js ];
     build_rules = [
       "%{chrome_example_FULL_DST_DIR}%/chrome_example.js", {
@@ -25,7 +24,7 @@ OCaml.program(
 OCaml.program(
   "background",
   ocaml+ {
-    requires = [ "ocplib-chrome" ];
+    requires = [ "ocplib-chrome"; "ocplib-declarative-content"; "ocplib-js-min" ];
     files = [ "background.ml", pp_js ];
     build_rules = [
       "%{background_FULL_DST_DIR}%/background.js", {
@@ -45,7 +44,7 @@ OCaml.program(
 OCaml.program(
   "popup",
   ocaml+ {
-    requires = [ "ocplib-chrome" ];
+    requires = [ "ocplib-chrome"; "ocplib-js-min" ];
     files = [ "popup.ml", pp_js ];
     build_rules = [
       "%{popup_FULL_DST_DIR}%/popup.js", {
@@ -64,7 +63,7 @@ OCaml.program(
 OCaml.program(
   "options",
   ocaml+ {
-    requires = [ "ocplib-chrome" ];
+    requires = [ "ocplib-chrome"; "ocplib-js-min" ];
     files = [ "options.ml", pp_js ];
     build_rules = [
       "%{options_FULL_DST_DIR}%/options.js", {

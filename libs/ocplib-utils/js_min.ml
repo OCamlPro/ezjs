@@ -5,24 +5,21 @@ module Firebug = Js_of_ocaml.Firebug
 
 open Js
 
-let log obj = Firebug.console##log(obj)
-let log2 o1 o2 = Firebug.console##log_2(o1, o2)
-let log3 o1 o2 o3 = Firebug.console##log_3(o1, o2, o3)
-let log_str s = Firebug.console##log(string s)
+include Js_log
 
-let setInnerHtml elt s = elt##innerHTML <- string s
+let setInnerHtml elt s = elt##.innerHTML := string s
 let setText elt = function
   | None -> ()
-  | Some s -> elt##textContent <- some (string s)
+  | Some s -> elt##.textContent := some (string s)
 
-let addClass elt s = elt##classList##add(string s)
+let addClass elt s = elt##.classList##add (string s)
 let addClasses elt l = List.iter (addClass elt) l
-let removeClass elt s = elt##classList##remove(string s)
-let containsClass elt s = elt##classList##contains(string s)
+let removeClass elt s = elt##.classList##remove (string s)
+let containsClass elt s = elt##.classList##contains (string s)
 
-let setAttribute elt key value = elt##setAttribute(string key, string value)
-let removeAttribute elt key = elt##removeAttribute(string key)
-let getAttribute elt key = Opt.to_option elt##getAttribute(string key)
+let setAttribute elt key value = elt##setAttribute (string key) (string value)
+let removeAttribute elt key = elt##removeAttribute (string key)
+let getAttribute elt key = Opt.to_option (elt##getAttribute (string key))
 
 let setCSS elt styles =
   let styles = String.concat "; " (List.map (fun (k, v) -> k ^ ": " ^ v) styles) in
@@ -37,7 +34,7 @@ let addCSS elt styles =
 let appendChild = Dom.appendChild
 let removeChild = Dom.removeChild
 let appendChildren parent children = List.iter (Dom.appendChild parent) children
-let children parent = Dom.list_of_nodeList parent##childNodes
+let children parent = Dom.list_of_nodeList parent##.childNodes
 let removeChildi parent i =
   match List.nth_opt (children parent) i with
   | None -> ()
@@ -109,5 +106,5 @@ let strings_to_array l = "[" ^ (String.concat "," l) ^ "]"
 let strings_to_object l =
   let s = "{" ^ (String.concat "," (
       List.map (fun (k,v) -> (encapse k) ^ ":" ^ v) l)) ^ "}" in
-  try _JSON##parse(string s)
-  with _ -> log_str ("cannot parse json " ^ s); Unsafe.obj [||]
+  try _JSON##parse (string s)
+  with _ -> Js_log.log_str ("cannot parse json " ^ s); Unsafe.obj [||]

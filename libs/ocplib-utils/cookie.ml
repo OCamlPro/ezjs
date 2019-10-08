@@ -17,8 +17,8 @@ let set key value =
   let today = new%js Js.date_now in
   let expire_date = new%js Js.date_ms
       (today##getFullYear + 1) (today##getMonth) (today##getDay)
-       (today##getHours) (today##getMinutes) (today##getSeconds)
-       (today##getMilliseconds) in
+      (today##getHours) (today##getMinutes) (today##getSeconds)
+      (today##getMilliseconds) in
   let expire_time = Js.to_string expire_date##toUTCString in
   Dom_html.document##.cookie :=
     Js.string (Printf.sprintf "%s=%s;expires=%s" key value expire_time)

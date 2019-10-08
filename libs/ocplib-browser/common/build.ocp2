@@ -1,0 +1,48 @@
+pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };
+
+OCaml.library("ocplib-browser-types", ocaml + {
+  files = [
+    "js_types.ml";
+  ];
+  requires = [
+    "js_of_ocaml";
+  ];
+});
+
+OCaml.library("ocplib-promise", ocaml + {
+  files = [
+    "promise.ml", pp_js;
+  ];
+  requires = [
+    "ocplib-browser-types";
+  ];
+});
+
+OCaml.library("ocplib-promise-lwt", ocaml + {
+  files = [
+    "promise_lwt.ml", pp_js;
+  ];
+  requires = [
+    "ocplib-browser-types"; "lwt"
+  ];
+});
+
+OCaml.library("ocplib-browser-common", ocaml + {
+  files = [
+    "browser_utils.ml", pp_js;
+    "tabs_utils.ml", pp_js;
+    "runtime_utils.ml", pp_js;
+  ];
+  requires = [
+    "ocplib-browser-types";
+  ];
+});
+
+OCaml.library("ocplib-declarative-content", ocaml + {
+  files = [
+    "declarative_content.ml", pp_js;
+  ];
+  requires = [
+    "ocplib-browser-common";
+  ];
+});

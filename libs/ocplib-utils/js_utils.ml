@@ -25,10 +25,10 @@ let window = Dom_html.window
 let alert s = window##(alert (Js.string s))
 let confirm s = Js.to_bool (window##(confirm (Js.string s)))
 
-let js_log obj = Firebug.console##(log obj)
-let js_debug obj = Firebug.console##(debug obj)
-let js_warn obj = Firebug.console##(warn obj)
-let js_error obj = Firebug.console##(error obj)
+let js_log obj = Firebug.console##log obj
+let js_debug obj = Firebug.console##debug obj
+let js_warn obj = Firebug.console##warn obj
+let js_error obj = Firebug.console##error obj
 
 let log fmt =
   Format.kfprintf

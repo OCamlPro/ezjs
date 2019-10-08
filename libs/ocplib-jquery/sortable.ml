@@ -38,38 +38,38 @@ end
 
 let make_container_options ?drag ?drop ?exclude ?group ?nested ?vertical () =
   let o : container t = Unsafe.obj [||] in
-  (match drag with None -> () | Some drag -> o##drag <- bool drag);
-  (match drop with None -> () | Some drop -> o##drop <- bool drop);
-  (match exclude with None -> () | Some exclude -> o##exclude <- string exclude);
-  (match group with None -> () | Some group -> o##group <- string group);
-  (match nested with None -> () | Some nested -> o##nested <- bool nested);
-  (match vertical with None -> () | Some vertical -> o##vertical <- bool vertical);
+  (match drag with None -> () | Some drag -> o##.drag := bool drag);
+  (match drop with None -> () | Some drop -> o##.drop := bool drop);
+  (match exclude with None -> () | Some exclude -> o##.exclude := string exclude);
+  (match group with None -> () | Some group -> o##.group := string group);
+  (match nested with None -> () | Some nested -> o##.nested := bool nested);
+  (match vertical with None -> () | Some vertical -> o##.vertical := bool vertical);
   o
 
 let make_group ?containerPath ?containerSelector ?distance ?delay ?group ?handle
     ?itemPath ?itemSelector ?bodyClass ?draggedClass ?placeholderClass ?placeholder
     ?pullPlaceholder ?tolerance () =
   let o : group t = Unsafe.obj [||] in
-  (match containerPath with None -> () | Some containerPath -> o##containerPath <- string containerPath);
-  (match containerSelector with None -> () | Some containerSelector -> o##containerSelector <- string containerSelector);
-  (match group with None -> () | Some group -> o##group <- string group);
-  (match handle with None -> () | Some handle -> o##handle <- string handle);
-  (match itemPath with None -> () | Some itemPath -> o##itemPath <- string itemPath);
-  (match itemSelector with None -> () | Some itemSelector -> o##itemSelector <- string itemSelector);
-  (match bodyClass with None -> () | Some bodyClass -> o##bodyClass <- string bodyClass);
-  (match draggedClass with None -> () | Some draggedClass -> o##draggedClass <- string draggedClass);
-  (match placeholderClass with None -> () | Some placeholderClass -> o##placeholderClass <- string placeholderClass);
-  (match placeholder with None -> () | Some placeholder -> o##placeholder <- string placeholder);
-  (match distance with None -> () | Some distance -> o##distance <- distance);
-  (match delay with None -> () | Some delay -> o##delay <- delay);
-  (match tolerance with None -> () | Some tolerance -> o##tolerance <- tolerance);
-  (match pullPlaceholder with None -> () | Some pullPlaceholder -> o##pullPlaceholder <- bool pullPlaceholder);
+  (match containerPath with None -> () | Some containerPath -> o##.containerPath := string containerPath);
+  (match containerSelector with None -> () | Some containerSelector -> o##.containerSelector := string containerSelector);
+  (match group with None -> () | Some group -> o##.group := string group);
+  (match handle with None -> () | Some handle -> o##.handle := string handle);
+  (match itemPath with None -> () | Some itemPath -> o##.itemPath := string itemPath);
+  (match itemSelector with None -> () | Some itemSelector -> o##.itemSelector := string itemSelector);
+  (match bodyClass with None -> () | Some bodyClass -> o##.bodyClass := string bodyClass);
+  (match draggedClass with None -> () | Some draggedClass -> o##.draggedClass := string draggedClass);
+  (match placeholderClass with None -> () | Some placeholderClass -> o##.placeholderClass := string placeholderClass);
+  (match placeholder with None -> () | Some placeholder -> o##.placeholder := string placeholder);
+  (match distance with None -> () | Some distance -> o##.distance := distance);
+  (match delay with None -> () | Some delay -> o##.delay := delay);
+  (match tolerance with None -> () | Some tolerance -> o##.tolerance := tolerance);
+  (match pullPlaceholder with None -> () | Some pullPlaceholder -> o##.pullPlaceholder := bool pullPlaceholder);
   o
 
 let sortable ?container_options ?group_options (o:jquery t) =
   (match container_options with
    | None -> ()
-   | Some opt -> (Unsafe.coerce o)##sortable(opt));
+   | Some opt -> (Unsafe.coerce o)##sortable opt);
   (match group_options with
    | None -> ()
-   | Some opt -> (Unsafe.coerce o)##sortable(opt))
+   | Some opt -> (Unsafe.coerce o)##sortable opt)
