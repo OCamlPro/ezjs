@@ -7,6 +7,7 @@ OCaml.library("ocplib-browser", ocaml + {
     "runtime_browser.ml", pp_js;
     "storage_browser.ml", pp_js;
     "i18n_browser.ml", pp_js;
+    "browser_action_browser.ml", pp_js;
     "browser.ml", pp_js;
   ];
   requires = [

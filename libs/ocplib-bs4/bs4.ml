@@ -1195,13 +1195,16 @@ module Items = struct
 
     module Attr = Utils.Attribute
 
-    let make_popover ?(placement=`Top) ?classes id value =
+    let make_popover ?(placement=`Top) ?classes ?trigger id value =
       let aclass = Attr.unopt_class classes in
+      let atrigger = match trigger with
+        | None -> []
+        | Some trigger -> [ Attr.a_data_trigger trigger ] in
       a ~a:([Attr.a_data_toggle "popover"; Attr.a_data_html true;
              Attr.a_data_placement placement;
              Attr.a_data_content
                (Printf.sprintf "<div id=\"%s\"></div>" id);
-             a_id ("link-" ^ id)] @ aclass) [ txt value ]
+             a_id ("link-" ^ id)] @ aclass @ atrigger) [ txt value ]
 
     let init_popovers () =
       Jquery.jQ popover_selector |> Jquery.popover_opt |> ignore
@@ -1213,6 +1216,9 @@ module Items = struct
           Js_utils.Manip.replaceChildren elt pop_elt;
           true) |>
       ignore
+
+    let hide_popovers () =
+      Jquery.jQ popover_selector |> Jquery.popover "hide" |> ignore;
   end
 
   module Tooltip = struct

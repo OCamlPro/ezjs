@@ -16,12 +16,12 @@ open Spinner
 
 (* Pagination *)
 
-let popover_link ?(classes=[]) ?(prefix="") value =
+let popover_link ?(classes=[]) ?(prefix="") ?trigger value =
   let classes = page_link :: classes in
   let create_id = let cpt = ref 0 in
     fun () -> incr cpt; prefix ^ "goto-page-" ^ (string_of_int !cpt) in
   let id = create_id () in
-  make_popover ~classes id value, id
+  make_popover ~classes ?trigger id value, id
 
 let mk_pages ?(use_sep=false) mk_page range =
   let rec mk rem =
@@ -143,7 +143,26 @@ and replace_pagination ?classes ?page_sizer id n seps current_page current_size 
   let elts = make_pagination_elts ?classes ?page_sizer id n seps current_page current_size f in
   Js_utils.Manip.replaceChildren container elts;
   init_popovers ();
-  List.iter (fun id -> fill_popover id [div [txt "test"]]) !seps;
+  List.iter (fun id_pop ->
+      fill_popover id_pop [
+        div ~a:[ a_class [BForm.input_group] ] [
+          Html.input ~a:[ a_input_type `Number; a_class [BForm.form_control];
+                          a_style "width:66px"; a_id ("popover-input-" ^ id_pop) ] ();
+          div ~a:[ a_class [BForm.input_group_append] ] [
+            button ~a:[ a_class [Button.btn; Button.btn_secondary];
+                        a_onclick (fun _e ->
+                            let popover_input =
+                              Js_utils.find_component ("popover-input-" ^ id_pop) in
+                            let input_value = Js_utils.Manip.value popover_input in
+                            match int_of_string_opt input_value with
+                            | None -> true
+                            | Some page ->
+                              current_page := (page-1);
+                              Popover.hide_popovers ();
+                              replace_pagination ?classes ?page_sizer
+                                id n seps current_page current_size f; true)
+                      ] [ txt "Go" ] ]
+        ] ]) !seps;
   f !current_page !current_size
 
 (* Table maker *)

@@ -1,4 +1,5 @@
 open Js_of_ocaml
+module Js = Js
 
 type 'a t = 'a Js.t
 type 'a prop = 'a Js.prop
@@ -41,6 +42,8 @@ let to_opt f x = match to_option x with
 let to_optdef f x = match to_def_option x with
   | None -> None
   | Some x -> Some (f x)
+let def_case = Js.Optdef.case
+let case = Js.Opt.case
 
 let obj = Js.Unsafe.obj
 let variable = Js.Unsafe.variable

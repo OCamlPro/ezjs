@@ -4,6 +4,7 @@ module Tabs = Tabs_chrome
 module Storage = Storage_chrome
 module Windows = Windows_chrome
 module I18n = I18n_chrome
+module Browser_action = Browser_action_chrome
 
 let runtime = Runtime.runtime
 let storage = Storage.storage
