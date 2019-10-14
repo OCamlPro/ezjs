@@ -1,5 +1,19 @@
 pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };
 
+OCaml.library("ocplib-browser-common", ocaml + {
+  files = [
+    "tabs_browser_common.ml", pp_js;
+    "windows_browser_common.ml", pp_js;
+    "runtime_browser_common.ml", pp_js;
+    "storage_browser_common.ml", pp_js;
+    "i18n_browser_common.ml", pp_js;
+    "browser_action_browser_common.ml", pp_js;
+  ];
+  requires = [
+    "ocplib-extension-common"; "ocplib-promise"; "ocplib-js-log"
+  ];
+});
+
 OCaml.library("ocplib-browser", ocaml + {
   files = [
     "tabs_browser.ml", pp_js;
@@ -11,6 +25,6 @@ OCaml.library("ocplib-browser", ocaml + {
     "browser.ml", pp_js;
   ];
   requires = [
-    "ocplib-browser-common"; "ocplib-promise"; "ocplib-js-log"
+    "ocplib-browser-common"
   ];
 });

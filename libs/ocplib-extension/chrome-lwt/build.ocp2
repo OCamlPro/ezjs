@@ -10,6 +10,6 @@ OCaml.library("ocplib-chrome-lwt", ocaml + {
     "chrome_lwt.ml", pp_js;
   ];
   requires = [
-    "ocplib-browser-common"; "ocplib-promise-lwt"; "ocplib-js-log"
+    "ocplib-chrome"; "ocplib-promise-lwt"
   ];
   });

@@ -18,13 +18,12 @@ let promise f =
   let cs : ('a, 'b) promise_cs = global##._Promise in
   new%js cs (wrap_callback f)
 
-
 let jthen ?error (prom : ('a, 'b) promise0 t) f =
   let p = prom##_then (wrap_callback f) in
   match error with
-  | None -> p
-  | Some error -> p##catch (wrap_callback error)
+  | None -> ()
+  | Some error -> p##catch (wrap_callback error) |> ignore
 
 let jthen_opt prom = function
-  | None -> prom
+  | None -> prom |> ignore
   | Some f -> jthen prom f

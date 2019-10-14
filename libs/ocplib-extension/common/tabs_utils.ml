@@ -175,14 +175,3 @@ let make_query
   query##.windowId := def_option windowId;
   query##.windowType := optdef string windowType;
   query
-
-let make_create ?active ?index ?openerTabId ?pinned ?selected ?url ?windowId () =
-  let tab : createProperties t = obj [||] in
-  tab##.active := optdef bool active;
-  tab##.index := def_option index;
-  tab##.openerTabId := def_option openerTabId;
-  tab##.pinned := optdef bool pinned;
-  tab##.selected := optdef bool selected;
-  tab##.url := optdef string url;
-  tab##.windowId := def_option windowId;
-  tab

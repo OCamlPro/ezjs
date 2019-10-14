@@ -1,27 +1,12 @@
 open Js_types
+include Promise
 
 let (>>=) = Lwt.(>>=)
 let return = Lwt.return
 let async = Lwt.async
 let return_unit = Lwt.return_unit
 
-class type ['a, 'b] promise0 = object
-  method _then : ('a -> unit) callback -> ('a, 'b) promise0 t meth
-  method catch : ('b -> unit) callback -> ('a, 'b) promise0 t meth
-end
-
-class type any = object
-end
-
-type 'a promise = ('a, any t) promise0
-
-type ('a,'b) promise_cs =
-  ((('a -> unit) -> ('b -> unit) -> unit) callback
-   -> ('a, 'b) promise0 t) constr
-
-let promise f =
-  let cs : ('a, 'b) promise_cs = global##._Promise in
-  new%js cs (wrap_callback f)
+(* promises *)
 
 let to_lwt (p : 'a promise t) =
   let waiter, notifier = Lwt.wait () in
@@ -29,10 +14,40 @@ let to_lwt (p : 'a promise t) =
     (wrap_callback (fun x -> Lwt.wakeup notifier (Error x))) |> ignore;
   waiter
 
+let to_lwt_opt cb (p : 'a promise t) =
+  let waiter, notifier = Lwt.wait () in
+  (p##_then (wrap_callback (fun x -> Lwt.wakeup notifier (Ok x))))##catch
+    (wrap_callback (fun x -> Lwt.wakeup notifier (Error x))) |> ignore;
+  waiter >>= function
+  | Error e -> return (Error e)
+  | Ok x -> match cb with None -> return (Ok None) | Some cb -> return (Ok (Some (cb x)))
+
+let to_lwt_tr tr (p : 'a promise t) =
+  let waiter, notifier = Lwt.wait () in
+  (p##_then (wrap_callback (fun x -> Lwt.wakeup notifier (Ok x))))##catch
+    (wrap_callback (fun x -> Lwt.wakeup notifier (Error x))) |> ignore;
+  waiter >>= function
+  | Error e -> return (Error e)
+  | Ok x -> return (Ok (tr x))
+
 let to_lwt_exn (p : 'a promise t) =
   let waiter, notifier = Lwt.wait () in
   p##_then (wrap_callback (Lwt.wakeup notifier)) |> ignore;
   waiter
+
+let to_lwt_exn_opt cb (p : 'a promise t) =
+  let waiter, notifier = Lwt.wait () in
+  p##_then (wrap_callback (Lwt.wakeup notifier)) |> ignore;
+  waiter >>= fun x ->
+  match cb with None -> return None | Some cb -> return (Some (cb x))
+
+let to_lwt_exn_tr tr (p : 'a promise t) =
+  let waiter, notifier = Lwt.wait () in
+  p##_then (wrap_callback (Lwt.wakeup notifier)) |> ignore;
+  waiter >>= fun x -> return (tr x)
+
+
+(* callbacks *)
 
 let to_lwt_cb0 f =
   let waiter, notifier = Lwt.wait () in
