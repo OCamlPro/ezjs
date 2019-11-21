@@ -3,7 +3,7 @@ open Ocp_js
 let path_string () = Url.Current.path_string
 
 let url () =
-  match Url.url_of_string (Js.to_string Dom_html.window##location##href) with
+  match Url.url_of_string (Js.to_string Dom_html.window##.location##.href) with
   | None -> assert false
   | Some url -> url
 
@@ -41,11 +41,11 @@ let set_args args =
     | Url.Https hu -> Url.Https { hu with Url.hu_arguments = args }
     | Url.File fu -> Url.File { fu with Url.fu_arguments = args }
   in
-  Dom_html.window##history##replaceState(
-      Js.Opt.empty,
-      Js.string "",
-      Js.some (Js.string (Url.string_of_url url)))
+  Dom_html.window##.history##replaceState
+      Js.Opt.empty
+      (Js.string "")
+      (Js.some (Js.string (Url.string_of_url url)))
 
 let set_url url =
-  Dom_html.window##location##href <-
+  Dom_html.window##.location##.href :=
     Js.string (Url.string_of_url url)

@@ -7,7 +7,7 @@ class type qrcode  = object
 end
 
 let make_code qrdiv text =
-  let qrcode_ctsr = Js.Unsafe.global##_QRCode in
+  let qrcode_ctsr = Js.Unsafe.global##._QRCode in
   let qrcode =
   (Js.Unsafe.new_obj qrcode_ctsr
      [| Js.Unsafe.inject qrdiv |] : qrcode Js.t) in

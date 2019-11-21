@@ -4,7 +4,7 @@ let local_args = ref []
 
 let get_storage () =
   try
-    match Js.Optdef.to_option Dom_html.window##localStorage with
+    match Js.Optdef.to_option Dom_html.window##.localStorage with
     | None -> raise Not_found
     | Some t -> t
   with exn ->
@@ -31,7 +31,7 @@ end = struct
   let get () =
     try
       let s = get_storage () in
-      match Js.Opt.to_option (s##getItem(name)) with
+      match Js.Opt.to_option (s##getItem name) with
       | None -> None
       | Some s -> Some (Json.unsafe_input s : V.t)
     with Not_found -> None
@@ -40,13 +40,13 @@ end = struct
     try
       let s = get_storage () in
       let str = Json.output (v : V.t) in
-      s##setItem(name, str)
+      s##setItem name str
     with Not_found -> ()
 
   let clear () =
     try
       let s = get_storage () in
-      s##removeItem(name)
+      s##removeItem name
     with Not_found -> ()
 
 end

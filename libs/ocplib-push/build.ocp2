@@ -1,13 +1,10 @@
-
-pp_js = { pp = [ "camlp4o"; "%{js_of_ocaml-camlp4_SRC_DIR}%/pa_js.cma" ] };
-
-OCaml.library(
-  "push-js",
-  ocaml + {
-    files = [
-      "push_js.ml", pp_js;
-    ];
-    requires = [
-      "ocplib-utils-js"
-    ];
-  });
+OCaml.library("push-js", ocaml + {
+  files = [
+    "push_js.ml", pp_js
+  ];
+  requires = [
+    "ocplib-utils-js";
+    "js_of_ocaml";
+    "js_of_ocaml-ppx"
+  ];
+});

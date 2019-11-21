@@ -1,0 +1,22 @@
+{
+  "esy": {
+    "build": [
+      "./configure #{os == 'windows' ? '--host x86_64-w64-mingw32' : ''} --prefix #{self.install} --with-ocamldir=#{self.install}/lib --with-metadir=#{self.install}/lib",
+      "make"
+    ],
+    "install": [ "make install" ],
+    "buildEnv": { "OCP_BUILD": "ocp-build.asm" }
+  },
+  "buildsInSource": false,
+  "dependencies": {
+    "@opam/base64": "3.2.0",
+    "@opam/js_of_ocaml": "3.4.0",
+    "@opam/js_of_ocaml-ppx": "3.4.0",
+    "@opam/js_of_ocaml-tyxml": "3.4.0",
+    "@opam/lwt": "4.2.1",
+    "@opam/ocamlfind": "1.8.0",
+    "ocaml": "<4.8.0",
+    "ocp-build": "github:Et7f3/ocp-build#94f0f92"
+  },
+  "resolutions": { "ocp-build": "github:Et7f3/ocp-build#94f0f92" }
+}

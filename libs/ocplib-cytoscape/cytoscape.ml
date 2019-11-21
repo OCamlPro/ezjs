@@ -89,40 +89,40 @@ class type cytoscape =
 
 let default_style =
   let node_style : style Js.t = Js.Unsafe.obj [||] in
-  node_style##selector <- Js.string "node";
-  node_style##style <- Js.Unsafe.obj [|"label", ((Js.Unsafe.coerce @@ Js.string "data(id)") : Ocp_js.Js.Unsafe.any) |];
+  node_style##.selector := Js.string "node";
+  node_style##.style := Js.Unsafe.obj [|"label", ((Js.Unsafe.coerce @@ Js.string "data(id)") : Ocp_js.Js.Unsafe.any) |];
   let edge_style : style Js.t = Js.Unsafe.obj [||] in
-  edge_style##selector <- Js.string "edge";
+  edge_style##.selector := Js.string "edge";
   Js.array [| node_style; edge_style |]
 
 let position x y =
   let p : position Js.t = Js.Unsafe.obj [||] in
-  p##x<-x;
-  p##y<-y;
+  p##.x:=x;
+  p##.y:=y;
   p
 
 let node nodename =
   let data : DataItem.data Js.t = Js.Unsafe.obj [||] in
-  data##id <- Js.string nodename;
+  data##.id := Js.string nodename;
 
   let node : DataItem.t Js.t = Js.Unsafe.obj [||] in
-  node##data <- data;
-  node##group <- Js.string "nodes";
+  node##.data := data;
+  node##.group := Js.string "nodes";
   node
 
 let edge (source : string) (target : string) =
   let data : DataItem.data Js.t = Js.Unsafe.obj [||] in
-  data##source <- Js.string source;
-  data##target <- Js.string target;
+  data##.source := Js.string source;
+  data##.target := Js.string target;
   let edge : DataItem.t Js.t = Js.Unsafe.obj [||] in
-  edge##group <- Js.string "edges";
-  edge##data <- data;
+  edge##.group := Js.string "edges";
+  edge##.data := data;
   edge
 
 let mk_graph ?(style= default_style) d : props Js.t =
   let g : props Js.t = Js.Unsafe.obj [||] in
-  g##container <- To_dom.of_element d;
-  g##style <- style;
+  g##.container := To_dom.of_element d;
+  g##.style := style;
   g
 
 let display (props : props Js.t) =
@@ -133,20 +133,20 @@ let display (props : props Js.t) =
     Js.Unsafe.fun_call
       (Js.Unsafe.js_expr "cytoscape") [|props|] in
   Js_utils.log "Resizing the graph";
-  ignore @@ g##resize ();
+  ignore @@ g##resize;
   Js_utils.log "Returning the graph";
   g
 
 let add_node g nodename  =
-  g##add(node nodename)
+  g##(add (node nodename))
 
 let add_edge g source target =
-  g##add(edge source target)
+  g##(add (edge source target))
 
 let random_layout g : layout Js.t =
   let layout_opt : layout_options Js_of_ocaml.Js.t = Js.Unsafe.obj [||] in
-  layout_opt##name <- Js.string "random";
-  g##layout(layout_opt)
+  layout_opt##.name := Js.string "random";
+  g##(layout layout_opt)
 
 let run_layout (l : layout Js.t) : unit =
-  l##run()
+  l##run

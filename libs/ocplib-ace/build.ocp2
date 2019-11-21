@@ -1,18 +1,14 @@
-
-
-OCaml.library("ocplib-ace-js",
-  ocaml + {
-    link = [ "-linkall" ];
-    files = [
+OCaml.library("ocplib-ace-js", ocaml + {
+  link = [
+    "-linkall"
+  ];
+  files = [
     "ace_types.mli";
-    "ace.ml",        { pp = camlp4_js };
-(*    "ocaml_mode.ml", { pp = camlp4_js }; *)
+    "ace.ml", pp_js;
+    (* "ocaml_mode.ml", pp_js;
+      *)
   ];
   requires = [
-    "ocplib-utils-js";
-    "js_of_ocaml";
-    "js_of_ocaml-lwt";
-    "lwt";
-    "ocp-indent.lib";
+    "ocplib-utils-js"
   ];
-  });
+});

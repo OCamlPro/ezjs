@@ -1,10 +1,9 @@
-OCaml.library(
-  "ocplib-jquery",
-  ocaml + {
-    files = [
-      "jquery.ml", { pp = camlp4_js };
-    ];
-    requires = [
-      "ocplib-utils-js";
-    ];
-  });
+OCaml.library("ocplib-jquery", ocaml + {
+  files = [
+    "jquery.ml", pp_js
+  ];
+  requires = [
+    "ocplib-utils-js";
+    "js_of_ocaml-ppx"
+  ];
+});

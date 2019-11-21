@@ -17,8 +17,8 @@ class type export =
 
 let export ?divId () =
   let obj : export Js.t = Js.Unsafe.obj [||] in
-  obj##enabled <- true;
-  obj##divId <- Js.Opt.option divId;
+  obj##.enabled := true;
+  obj##.divId := Js.Opt.option divId;
   obj
 
 class type legend =  object
@@ -96,8 +96,8 @@ module Pie = struct
     let array =
       Array.map (fun (title, value) ->
           let obj : dataItem Js.t = Js.Unsafe.obj [||] in
-          obj##title <- Js.string title;
-          obj##value <- value;
+          obj##.title := Js.string title;
+          obj##.value := value;
           obj
         ) array
     in
@@ -269,7 +269,7 @@ module DataItem = struct
                   field_name,Js.Unsafe.inject field_val)
                value_array
            in
-           obj##x <- Js.string title;
+           obj##.x := Js.string title;
            obj
         ) array
     in
@@ -372,21 +372,24 @@ let amCharts() =
 let ready baseurl f =
   Jsbind.resolve_deps jsdeps baseurl (fun () ->
                  let amCharts = amCharts() in
-                 if amCharts##isReady then
+                 if amCharts##.isReady then
                    f ()
                  else
-                   amCharts##ready (Js.wrap_callback f))
+                   amCharts##(ready (Js.wrap_callback f)))
 
 let pie () =
-  let pie =  jsnew ((amCharts())##_AmPieChart) () in
-  pie##titleField <- Js.string "title";
-  pie##valueField <- Js.string "value";
-  pie##hideCredits <- true;
+  let pie =
+    let a = (amCharts())##._AmPieChart in
+    new%js a
+  in
+  pie##.titleField := Js.string "title";
+  pie##.valueField := Js.string "value";
+  pie##.hideCredits := true;
   pie
 
 let legend () =
   let legend : legend Js.t = Js.Unsafe.obj [||] in
-  legend##enabled <- true ;
+  legend##.enabled := true ;
   legend
 
 let title () =
@@ -394,10 +397,11 @@ let title () =
   title
 
 let serialN () =
-  let chart =
-    (jsnew ((amCharts())##_AmSerialChart) () : Serial.t Js.t)
+  let chart : Serial.t Js.t =
+    let a = (amCharts())##._AmSerialChart in
+    new%js a
   in
-  chart##categoryField <- Js.string "x";
+  chart##.categoryField := Js.string "x";
   chart
 
 let serial = serialN
@@ -405,18 +409,24 @@ let serial = serialN
 let serial2 = serialN
 
 let valueAxis () =
-  jsnew ((amCharts())##_ValueAxis) ()
+  let a = (amCharts())##._ValueAxis in
+  new%js a
 
 let chartCursor () =
-  jsnew ((amCharts())##_ChartCursor) ()
+  let a = (amCharts())##._ChartCursor in
+  new%js a
 
 let chartScrollbar () =
-  jsnew ((amCharts())##_ChartScrollbar) ()
+  let a = (amCharts())##._ChartScrollbar in
+  new%js a
 
 let graphN field _type =
-  let graph = jsnew ((amCharts())##_AmGraph) () in
-  graph##valueField <- Js.string field;
-  graph##_type <- Js.string _type;
+  let graph =
+    let a = (amCharts())##._AmGraph in
+    new%js a
+  in
+  graph##.valueField := Js.string field;
+  graph##._type := Js.string _type;
   (graph : Graph.t Js.t)
 
 let graph = graphN "y"

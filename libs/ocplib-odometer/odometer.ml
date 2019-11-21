@@ -38,38 +38,38 @@ type configuraton = {
 
 let from_config config =
   let configuration : configuration Js.t =  Js.Unsafe.obj [||] in
-  configuration##el <- config.element  ;
-  configuration##value <- config.value ;
+  configuration##.el := config.element  ;
+  configuration##.value := config.value ;
   begin match config.format with
     | None -> ()
-    | Some format -> configuration##format <- Js.string format
+    | Some format -> configuration##.format := Js.string format
   end  ;
   begin match config.auto with
     | None -> ()
-    | Some auto -> configuration##auto <- auto
+    | Some auto -> configuration##.auto := auto
   end ;
   begin match config.theme with
     | None -> ()
-    | Some theme -> configuration##theme <- Js.string theme
+    | Some theme -> configuration##.theme := Js.string theme
   end
 
 
 (* With specific configuration *)
 let odometer_with_config config =
   let configuration = from_config config in
-  let odometer_ctsr = Js.Unsafe.global##_Odometer in
+  let odometer_ctsr = Js.Unsafe.global##._Odometer in
   (Js.Unsafe.new_obj odometer_ctsr
      [| Js.Unsafe.inject configuration |] : odometer Js.t)
 
 (* With default config *)
 let odometer el =
   let configuration : configuration Js.t =  Js.Unsafe.obj [||] in
-  configuration##el <- el ;
-  configuration##value <- 0 ;
-  configuration##format <- Js.string "d" ;
-  let odometer_ctsr = Js.Unsafe.global##_Odometer in
+  configuration##.el := el ;
+  configuration##.value := 0 ;
+  configuration##.format := Js.string "d" ;
+  let odometer_ctsr = Js.Unsafe.global##._Odometer in
   (Js.Unsafe.new_obj odometer_ctsr
       [| Js.Unsafe.inject configuration |] : odometer Js.t)
 
 let update od value =
-   od##update (value)
+   od##(update value)

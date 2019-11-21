@@ -363,7 +363,7 @@ module Menu = struct
     | Link of string list *
                 string * Html_types.flow5_without_interactive Ocp_js.elt * bool
     | Link2 of string list *
-                [ Html_types.a_attrib ] attrib list * Html_types.flow5_without_interactive Ocp_js.Html.elt * bool
+                Html_types.a_attrib attrib list * Html_types.flow5_without_interactive Ocp_js.Html.elt * bool
     | Action of string list *
                   (unit -> unit) *
                     Html_types.flow5_without_interactive Ocp_js.elt

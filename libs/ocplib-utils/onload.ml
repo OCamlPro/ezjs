@@ -20,7 +20,7 @@ let on_load _ =
   Js._true
 
 let _ =
-  Dom_html.window##onload <- Dom_html.handler on_load
+  Dom_html.window##.onload := Dom_html.handler on_load
 
 let add f =
   if !on_load_done then f ()
