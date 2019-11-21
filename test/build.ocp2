@@ -19,13 +19,13 @@ OCaml.program(
       "main.ml"
     ];
     build_rules = [
-      "%{main_FULL_DST_DIR}%/main.byte.js", {
+      "%{main_FULL_DST_DIR}%/main.js", {
         build_target = true;
-        sources = "%{main_FULL_DST_DIR}%/main.byte.exe";
+        sources = "%{main_FULL_DST_DIR}%/main.byte";
         commands = [
           OCaml.system([
             "js_of_ocaml";
-            "%{main_FULL_DST_DIR}%/main.byte.exe";
+            "%{main_FULL_DST_DIR}%/main.byte";
           ])
         ]
       }
