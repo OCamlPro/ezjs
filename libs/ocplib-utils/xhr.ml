@@ -1,5 +1,9 @@
 open Ocp_js
 
+let unoptf f def x = match Js.Opt.to_option x with
+  | None -> def
+  | Some x -> f x
+
 let get ?error msg url f =
   if msg <> "" then
     Js_utils.log "[>%s GET %s]" msg url;
@@ -12,7 +16,7 @@ let get ?error msg url f =
           if msg <> "" then
             Js_utils.log "[>%s RECV %d %s]" msg status url;
           if status = 200 then begin
-              f (Js.to_string xhr##.responseText)
+              f (unoptf Js.to_string "" xhr##.responseText)
             end else
             match error with
             | None -> ()
@@ -34,7 +38,7 @@ let post ?(content_type="application/json") ?(content="{}") ?error msg url f =
           if msg <> "" then
             Js_utils.log "[>%s RECV %d %s]" msg status url;
           if status = 200 then
-            f (Js.to_string xhr##.responseText)
+            f (unoptf Js.to_string "" xhr##.responseText)
           else
             match error with
             | None -> ()
