@@ -23,6 +23,10 @@ let url_encode_list l =
   String.concat "&" (List.map (fun (name, arg) ->
       Printf.sprintf "%s=%s" name (Url.urlencode arg)) l)
 
+let unoptf f def x = match Js.Opt.to_option x with
+  | None -> def
+  | Some x -> f x
+
 let get ?(headers=[]) ~url ~args =
   let (res, w) = Lwt.task () in
   let req = XmlHttpRequest.create () in
@@ -36,11 +40,11 @@ let get ?(headers=[]) ~url ~args =
     headers;
   let callback () =
     match req##.status with
-    | 200 -> Lwt.wakeup w (Js.to_string req##.responseText)
+    | 200 -> Lwt.wakeup w (unoptf Js.to_string "" req##.responseText)
     | 204 -> Lwt.wakeup w ""
     | code (* including 0 *) ->
-        Lwt.wakeup_exn w
-	        (Request_failed (code, Js.to_string req##.responseText)) in
+      Lwt.wakeup_exn w
+	(Request_failed (code, unoptf Js.to_string "" req##.responseText)) in
   req##.onreadystatechange := Js.wrap_callback
       (fun _ -> (match req##.readyState with
 	           XmlHttpRequest.DONE -> callback ()
@@ -66,10 +70,10 @@ let post ?(headers=[]) ?(get_args=[]) ~url ~body =
     headers;
   let callback () =
     match req##.status with
-    | 200 -> Lwt.wakeup w (Js.to_string req##.responseText)
+    | 200 -> Lwt.wakeup w (unoptf Js.to_string "" req##.responseText)
     | 204 -> Lwt.wakeup w ""
     | code (* including 0 *) -> Lwt.wakeup_exn w
-	  (Request_failed (code, Js.to_string req##.responseText))
+	  (Request_failed (code, unoptf Js.to_string "" req##.responseText))
   in
   req##.onreadystatechange := Js.wrap_callback
       (fun _ -> (match req##.readyState with
