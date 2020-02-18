@@ -79,7 +79,10 @@ let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
   data##.top := def_option top;
   data##.width := def_option width;
   data##.height := def_option height;
-  data##.focused := optdef bool focused;
+  begin match focused with
+    | None -> ()
+    | Some _ -> data##.focused := optdef bool focused
+  end;
   data##._type := optdef string typ;
   data##.state := optdef string state;
   data##.allowScriptsToClose := optdef bool allowScriptsToClose;
