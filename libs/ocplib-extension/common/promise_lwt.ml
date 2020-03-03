@@ -67,3 +67,15 @@ let to_lwt_cb_opt callback f = match callback with
     f (def (wrap_callback (Lwt.wakeup notifier)));
     waiter >>= fun x -> return (Some (callback x))
   | None -> f undefined; Lwt.return_none
+
+let promise_lwt res =
+  let f resolve _reject = async (fun () ->
+      res >>= fun value -> resolve value; return_unit) in
+  promise f
+
+let promise_lwt_res res =
+  let f resolve reject = async (fun () ->
+      res >>= function
+      | Ok value -> resolve value; return_unit
+      | Error reason -> reject reason; return_unit) in
+  promise f

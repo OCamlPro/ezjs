@@ -11,8 +11,7 @@ end
 type 'a promise = ('a, any t) promise0
 
 type ('a,'b) promise_cs =
-  ((('a -> unit) -> ('b -> unit) -> unit) callback
-   -> ('a, 'b) promise0 t) constr
+  ((('a -> unit) -> ('b -> unit) -> unit) callback -> ('a, 'b) promise0 t) constr
 
 let promise f =
   let cs : ('a, 'b) promise_cs = global##._Promise in
