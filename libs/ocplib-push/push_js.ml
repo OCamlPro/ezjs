@@ -52,6 +52,8 @@ class type serviceWorkerRegistration = object
     Js.js_string Js.t -> notification_options Js.t ->
     notificationEvent Js.t promise Js.t Js.meth
   method pushManager : pushManager Js.t Js.prop
+  method update : serviceWorkerRegistration Js.t promise Js.t Js.meth
+  method unregister : bool Js.t promise Js.t Js.meth
 end
 
 class type serviceWorkerContainer = object
@@ -122,6 +124,9 @@ let get_registration ?(none=fun () -> Js_utils.log "No service worker") f =
 
 let registration path f =
   get_registration ~none:(fun () -> register_worker path f) f
+
+let update_service_worker reg = reg##update |> ignore
+let unregister_service_worker reg = reg##unregister |> ignore
 
 let push_manager reg = reg##.pushManager
 
