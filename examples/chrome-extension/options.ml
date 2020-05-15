@@ -12,7 +12,7 @@ end
 let () =
   List.iter (fun color ->
       let color_obj = strings_to_object [ ("color", encapse color) ] in
-      let callback _ = Js_log.log_str ("color is " ^ color) in
+      let callback _ = log_str ("color is " ^ color) in
       let onclick _ = Chrome.Storage.set ~callback Chrome.sync color_obj; true in
       let b = El.button ~styles:["background-color", color] ~listen:["click", onclick] [] in
       appendChild page b
