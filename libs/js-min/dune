@@ -1,0 +1,20 @@
+(library
+ (name js_log)
+ (public_name ocplib-jsutils.js-log)
+ (modules js_log)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml))
+
+(library
+ (name js_min)
+ (public_name ocplib-jsutils.js-min)
+ (modules js_min)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml))
+
+(library
+ (name dom_min)
+ (public_name ocplib-jsutils.dom-min)
+ (modules dom_min)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_min))

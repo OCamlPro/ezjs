@@ -1,0 +1,7 @@
+(library
+ (name bs4)
+ (public_name ocplib-jsutils.bs4)
+ (wrapped false)
+ (flags (:standard -w +a-3-4-44-45-48))
+ (modules bs4 bs4_card bs4_navs bs4_form bs4_deck)
+ (libraries cleave jquery))
