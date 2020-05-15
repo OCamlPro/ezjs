@@ -1,0 +1,12 @@
+(library
+ (name browser_lwt)
+ (public_name ocplib-jsutils.browser-lwt)
+ (modules
+  tabs_browser_lwt
+  windows_browser_lwt
+  runtime_browser_lwt
+  storage_browser_lwt
+  i18n_browser_lwt
+  browser_lwt)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries browser_common promise_lwt))

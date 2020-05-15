@@ -1,37 +1,33 @@
-
-#############################################################################
-#
-#          This file is managed by ocp-autoconf.
-#
-#  Remove it from `manage_files` in 'ocp-autoconf.config' if you want to
-#  modify it manually.
-#
-#############################################################################
-
-BASE64_3:=true
-
-include autoconf/Makefile.config
+-include autoconf/Makefile.config
 
 all: build
 
--include ocp-autoconf.d/Makefile
+build:
+	dune build
 
-build: base64-conf ocp-build-build $(PROJECT_BUILD)
+clean:
+	dune clean
 
-install: ocp-build-install $(PROJECT_INSTALL)
+install:
+	dune install
 
-clean: ocp-build-clean $(PROJECT_CLEAN)
+ocp-build-conf:
+	ocp-autoconf
 
-distclean: clean ocp-distclean $(PROJECT_DISTCLEAN)
-	find . -name '*~' -exec rm -f {} \;
+ocp-build: ocp-build-conf
+	ocp-build $(PROJECT_BUILD)
 
-test: build
+ocp-build-install: ocp-build-install $(PROJECT_INSTALL)
+
+ocp-build-clean: ocp-build-clean $(PROJECT_CLEAN)
+
+test: ocp-build
 	cp _obuild/main/main.js test
 
-chrome-extension-example: build
+chrome-extension-example: ocp-build
 	cp _obuild/background-example/background-example.js examples/chrome-extension
 	cp _obuild/popup-example/popup-example.js examples/chrome-extension
 	cp _obuild/options-example/options-example.js examples/chrome-extension
 	cp _obuild/chrome-example/chrome-example.js examples/chrome-extension
 
-include autoconf/Makefile.rules
+-include autoconf/Makefile.rules

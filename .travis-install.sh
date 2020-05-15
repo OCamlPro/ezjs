@@ -9,6 +9,4 @@ echo OPAM versions
 opam --version
 opam --git-version
 
-opam init
-opam switch $OCAML_VERSION
-
+opam init --disable-sandboxing --compiler=${OCAML_VERSION}

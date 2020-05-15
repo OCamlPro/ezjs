@@ -1,5 +1,0 @@
-ppx_js = [
-  "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp"
-];
-
-pp_js = { pp = ppx_js };

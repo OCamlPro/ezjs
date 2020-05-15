@@ -1,0 +1,13 @@
+(library
+ (name jquery)
+ (public_name ocplib-jsutils.jquery)
+ (modules jquery)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries jsutils))
+
+(library
+ (name sortable)
+ (public_name ocplib-jsutils.sortable)
+ (modules sortable)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries jquery))

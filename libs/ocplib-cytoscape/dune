@@ -1,0 +1,6 @@
+(library
+ (name cytoscape)
+ (public_name ocplib-jsutils.cytoscape)
+ (modules cytoscape)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries jsutils))

@@ -1,0 +1,6 @@
+(library
+ (name disqus)
+ (public_name ocplib-jsutils.disqus)
+ (modules disqus)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries jsutils))

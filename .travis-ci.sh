@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export OPAMYES=1 OPAMVERBOSE=1
-eval `opam config env`
+eval $(opam env)
 
 echo Architecture
 uname -a
@@ -13,7 +13,5 @@ opam --git-version
 
 PREFIX=$HOME/.opam/$OCAML_VERSION
 
-opam pin add my-package .
-opam install my-package
-opam remove my-package
-
+opam install .
+opam remove .

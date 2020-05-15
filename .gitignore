@@ -23,3 +23,11 @@ ocp-autoconf.d/config.ocp2inc
 
 _esy
 esy.lock
+
+_build
+*.merlin
+autoconf
+ocp-autoconf.d
+test/*.js
+examples/chrome-extension/*.js
+configure

@@ -10,7 +10,7 @@ class type tabs = object
   method captureVisibleTab : int optdef -> imageDetails t optdef -> js_string t promise t meth
   method connect : int -> 'a t optdef -> port meth
   method create : createProperties t -> tab t promise t meth
-  method detectLanguage : int optdef -> (js_string t -> unit) callback -> js_string t promise t meth
+  method detectLanguage : int optdef -> js_string t promise t meth
   method discard : int -> unit promise t meth
   method discard_arr : int js_array t -> unit promise t meth
   method duplicate : int -> tab t promise t meth
@@ -63,7 +63,7 @@ let captureVisibleTab ?id ?options () =
 let connect ?info id = tabs##connect id (Optdef.option info)
 let create ?callback tab = to_lwt_opt callback (tabs##create tab)
 let detectLanguage ?id () =
-  to_lwt_cb_tr to_string (fun cb -> (tabs##detectLanguage (Optdef.option id) cb))
+  to_lwt_tr to_string (tabs##detectLanguage (Optdef.option id))
 let discard ?callback id = to_lwt_opt callback (tabs##discard id)
 let discard_list ?callback ids =
   to_lwt_opt callback (tabs##discard_arr (of_list ids))
