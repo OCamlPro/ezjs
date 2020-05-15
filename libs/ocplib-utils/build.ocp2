@@ -9,6 +9,7 @@ OCaml.library("ocplib-utils-js",  ocaml+ {
     "jsloc.ml", pp_js;
     "jsStorage.ml", pp_js;
     "cookie", pp_js;
+    "session.ml", pp_js;
     "jslang.ml";
     "onload.ml", pp_js;
     "jsdate.ml", pp_js;
