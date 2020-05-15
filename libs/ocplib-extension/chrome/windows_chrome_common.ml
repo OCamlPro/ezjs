@@ -66,7 +66,7 @@ let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
    | Some _, None -> data##.url := optdef string url
    | None, Some _ ->   data##.url_arr := optdef (of_listf string) url_l
    | None, None -> ()
-   | _ -> Js_log.log_str "cannot define both url and url_l for window creation");
+   | _ -> log_str "cannot define both url and url_l for window creation");
   data##.tabId := Optdef.option tabId;
   data##.left := Optdef.option left;
   data##.top := Optdef.option top;

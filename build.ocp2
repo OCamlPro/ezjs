@@ -27,3 +27,21 @@ filename_ocp2 = "ocp-autoconf.d/config.ocp2inc";
 if( Sys.file_exists(dirname + "/" + filename_ocp2) ){ include filename_ocp2; }
 
 pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };
+
+function js_program(name, file, libs){
+  OCaml.program(name, ocaml + {
+    has_asm = false;
+    requires = libs;
+    files = [ file, pp_js ];
+    build_rules = [
+      "%{" + name + "_FULL_DST_DIR}%/" + name + ".js", {
+        build_target = true;
+        sources = [ "%{" + name + "_FULL_DST_DIR}%/" + name + ".byte" ];
+        commands = [
+          OCaml.system([
+            "js_of_ocaml";
+            "--pretty";
+            "%{" + name + "_FULL_DST_DIR}%/" + name + ".byte";
+    ])]}]
+  });
+}
