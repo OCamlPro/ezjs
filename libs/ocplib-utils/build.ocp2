@@ -1,4 +1,4 @@
-OCaml.library("ocplib-utils-js", ocaml + {
+OCaml.library("ocplib-utils-js",  ocaml+ {
   files = [
     "ocp_js.ml";
     "js_utils.ml", pp_js;
@@ -11,7 +11,7 @@ OCaml.library("ocplib-utils-js", ocaml + {
     "cookie", pp_js;
     "jslang.ml";
     "onload.ml", pp_js;
-    "jsdate.ml", pp_js
+    "jsdate.ml", pp_js;
   ];
   requires = [
     "js_of_ocaml";

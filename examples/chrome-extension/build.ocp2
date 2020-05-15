@@ -1,0 +1,80 @@
+pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };
+
+OCaml.program(
+  "chrome_example",
+  ocaml+ {
+    requires = [ "ocplib-chrome"; "ocplib-dom-min" ];
+    files = [ "chrome_example.ml", pp_js ];
+    build_rules = [
+      "%{chrome_example_FULL_DST_DIR}%/chrome_example.js", {
+        build_target = true;
+        sources = "%{chrome_example_FULL_DST_DIR}%/chrome_example.byte";
+        commands = [
+          OCaml.system([
+            "js_of_ocaml";
+            "%{chrome_example_FULL_DST_DIR}%/chrome_example.byte";
+            "--pretty";
+          ])
+        ]
+      }
+   ]
+});
+
+
+OCaml.program(
+  "background",
+  ocaml+ {
+    requires = [ "ocplib-chrome"; "ocplib-declarative-content"; "ocplib-dom-min" ];
+    files = [ "background.ml", pp_js ];
+    build_rules = [
+      "%{background_FULL_DST_DIR}%/background.js", {
+        build_target = true;
+        sources = "%{background_FULL_DST_DIR}%/background.byte";
+        commands = [
+          OCaml.system([
+            "js_of_ocaml";
+            "%{background_FULL_DST_DIR}%/background.byte";
+            "--pretty";
+          ])
+        ]
+      }
+   ]
+});
+
+OCaml.program(
+  "popup",
+  ocaml+ {
+    requires = [ "ocplib-chrome"; "ocplib-dom-min" ];
+    files = [ "popup.ml", pp_js ];
+    build_rules = [
+      "%{popup_FULL_DST_DIR}%/popup.js", {
+        build_target = true;
+        sources = "%{popup_FULL_DST_DIR}%/popup.byte";
+        commands = [
+          OCaml.system([
+            "js_of_ocaml";
+            "%{popup_FULL_DST_DIR}%/popup.byte";
+          ])
+        ]
+      }
+   ]
+});
+
+OCaml.program(
+  "options",
+  ocaml+ {
+    requires = [ "ocplib-chrome"; "ocplib-dom-min" ];
+    files = [ "options.ml", pp_js ];
+    build_rules = [
+      "%{options_FULL_DST_DIR}%/options.js", {
+        build_target = true;
+        sources = "%{options_FULL_DST_DIR}%/options.byte";
+        commands = [
+          OCaml.system([
+            "js_of_ocaml";
+            "%{options_FULL_DST_DIR}%/options.byte";
+          ])
+        ]
+      }
+   ]
+});

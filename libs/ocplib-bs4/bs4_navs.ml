@@ -70,8 +70,8 @@ let deactivate_nav nav =
     Manip.removeClass (find_component ("nav-content-" ^ nav.id)) bshow;
     Manip.addClass (find_component ("nav-content-" ^ nav.id)) fade
 
-let change_arg nav =
-   Jsloc.set_args ["nav", nav.id]
+let change_arg ?(set_args=Jsloc.set_args) nav =
+  set_args ["nav", nav.id]
 
 let make_tab_content nav content =
   div ~a:[ a_id ("nav-content-" ^ nav.id);
@@ -87,29 +87,29 @@ module Make(S : sig type t end) = struct
   let current_nav : S.t tnav ref = ref (make "" (fun _ -> div []))
   let navs_list : S.t tnav list ref = ref []
 
-  let change_nav nav =
+  let change_nav ?set_args nav =
     deactivate_nav !current_nav;
     activate_nav nav;
     current_nav:= nav;
-    change_arg nav
+    change_arg ?set_args nav
 
-  let update_nav ?(once=true) nav =
-    change_nav nav;
+  let update_nav ?set_args ?(once=true) nav =
+    change_nav ?set_args nav;
     if (nav.first || not once) then (
       nav.first <- false;
       nav.onshow ())
 
-  let init ?value () =
+  let init ?(find_arg=Jsloc.find_arg) ?set_args ?value () =
     let f value =
-      List.iter (fun nav -> if nav.id = value then update_nav nav) !navs_list in
-    match Jsloc.find_arg "nav", value with
+      List.iter (fun nav -> if nav.id = value then update_nav ?set_args nav) !navs_list in
+    match find_arg "nav", value with
       | _, Some value -> f value
       | Some value, _ -> f value
       | None, None ->
-        List.iter (fun nav -> if nav.state = Active then update_nav nav) !navs_list
+        List.iter (fun nav -> if nav.state = Active then update_nav ?set_args nav) !navs_list
 
 
-  let make_nav ?(link=fun id -> a_href ("#nav-content-" ^ id)) ?param ?once nav =
+  let make_nav ?(link=fun id -> a_href ("#nav-content-" ^ id)) ?set_args ?param ?once nav =
     let is_active_class =
       if nav.state = Disabled then [] else
         [ a_user_data "toggle" (kind_str nav.kind); link nav.id] in
@@ -117,7 +117,7 @@ module Make(S : sig type t end) = struct
       if nav.state <> Hidden then [] else [ a_style "display:none" ] in
     li ~a:([ a_class (Nav.nav_item :: nav.classes);
              a_id ("li-nav-" ^ nav.id);
-             a_onshow (fun _e -> update_nav ?once nav; true)]
+             a_onshow (fun _e -> update_nav ?set_args ?once nav; true)]
            @ is_hidden_attr) [
       a ~a:([ a_id ("nav-" ^ nav.id);
               a_class (Nav.nav_link :: nav.classes @ make_state_class nav.state);
@@ -129,7 +129,7 @@ module Make(S : sig type t end) = struct
       ]
     ]
 
-  let make_navs ?(kind=Tab) ?(classes=[]) ?once navs =
+  let make_navs ?set_args ?(kind=Tab) ?(classes=[]) ?once navs =
     navs_list := navs;
     let classes = match kind with
       | Tab -> Nav.nav_tabs :: classes
@@ -137,6 +137,6 @@ module Make(S : sig type t end) = struct
       | Empty -> classes in
     ul ~a:[ a_class (Nav.nav :: classes) ] @@
     List.map (fun nav -> if nav.state = Active then current_nav := nav;
-               make_nav ?once nav) navs
+               make_nav ?set_args ?once nav) navs
 
 end

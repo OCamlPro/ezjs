@@ -25,3 +25,5 @@ if( Sys.file_exists(dirname + "/" + filename_ocp2) ){ include filename_ocp2; }
 
 filename_ocp2 = "ocp-autoconf.d/config.ocp2inc";
 if( Sys.file_exists(dirname + "/" + filename_ocp2) ){ include filename_ocp2; }
+
+pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };

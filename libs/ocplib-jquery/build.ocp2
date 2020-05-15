@@ -4,6 +4,10 @@ OCaml.library("ocplib-jquery", ocaml + {
   ];
   requires = [
     "ocplib-utils-js";
-    "js_of_ocaml-ppx"
   ];
+});
+
+OCaml.library("ocplib-sortable", ocaml + {
+  files = [ "sortable.ml", pp_js ];
+  requires = [ "ocplib-jquery" ];
 });

@@ -648,6 +648,11 @@ module Utils = struct
     let my4 = "my-4"
     let my5 = "my-5"
 
+    let ma = "m-auto"
+    let ma_sm = "m-sm-auto"
+    let ma_md = "m-md-auto"
+    let ma_lg = "m-lg-auto"
+    let ma_xl = "m-xl-auto"
     let mra = "mr-auto"
     let mra_sm = "mr-sm-auto"
     let mra_md = "mr-md-auto"
@@ -1071,10 +1076,13 @@ module Items = struct
     let modal_lg = "modal-lg"
     let modal_sm = "modal-sm"
     let modal_xl = "modal-xl"
+    let a_data_backdrop = Utils.Attribute.a_data_custom "backdrop"
 
-    let make_modal ?(modal_class=[]) ?(header_class=[])
+    let make_modal ?body_id ?(modal_class=[]) ?(header_class=[])
         ?(title_class=[]) ?title_content
-        ?(body_class=[]) ?(footer_class=[]) ?footer_content id content =
+        ?(body_class=[]) ?(dialog_class=[])
+        ?(footer_class=[]) ?footer_content id content =
+      let body_id = match body_id with None -> [] | Some id -> [ a_id id ] in
       let header = match title_content with
         | None -> []
         | Some content -> [
@@ -1090,16 +1098,22 @@ module Items = struct
               button ~a:[a_button_type `Button; a_class Button.[btn; btn_danger];
                          Alert.a_data_dismiss modal] [ txt "Close" ] ] ] in
 
-      div ~a:[a_id id; a_class (modal :: modal_class)] [
-        div ~a:[ a_class [modal_content] ]
-          (header @ [
-              div ~a:[ a_class (modal_body :: body_class) ] content ] @
-           footer) ]
+      div ~a:[a_id id; a_class (modal :: modal_class); a_role ["dialog"]] [
+        div ~a:[ a_class (modal_dialog :: dialog_class) ] [
+          div ~a:[ a_class [modal_content] ]
+            (header @ [
+                div ~a:(a_class (modal_body :: body_class) :: body_id) content ] @
+             footer) ] ]
 
-    let make_modal_button ?(button_class=[]) id text =
-      button ~a:[a_class (Button.btn :: button_class);
-                 Utils.Attribute.a_data_toggle modal;
-                 Utils.Attribute.a_data_custom "target" ("#" ^ id)] [txt text]
+    let make_modal_button ?onclick ?(button_class=[]) ?(backdrop="true") id content =
+      let onclick = match onclick with
+        | None -> []
+        | Some f -> [ a_onclick f ] in
+      button ~a:(a_class (Button.btn :: button_class) ::
+                 Utils.Attribute.a_data_toggle modal ::
+                 Utils.Attribute.a_data_custom "target" ("#" ^ id) ::
+                 a_data_backdrop backdrop ::
+                 onclick) content
   end
 
   module Nav = struct
@@ -1188,13 +1202,16 @@ module Items = struct
 
     module Attr = Utils.Attribute
 
-    let make_popover ?(placement=`Top) ?classes id value =
+    let make_popover ?(placement=`Top) ?classes ?trigger id value =
       let aclass = Attr.unopt_class classes in
+      let atrigger = match trigger with
+        | None -> []
+        | Some trigger -> [ Attr.a_data_trigger trigger ] in
       a ~a:([Attr.a_data_toggle "popover"; Attr.a_data_html true;
              Attr.a_data_placement placement;
              Attr.a_data_content
                (Printf.sprintf "<div id=\"%s\"></div>" id);
-             a_id ("link-" ^ id)] @ aclass) [ txt value ]
+             a_id ("link-" ^ id)] @ aclass @ atrigger) [ txt value ]
 
     let init_popovers () =
       Jquery.jQ popover_selector |> Jquery.popover_opt |> ignore
@@ -1206,6 +1223,9 @@ module Items = struct
           Js_utils.Manip.replaceChildren elt pop_elt;
           true) |>
       ignore
+
+    let hide_popovers () =
+      Jquery.jQ popover_selector |> Jquery.popover "hide" |> ignore;
   end
 
   module Tooltip = struct
