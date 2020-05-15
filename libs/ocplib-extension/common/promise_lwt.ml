@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 include Promise
 
 let (>>=) = Lwt.(>>=)

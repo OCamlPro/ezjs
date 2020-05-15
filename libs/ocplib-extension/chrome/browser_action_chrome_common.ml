@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 
 type uint8Array = Js_of_ocaml.Typed_array.uint8Array
 
@@ -53,7 +53,7 @@ class type browserAction = object
   method onClicked : Tabs_utils.tab Browser_utils.event t prop
 end
 
-let browserAction : browserAction t = variable "chrome.browserAction"
+let browserAction : browserAction t = Unsafe.variable "chrome.browserAction"
 
 let onClicked f =
   Browser_utils.addListener1 browserAction##.onClicked f

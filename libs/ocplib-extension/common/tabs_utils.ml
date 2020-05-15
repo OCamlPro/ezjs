@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 
 class type mutedInfo = object
   method extensionId : js_string t optdef prop
@@ -144,12 +144,12 @@ end
 
 let make_script_details
     ?allFrames ?code ?cssOrigin ?file ?frameId ?matchAboutBlank ?runAt () =
-  let details : details t = obj [||] in
+  let details : details t = Unsafe.obj [||] in
   details##.allFrames := optdef bool allFrames;
   details##.code := optdef string code;
   details##.cssOrigin := optdef string cssOrigin;
   details##.file := optdef string file;
-  details##.frameId := def_option frameId;
+  details##.frameId := Optdef.option frameId;
   details##.matchAboutBlank := optdef bool matchAboutBlank;
   details##.runAt := optdef string runAt;
   details
@@ -158,20 +158,20 @@ let make_query
     ?active ?audible ?autoDiscardable ?currentWindow ?discarded ?highlighted
     ?index ?lastFocusedWindow ?muted ?pinned ?status ?title ?url ?windowId
     ?windowType () =
-  let query : queryInfo t = obj [||] in
+  let query : queryInfo t = Unsafe.obj [||] in
   query##.active := optdef bool active;
   query##.audible := optdef bool audible;
   query##.autoDiscardable := optdef bool autoDiscardable;
   query##.currentWindow := optdef bool currentWindow;
   query##.discarded := optdef bool discarded;
   query##.highlighted := optdef bool highlighted;
-  query##.index := def_option index;
+  query##.index := Optdef.option index;
   query##.lastFocusedWindow := optdef bool lastFocusedWindow;
   query##.muted := optdef bool muted;
   query##.pinned := optdef bool pinned;
   query##.status := optdef string status;
   query##.title := optdef string title;
   query##.url := optdef string url;
-  query##.windowId := def_option windowId;
+  query##.windowId := Optdef.option windowId;
   query##.windowType := optdef string windowType;
   query

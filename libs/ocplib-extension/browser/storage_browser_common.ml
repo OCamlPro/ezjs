@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 open Promise
 
 class type storageChange = object
@@ -23,7 +23,7 @@ class type storage = object
   method managed : storageArea t prop
 end
 
-let storage : storage t = variable "browser.storage"
+let storage : storage t = Unsafe.variable "browser.storage"
 let local = storage##.local
 let sync = storage##.sync
 let managed = storage##.managed

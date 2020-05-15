@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 
 class type ['a] event = object
   method addListener : ('a -> unit) -> unit meth
@@ -31,7 +31,7 @@ type error_browser = {
 }
 
 let of_error_browser {error_message; error_fichier; error_ligne} =
-  let o : errorBrowser t = obj [||] in
+  let o : errorBrowser t = Unsafe.obj [||] in
   o##.message := string error_message;
   o##.nomFichier := string error_fichier;
   o##.numeroLigne := error_ligne;

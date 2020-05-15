@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 open Promise
 
 type uint8Array = Js_of_ocaml.Typed_array.uint8Array
@@ -59,61 +59,61 @@ class type browserAction = object
   method onClicked : Tabs_utils.tab Browser_utils.event t prop
 end
 
-let browserAction : browserAction t = variable "chrome.browserAction"
+let browserAction : browserAction t = Unsafe.variable "chrome.browserAction"
 
 let set_title ?tabId ?windowId ?title () =
-  let details : titleDetails t = obj [||] in
+  let details : titleDetails t = Unsafe.obj [||] in
   details##.title := opt string title;
-  details##.tabId := def_option tabId;
-  details##.windowId := def_option windowId;
+  details##.tabId := Optdef.option tabId;
+  details##.windowId := Optdef.option windowId;
   browserAction##setTitle details
 
 let set_icon ?data ?path ?tabId ?windowId () =
-  let details : iconDetails t = obj [||] in
+  let details : iconDetails t = Unsafe.obj [||] in
   (match path, data with
    | Some s, _ -> details##.path := def (string s)
    | _, Some d -> details##.imageData := def d
    | _ -> ());
-  details##.tabId := def_option tabId;
-  details##.windowId := def_option windowId;
+  details##.tabId := Optdef.option tabId;
+  details##.windowId := Optdef.option windowId;
   browserAction##setIcon details
 
 let set_popup ?tabId ?windowId ?popup () =
-  let details : popupDetails t = obj [||] in
+  let details : popupDetails t = Unsafe.obj [||] in
   details##.popup := opt string popup;
-  details##.tabId := def_option tabId;
-  details##.windowId := def_option windowId;
+  details##.tabId := Optdef.option tabId;
+  details##.windowId := Optdef.option windowId;
   browserAction##setPopup details
 
 let set_badge ?tabId ?windowId ?text () =
-  let details : badgeDetails t = obj [||] in
+  let details : badgeDetails t = Unsafe.obj [||] in
   details##.text := opt string text;
-  details##.tabId := def_option tabId;
-  details##.windowId := def_option windowId;
+  details##.tabId := Optdef.option tabId;
+  details##.windowId := Optdef.option windowId;
   browserAction##setBadgeText details
 
 let set_badge_bg ?tabId ?windowId ?color () =
-  let details : badgeColorDetails t = obj [||] in
+  let details : badgeColorDetails t = Unsafe.obj [||] in
   details##.color := opt string color;
-  details##.tabId := def_option tabId;
-  details##.windowId := def_option windowId;
+  details##.tabId := Optdef.option tabId;
+  details##.windowId := Optdef.option windowId;
   browserAction##setBadgeBackgroundColor details
 
 let set_badge_color ?tabId ?windowId ?color () =
-  let details : badgeColorDetails t = obj [||] in
+  let details : badgeColorDetails t = Unsafe.obj [||] in
   details##.color := opt string color;
-  details##.tabId := def_option tabId;
-  details##.windowId := def_option windowId;
+  details##.tabId := Optdef.option tabId;
+  details##.windowId := Optdef.option windowId;
   browserAction##setBadgeTextColor details
 
 let enable ?tabId () =
-  let details : tabDetails t = obj [||] in
-  details##.tabId := def_option tabId;
+  let details : tabDetails t = Unsafe.obj [||] in
+  details##.tabId := Optdef.option tabId;
   browserAction##enable details
 
 let disable ?tabId () =
-  let details : tabDetails t = obj [||] in
-  details##.tabId := def_option tabId;
+  let details : tabDetails t = Unsafe.obj [||] in
+  details##.tabId := Optdef.option tabId;
   browserAction##disable details
 
 let onClicked f =

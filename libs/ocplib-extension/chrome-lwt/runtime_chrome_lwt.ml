@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 open Promise_lwt
 include Runtime_chrome_common
 
@@ -16,9 +16,9 @@ let sendMessage ?id ?options ?callback message =
   match callback with
   | Some callback ->
     let waiter, notifier = Lwt.wait () in
-    runtime##sendMessage (def_option id) message (def_option options) (def (Lwt.wakeup notifier));
+    runtime##sendMessage (Optdef.option id) message (Optdef.option options) (def (Lwt.wakeup notifier));
     waiter >>= fun x -> return (Some (callback x))
-  | None -> runtime##sendMessage (def_option id) message (def_option options) undefined; Lwt.return_none
+  | None -> runtime##sendMessage (Optdef.option id) message (Optdef.option options) undefined; Lwt.return_none
 let sendNativeMessage ?callback application message =
   match callback with
   | Some callback ->

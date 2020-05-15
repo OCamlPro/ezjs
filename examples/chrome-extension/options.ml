@@ -1,5 +1,5 @@
 open Js_min
-open Js
+open Dom_min
 
 let page = by_id "buttonDiv"
 

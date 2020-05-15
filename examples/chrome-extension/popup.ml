@@ -1,5 +1,5 @@
 open Js_min
-open Js
+open Dom_min
 open Chrome
 
 let changeColor = by_id "changeColor"

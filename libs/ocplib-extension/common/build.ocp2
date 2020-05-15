@@ -1,20 +1,11 @@
 pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };
 
-OCaml.library("ocplib-extension-types", ocaml + {
-  files = [
-    "js_types.ml";
-  ];
-  requires = [
-    "js_of_ocaml";
-  ];
-});
-
 OCaml.library("ocplib-promise", ocaml + {
   files = [
     "promise.ml", pp_js;
   ];
   requires = [
-    "ocplib-extension-types";
+    "ocplib-js-min";
   ];
 });
 
@@ -34,7 +25,7 @@ OCaml.library("ocplib-extension-common", ocaml + {
     "runtime_utils.ml", pp_js;
   ];
   requires = [
-    "ocplib-extension-types";
+    "ocplib-js-min";
   ];
 });
 

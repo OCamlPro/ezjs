@@ -1,17 +1,17 @@
-open Js_types
+open Js_min
 open Browser_utils
 open Runtime_utils
 open Tabs_utils
 
 let make_create ?active ?index ?openerTabId ?pinned ?selected ?url ?windowId () =
-  let tab : createProperties t = obj [||] in
+  let tab : createProperties t = Unsafe.obj [||] in
   tab##.active := optdef bool active;
-  tab##.index := def_option index;
-  tab##.openerTabId := def_option openerTabId;
+  tab##.index := Optdef.option index;
+  tab##.openerTabId := Optdef.option openerTabId;
   tab##.pinned := optdef bool pinned;
   tab##.selected := optdef bool selected;
   tab##.url := optdef string url;
-  tab##.windowId := def_option windowId;
+  tab##.windowId := Optdef.option windowId;
   tab
 
 class type tabs = object
@@ -53,11 +53,11 @@ class type tabs = object
   method onZoomChanged : 'a t event t prop
 end
 
-let tabs : tabs t = variable "chrome.tabs"
+let tabs : tabs t = Unsafe.variable "chrome.tabs"
 let tab_id_none () = tabs##._TAB_ID_NONE
 
-let connect ?info id = tabs##connect id (def_option info)
-let insertCSS ?id () = tabs##insertCSS (def_option id)
+let connect ?info id = tabs##connect id (Optdef.option info)
+let insertCSS ?id () = tabs##insertCSS (Optdef.option id)
 
 let onActivated f = addListener1 tabs##.onActivated f
 let onAttached f = addListener2 tabs##.onAttached f

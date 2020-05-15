@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 open Browser_utils
 
 class type window = object
@@ -61,17 +61,17 @@ end
 
 let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
     ?state ?selfOpener () =
-  let data : createData t = obj [||] in
+  let data : createData t = Unsafe.obj [||] in
   (match url, url_l with
    | Some _, None -> data##.url := optdef string url
-   | None, Some _ ->   data##.url_arr := optdef array_of_list_str url_l
+   | None, Some _ ->   data##.url_arr := optdef (of_listf string) url_l
    | None, None -> ()
    | _ -> Js_log.log_str "cannot define both url and url_l for window creation");
-  data##.tabId := def_option tabId;
-  data##.left := def_option left;
-  data##.top := def_option top;
-  data##.width := def_option width;
-  data##.height := def_option height;
+  data##.tabId := Optdef.option tabId;
+  data##.left := Optdef.option left;
+  data##.top := Optdef.option top;
+  data##.width := Optdef.option width;
+  data##.height := Optdef.option height;
   data##.focused := optdef bool focused;
   data##._type := optdef string typ;
   data##.state := optdef string state;
@@ -79,17 +79,17 @@ let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
   data
 
 let make_updateInfo ?left ?top ?width ?height ?focused ?drawAttention ?state () =
-  let data : updateInfo t = obj [||] in
-  data##.left := def_option left;
-  data##.top := def_option top;
-  data##.width := def_option width;
-  data##.height := def_option height;
+  let data : updateInfo t = Unsafe.obj [||] in
+  data##.left := Optdef.option left;
+  data##.top := Optdef.option top;
+  data##.width := Optdef.option width;
+  data##.height := Optdef.option height;
   data##.focused := optdef bool focused;
   data##.drawAttention := optdef bool drawAttention;
   data##.state := optdef string state;
   data
 
-let windows : windows t = variable "chrome.windows"
+let windows : windows t = Unsafe.variable "chrome.windows"
 
 let onCreated handler =
   addListener1 windows##.onCreated handler

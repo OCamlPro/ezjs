@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 open Promise_lwt
 open Browser_utils
 open Runtime_utils
@@ -53,56 +53,56 @@ class type tabs = object
   method onUpdated : (int, 'a t, tab t) event3 t prop
   method onZoomChanged : 'a t event t prop
 end
-let tabs : tabs t = variable "browser.tabs"
+let tabs : tabs t = Unsafe.variable "browser.tabs"
 let tab_id_none () = tabs##._TAB_ID_NONE
 
 let captureTab ?id ?options () =
-  to_lwt_tr to_string (tabs##captureTab (def_option id) (def_option options))
+  to_lwt_tr to_string (tabs##captureTab (Optdef.option id) (Optdef.option options))
 let captureVisibleTab ?id ?options () =
-  to_lwt_tr to_string (tabs##captureVisibleTab (def_option id) (def_option options))
-let connect ?info id = tabs##connect id (def_option info)
+  to_lwt_tr to_string (tabs##captureVisibleTab (Optdef.option id) (Optdef.option options))
+let connect ?info id = tabs##connect id (Optdef.option info)
 let create ?callback tab = to_lwt_opt callback (tabs##create tab)
 let detectLanguage ?id () =
-  to_lwt_cb_tr to_string (fun cb -> (tabs##detectLanguage (def_option id) cb))
+  to_lwt_cb_tr to_string (fun cb -> (tabs##detectLanguage (Optdef.option id) cb))
 let discard ?callback id = to_lwt_opt callback (tabs##discard id)
 let discard_list ?callback ids =
-  to_lwt_opt callback (tabs##discard_arr (array_of_list ids))
+  to_lwt_opt callback (tabs##discard_arr (of_list ids))
 let duplicate ?callback id = to_lwt_opt callback (tabs##duplicate id)
 let executeScript ?id ?callback details =
-  to_lwt_opt callback (tabs##executeScript (def_option id) details)
+  to_lwt_opt callback (tabs##executeScript (Optdef.option id) details)
 let get id = to_lwt (tabs##get id)
 let getCurrent () = to_lwt tabs##getCurrent
-let getZoom ?id () = to_lwt_tr float_of_number (tabs##getZoom (def_option id))
-let getZoomSettings ?id () = to_lwt (tabs##getZoomSettings (def_option id))
+let getZoom ?id () = to_lwt_tr float_of_number (tabs##getZoom (Optdef.option id))
+let getZoomSettings ?id () = to_lwt (tabs##getZoomSettings (Optdef.option id))
 let hide id = tabs##hide id
-let hide_list ids = tabs##hide_arr (array_of_list ids)
+let hide_list ids = tabs##hide_arr (of_list ids)
 let highlight ?callback info = to_lwt_opt callback (tabs##highlight info)
-let insertCSS ?id () = tabs##insertCSS (def_option id)
+let insertCSS ?id () = tabs##insertCSS (Optdef.option id)
 let move ?callback id props = to_lwt_opt callback (tabs##move id props)
 let move_list ?callback ids props =
-  to_lwt_opt callback (tabs##move_arr (array_of_list ids) props)
+  to_lwt_opt callback (tabs##move_arr (of_list ids) props)
 let moveInSuccession ?id ?options ids =
-  tabs##moveInSuccession (array_of_list ids) (def_option id) (def_option options)
+  tabs##moveInSuccession (of_list ids) (Optdef.option id) (Optdef.option options)
 let print () = tabs##print
 let printPreview () = tabs##printPreview
 let query info = to_lwt (tabs##query info)
 let reload ?id ?props ?callback () =
-  to_lwt_opt callback (tabs##reload (def_option id) (def_option props))
+  to_lwt_opt callback (tabs##reload (Optdef.option id) (Optdef.option props))
 let remove ?callback id = to_lwt_opt callback (tabs##remove id)
-let removeCSS ?id details = tabs##removeCSS (def_option id) details
+let removeCSS ?id details = tabs##removeCSS (Optdef.option id) details
 let saveAsPDF settings = to_lwt_tr to_string (tabs##saveAsPDF settings)
-let remove_list ?callback id = to_lwt_opt callback (tabs##remove_arr (array_of_list id))
+let remove_list ?callback id = to_lwt_opt callback (tabs##remove_arr (of_list id))
 let sendMessage ?details ?callback id message =
-  to_lwt_opt callback (tabs##sendMessage id message (def_option details))
+  to_lwt_opt callback (tabs##sendMessage id message (Optdef.option details))
 let setZoom ?id ?callback factor =
-  to_lwt_opt callback (tabs##setZoom (def_option id) (number_of_float factor))
+  to_lwt_opt callback (tabs##setZoom (Optdef.option id) (number_of_float factor))
 let setZoomSettings ?id props =
-  to_lwt (tabs##setZoomSettings (def_option id) props)
+  to_lwt (tabs##setZoomSettings (Optdef.option id) props)
 let show id = tabs##show id
-let show_list ids = tabs##show_arr (array_of_list ids)
-let toggleReaderMode ?id () = tabs##toggleReaderMode (def_option id)
+let show_list ids = tabs##show_arr (of_list ids)
+let toggleReaderMode ?id () = tabs##toggleReaderMode (Optdef.option id)
 let update ?id ?callback props =
-  to_lwt_opt callback (tabs##update (def_option id) props)
+  to_lwt_opt callback (tabs##update (Optdef.option id) props)
 
 let onActivated f = addListener1 tabs##.onActivated f
 let onAttached f = addListener2 tabs##.onAttached f

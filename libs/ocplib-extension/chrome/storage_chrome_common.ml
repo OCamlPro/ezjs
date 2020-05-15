@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 
 class type storageChange = object
   method oldValue : 'a prop
@@ -22,7 +22,7 @@ class type storage = object
   method managed : storageArea t prop
 end
 
-let storage : storage t = variable "chrome.storage"
+let storage : storage t = Unsafe.variable "chrome.storage"
 let local = storage##.local
 let sync = storage##.sync
 let managed = storage##.managed

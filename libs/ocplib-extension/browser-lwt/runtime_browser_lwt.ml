@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 open Promise_lwt
 include Runtime_browser_common
 
@@ -10,7 +10,7 @@ let setUninstallURL ?callback s =
 let requestUpdateCheck () = to_lwt_exn runtime##requestUpdateCheck
 let sendMessage ?id ?options ?callback message =
   to_lwt_exn_opt callback @@
-  runtime##sendMessage (option id) message (option options)
+  runtime##sendMessage (Opt.option id) message (Opt.option options)
 let sendNativeMessage ?callback application message =
   to_lwt_exn_opt callback @@ runtime##sendNativeMessage (string application) message
 let getPlatformInfo () =

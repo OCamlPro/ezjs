@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 open Promise
 
 class type language_percent = object
@@ -18,8 +18,8 @@ class type i18n = object
   method detectLanguage : js_string t -> language_detection t promise t meth
 end
 
-let i18n = variable "browser.i18n"
+let i18n = Unsafe.variable "browser.i18n"
 
 let getMessage ?substitutions message =
-  to_string @@ i18n##getMessage (string message) (optdef array_of_list_str substitutions)
+  to_string (i18n##getMessage (string message) (optdef (of_listf string) substitutions))
 let getUILanguage () = i18n##getUILanguage

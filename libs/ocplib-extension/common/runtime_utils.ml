@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 open Tabs_utils
 
 class type requestCheckResponse = object
@@ -49,7 +49,7 @@ type platform_info = {
 }
 
 let of_platform_info {platform_os; platform_arch; platform_nacl_arch} =
-  let r : platformInfo t = obj [||] in
+  let r : platformInfo t = Unsafe.obj [||] in
   r##.os := string platform_os;
   r##.arch := string platform_arch;
   r##.nacl_arch := string platform_nacl_arch;
@@ -62,6 +62,6 @@ let to_platform_info (o:platformInfo t) = {
 }
 
 let mk_connection_info name =
-  let i : connectInfo t = obj [||] in
+  let i : connectInfo t = Unsafe.obj [||] in
   i##.name := string name ;
   i

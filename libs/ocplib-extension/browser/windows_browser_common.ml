@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 open Promise
 open Browser_utils
 
@@ -68,17 +68,17 @@ end
 
 let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
     ?state ?allowScriptsToClose ?cookieStoreId ?titlePreface () =
-  let data : createData t = obj [||] in
+  let data : createData t = Unsafe.obj [||] in
   (match url, url_l with
    | Some _, None -> data##.url := optdef string url
-   | None, Some _ ->   data##.url_arr := optdef array_of_list_str url_l
+   | None, Some _ ->   data##.url_arr := optdef (of_listf string) url_l
    | None, None -> ()
-   | _ -> Js_log.log_str "cannot define both url and url_l for window creation");
-  data##.tabId := def_option tabId;
-  data##.left := def_option left;
-  data##.top := def_option top;
-  data##.width := def_option width;
-  data##.height := def_option height;
+   | _ -> log_str "cannot define both url and url_l for window creation");
+  data##.tabId := Optdef.option tabId;
+  data##.left := Optdef.option left;
+  data##.top := Optdef.option top;
+  data##.width := Optdef.option width;
+  data##.height := Optdef.option height;
   begin match focused with
     | None -> ()
     | Some _ -> data##.focused := optdef bool focused
@@ -86,24 +86,24 @@ let make_createData ?url ?url_l ?tabId ?left ?top ?width ?height ?focused ?typ
   data##._type := optdef string typ;
   data##.state := optdef string state;
   data##.allowScriptsToClose := optdef bool allowScriptsToClose;
-  data##.cookieStoreId := def_option cookieStoreId;
+  data##.cookieStoreId := Optdef.option cookieStoreId;
   data##.titlePreface := optdef string titlePreface;
   data
 
 let make_updateInfo ?left ?top ?width ?height ?focused ?drawAttention ?state
     ?titlePreface () =
-  let data : updateInfo t = obj [||] in
-  data##.left := def_option left;
-  data##.top := def_option top;
-  data##.width := def_option width;
-  data##.height := def_option height;
+  let data : updateInfo t = Unsafe.obj [||] in
+  data##.left := Optdef.option left;
+  data##.top := Optdef.option top;
+  data##.width := Optdef.option width;
+  data##.height := Optdef.option height;
   data##.focused := optdef bool focused;
   data##.drawAttention := optdef bool drawAttention;
   data##.state := optdef string state;
   data##.titlePreface := optdef string titlePreface;
   data
 
-let windows : windows t = variable "browser.windows"
+let windows : windows t = Unsafe.variable "browser.windows"
 
 let onCreated handler =
   addListener1 windows##.onCreated handler

@@ -1,19 +1,19 @@
-open Js_types
+open Js_min
 open Promise
 include Runtime_browser_common
 
 let getBackgroundPage f = jthen runtime##getBackgroundPage f
 let openOptionsPage ?callback () =
-  jthen runtime##openOptionsPage (unopt_callback callback)
+  jthen runtime##openOptionsPage (match callback with None -> (fun _ -> ()) | Some cb -> cb)
 let setUninstallURL ?callback s =
-  jthen (runtime##setUninstallURL s) (unopt_callback callback)
+  jthen (runtime##setUninstallURL s) (match callback with None -> (fun _ -> ()) | Some cb -> cb)
 let requestUpdateCheck f = jthen runtime##requestUpdateCheck f
 let sendMessage ?id ?options ?callback message =
-  jthen (runtime##sendMessage (option id) message (option options))
-    (unopt_callback callback)
+  jthen (runtime##sendMessage (Opt.option id) message (Opt.option options))
+    (match callback with None -> (fun _ -> ()) | Some cb -> cb)
 let sendNativeMessage ?callback application message =
   jthen (runtime##sendNativeMessage (string application) message)
-    (unopt_callback callback)
+    (match callback with None -> (fun _ -> ()) | Some cb -> cb)
 let getPlatformInfo f =
   jthen runtime##getPlatformInfo (fun o -> f (Runtime_utils.to_platform_info o))
 let getPackageDirectoryEntry f =

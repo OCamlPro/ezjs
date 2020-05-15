@@ -1,6 +1,6 @@
-open Js_types
+open Js_min
 include I18n_chrome_common
 
 let getAcceptLanguages f =
-  i18n##getAcceptLanguages (wrap_callback (fun a -> f (array_to_list_str a)))
+  i18n##getAcceptLanguages (wrap_callback (fun a -> f (of_listf string a)))
 let detectLanguage text f = i18n##detectLanguage (string text) (wrap_callback f)

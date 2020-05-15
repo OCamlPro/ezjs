@@ -1,5 +1,3 @@
-pp_js = { pp = [ "%{js_of_ocaml-ppx_SRC_DIR}%/ppx.exe"; "--as-pp" ] };
-
 OCaml.library("ocplib-utils-js",  ocaml+ {
   files = [
     "ocp_js.ml";
@@ -34,23 +32,5 @@ OCaml.library("ocplib-xor", ocaml + {
   ];
   requires = [
     "base64"
-  ];
-});
-
-OCaml.library("ocplib-js-log",  ocaml+ {
-  files = [
-    "js_log.ml", pp_js;
-  ];
-  requires = [
-    "js_of_ocaml";
-  ];
-});
-
-OCaml.library("ocplib-js-min",  ocaml+ {
-  files = [
-    "js_min.ml", pp_js;
-  ];
-  requires = [
-    "ocplib-js-log";
   ];
 });

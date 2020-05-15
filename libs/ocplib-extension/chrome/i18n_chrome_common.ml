@@ -1,4 +1,4 @@
-open Js_types
+open Js_min
 
 class type language_percent = object
   method language : js_string t prop
@@ -17,8 +17,8 @@ class type i18n = object
   method detectLanguage : js_string t -> (language_detection t -> unit) callback -> unit meth
 end
 
-let i18n = variable "chrome.i18n"
+let i18n = Unsafe.variable "chrome.i18n"
 
 let getMessage ?substitutions message =
-  to_string @@ i18n##getMessage (string message) (optdef array_of_list_str substitutions)
+  to_string (i18n##getMessage (string message) (optdef (of_listf string) substitutions))
 let getUILanguage () = i18n##getUILanguage

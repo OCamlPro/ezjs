@@ -1,4 +1,4 @@
-open Js_min
+open Dom_min
 open Chrome
 module Content = Declarative_content
 

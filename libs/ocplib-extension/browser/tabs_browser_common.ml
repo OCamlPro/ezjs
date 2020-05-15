@@ -1,17 +1,17 @@
-open Js_types
+open Js_min
 open Promise
 open Browser_utils
 open Runtime_utils
 open Tabs_utils
 
 let make_create ?active ?index ?openerTabId ?pinned ?url ?windowId () =
-  let tab : createProperties t = obj [||] in
+  let tab : createProperties t = Unsafe.obj [||] in
   tab##.active := optdef bool active;
-  tab##.index := def_option index;
-  tab##.openerTabId := def_option openerTabId;
+  tab##.index := Optdef.option index;
+  tab##.openerTabId := Optdef.option openerTabId;
   tab##.pinned := optdef bool pinned;
   tab##.url := optdef string url;
-  tab##.windowId := def_option windowId;
+  tab##.windowId := Optdef.option windowId;
   tab
 
 class type tabs = object
@@ -63,21 +63,21 @@ class type tabs = object
   method onUpdated : (int, 'a t, tab t) event3 t prop
   method onZoomChanged : 'a t event t prop
 end
-let tabs : tabs t = variable "browser.tabs"
+let tabs : tabs t = Unsafe.variable "browser.tabs"
 let tab_id_none () = tabs##._TAB_ID_NONE
 
-let connect ?info id = tabs##connect id (def_option info)
+let connect ?info id = tabs##connect id (Optdef.option info)
 let hide id = tabs##hide id
-let hide_list ids = tabs##hide_arr (array_of_list ids)
-let insertCSS ?id () = tabs##insertCSS (def_option id)
+let hide_list ids = tabs##hide_arr (of_list ids)
+let insertCSS ?id () = tabs##insertCSS (Optdef.option id)
 let moveInSuccession ?id ?options ids =
-  tabs##moveInSuccession (array_of_list ids) (def_option id) (def_option options)
+  tabs##moveInSuccession (of_list ids) (Optdef.option id) (Optdef.option options)
 let print () = tabs##print
 let printPreview () = tabs##printPreview
-let removeCSS ?id details = tabs##removeCSS (def_option id) details
+let removeCSS ?id details = tabs##removeCSS (Optdef.option id) details
 let show id = tabs##show id
-let show_list ids = tabs##show_arr (array_of_list ids)
-let toggleReaderMode ?id () = tabs##toggleReaderMode (def_option id)
+let show_list ids = tabs##show_arr (of_list ids)
+let toggleReaderMode ?id () = tabs##toggleReaderMode (Optdef.option id)
 
 let onActivated f = addListener1 tabs##.onActivated f
 let onAttached f = addListener2 tabs##.onAttached f

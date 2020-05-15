@@ -1,11 +1,4 @@
-module Js = Js_of_ocaml.Js
-module Dom = Js_of_ocaml.Dom
-module Dom_html = Js_of_ocaml.Dom_html
-module Firebug = Js_of_ocaml.Firebug
-
-open Js
-
-include Js_log
+open Js_min
 
 let setInnerHtml elt s = elt##.innerHTML := string s
 let setText elt = function
@@ -107,4 +100,4 @@ let strings_to_object l =
   let s = "{" ^ (String.concat "," (
       List.map (fun (k,v) -> (encapse k) ^ ":" ^ v) l)) ^ "}" in
   try _JSON##parse (string s)
-  with _ -> Js_log.log_str ("cannot parse json " ^ s); Unsafe.obj [||]
+  with _ -> log_str ("cannot parse json " ^ s); Unsafe.obj [||]
