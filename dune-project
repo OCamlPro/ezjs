@@ -22,4 +22,5 @@
  (depends
   (js_of_ocaml-tyxml (>= 3.4.0))
   (base64 (>= 3.2.0))
-  (lwt (>= 4.0.0))))
+  (lwt (>= 4.0.0))
+  (stdlib-shims (>= 0.1.0))))

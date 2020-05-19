@@ -3,7 +3,7 @@
  (public_name ocplib-jsutils.js-log)
  (modules js_log)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml))
+ (libraries js_of_ocaml stdlib-shims))
 
 (library
  (name js_min)
