@@ -1,6 +1,6 @@
 (library
  (name jsutils)
- (public_name ocplib-jsutils.utils)
+ (public_name ocplib-jsutils)
  (wrapped false)
  (modules
   ocp_js
@@ -23,4 +23,5 @@
  (public_name ocplib-jsutils.xor)
  (name xor)
  (modules xor)
+ (optional)
  (libraries base64))

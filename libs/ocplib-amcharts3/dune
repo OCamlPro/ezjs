@@ -1,6 +1,6 @@
 (library
  (name amcharts3)
- (public_name ocplib-jsutils.amcharts3)
+ (public_name ocplib-amcharts3)
  (wrapped false)
  (modules ammap3 amcharts3 amcharts3_bis)
  (preprocess (pps js_of_ocaml-ppx))

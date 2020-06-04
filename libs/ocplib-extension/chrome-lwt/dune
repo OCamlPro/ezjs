@@ -1,6 +1,6 @@
 (library
  (name chrome_lwt)
- (public_name ocplib-jsutils.chrome-lwt)
+ (public_name ocplib-extension.chrome-lwt)
  (modules
   tabs_chrome_lwt
   windows_chrome_lwt
@@ -8,5 +8,6 @@
   storage_chrome_lwt
   i18n_chrome_lwt
   chrome_lwt)
+ (optional)
  (preprocess (pps js_of_ocaml-ppx))
  (libraries chrome_common promise_lwt))

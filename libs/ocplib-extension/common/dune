@@ -1,20 +1,21 @@
 (library
  (name promise)
- (public_name ocplib-jsutils.promise)
+ (public_name ocplib-extension.promise)
  (modules promise)
  (preprocess (pps js_of_ocaml-ppx))
  (libraries js_min))
 
 (library
  (name promise_lwt)
- (public_name ocplib-jsutils.promise-lwt)
+ (public_name ocplib-extension.promise-lwt)
  (modules promise_lwt)
  (preprocess (pps js_of_ocaml-ppx))
+ (optional)
  (libraries promise lwt))
 
 (library
  (name extension_common)
- (public_name ocplib-jsutils.extension-common)
+ (public_name ocplib-extension.common)
  (wrapped false)
  (modules browser_utils tabs_utils runtime_utils)
  (preprocess (pps js_of_ocaml-ppx))
@@ -22,7 +23,7 @@
 
 (library
  (name declarative_content)
- (public_name ocplib-jsutils.declarative-content)
+ (public_name ocplib-extension.declarative-content)
  (modules declarative_content)
  (preprocess (pps js_of_ocaml-ppx))
  (libraries js_min))
