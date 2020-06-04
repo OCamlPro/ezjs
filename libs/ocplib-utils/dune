@@ -1,0 +1,27 @@
+(library
+ (name jsutils)
+ (public_name ocplib-jsutils)
+ (wrapped false)
+ (modules
+  ocp_js
+  js_utils
+  lwt_request
+  xhr
+  jsbind
+  bootstrap_helpers
+  jsloc
+  jsStorage
+  cookie
+  session
+  jslang
+  onload
+  jsdate)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml-tyxml lwt))
+
+(library
+ (public_name ocplib-jsutils.xor)
+ (name xor)
+ (modules xor)
+ (optional)
+ (libraries base64))

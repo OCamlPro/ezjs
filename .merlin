@@ -1,6 +1,0 @@
-S libs/**
-B _obuild/**
-PKG js_of_ocaml
-PKG js_of_ocaml-ppx
-PKG js_of_ocaml-tyxml
-PKG lwt

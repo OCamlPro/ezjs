@@ -1,4 +1,4 @@
-open Ocp_js
+open Js_of_ocaml
 
 class type  configuration = object
   method auto : bool Js.prop

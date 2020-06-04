@@ -1,0 +1,6 @@
+(library
+ (name cleave)
+ (public_name ocplib-cleave)
+ (modules cleave)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml))

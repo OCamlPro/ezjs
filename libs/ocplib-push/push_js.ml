@@ -1,4 +1,4 @@
-open Ocp_js
+open Js_of_ocaml
 
 class type ['a] promise = object
   method _then : ('a -> unit) -> 'a promise Js.t Js.meth
@@ -117,7 +117,7 @@ let register_worker path f =
   let service_worker = service_worker () in
   then1 service_worker##(register (Js.string path)) f
 
-let get_registration ?(none=fun () -> Js_utils.log "No service worker") f =
+let get_registration ?(none=fun () -> Firebug.console##log (Js.string "No service worker")) f =
   let service_worker = service_worker () in
   then1 service_worker##getRegistration (fun reg ->
       Js.Optdef.case reg none f)
@@ -160,7 +160,7 @@ let subscribe ?options reg f =
   let push_manager = push_manager reg in
   then1 push_manager##(subscribe options) f
 
-let get_subscription ?(none=fun () -> Js_utils.log "No subscription") reg f =
+let get_subscription ?(none=fun () -> Firebug.console##log (Js.string "No subscription")) reg f =
   let push_manager = push_manager reg in
   then1 push_manager##getSubscription (fun subs ->
       Js.Opt.case subs none f)

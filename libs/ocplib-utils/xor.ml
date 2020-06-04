@@ -49,6 +49,6 @@ let xor ?prefix str =
   done;
   Bytes.to_string str'
 
-let alphabet = Bytes.to_string alphabet
-let decode ?prefix str = xor ?prefix @@ B64.decode ~alphabet str
-let encode ?prefix str = B64.encode ~alphabet ( xor ?prefix str )
+let alphabet = Base64.make_alphabet @@ Bytes.to_string alphabet
+let decode ?prefix str = xor ?prefix @@ Base64.decode_exn ~alphabet str
+let encode ?prefix str = Base64.encode_exn ~alphabet ( xor ?prefix str )

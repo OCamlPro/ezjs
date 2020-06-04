@@ -1,10 +1,11 @@
 include Js_of_ocaml.Js
-include Pervasives
 module Url = Js_of_ocaml.Url
 module Dom_html = Js_of_ocaml.Dom_html
 module Firebug = Js_of_ocaml.Firebug
 module File = Js_of_ocaml.File
 module Dom = Js_of_ocaml.Dom
+
+type ('a, 'b) result = ('a, 'b) Stdlib.result = Ok of 'a | Error of 'b
 
 type window = Dom_html.window
 
