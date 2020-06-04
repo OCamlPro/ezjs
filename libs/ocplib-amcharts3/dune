@@ -4,4 +4,4 @@
  (wrapped false)
  (modules ammap3 amcharts3 amcharts3_bis)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries jsutils))
+ (libraries ocplib-jsutils))

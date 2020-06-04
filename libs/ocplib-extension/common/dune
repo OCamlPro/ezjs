@@ -3,7 +3,7 @@
  (public_name ocplib-extension.promise)
  (modules promise)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_min))
+ (libraries ocplib-jsmin.js))
 
 (library
  (name promise_lwt)
@@ -19,11 +19,11 @@
  (wrapped false)
  (modules browser_utils tabs_utils runtime_utils)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_min))
+ (libraries ocplib-jsmin.js))
 
 (library
  (name declarative_content)
  (public_name ocplib-extension.declarative-content)
  (modules declarative_content)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_min))
+ (libraries ocplib-jsmin.js))
