@@ -1,6 +1,6 @@
 (library
  (name odometer)
- (public_name ocplib-jsutils.odometer)
+ (public_name ezjs-odometer)
  (modules odometer)
  (preprocess (pps js_of_ocaml-ppx))
  (libraries js_of_ocaml))

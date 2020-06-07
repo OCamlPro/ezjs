@@ -1,6 +1,6 @@
 (library
  (name chrome_common)
- (public_name ocplib-extension.chrome-common)
+ (public_name ezjs-extension.chrome-common)
  (wrapped false)
  (modules
   tabs_chrome_common
@@ -14,7 +14,7 @@
 
 (library
  (name chrome)
- (public_name ocplib-extension.chrome)
+ (public_name ezjs-extension.chrome)
  (modules
   tabs_chrome
   windows_chrome

@@ -1,6 +1,6 @@
 (library
- (name ocplib_ace)
- (public_name ocplib-ace)
+ (name ace)
+ (public_name ezjs-ace)
  (modules_without_implementation ace_types)
  (modules ace_types ace)
  (preprocess (pps js_of_ocaml-ppx))

@@ -1,6 +1,6 @@
 (library
  (name push_js)
- (public_name ocplib-push-js)
+ (public_name ezjs-push)
  (modules push_js)
  (preprocess (pps js_of_ocaml-ppx))
  (libraries js_of_ocaml))

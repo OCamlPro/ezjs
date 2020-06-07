@@ -1,13 +1,13 @@
 (library
  (name promise)
- (public_name ocplib-extension.promise)
+ (public_name ezjs-extension.promise)
  (modules promise)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries ocplib-jsmin.js))
+ (libraries ezjs-min.js))
 
 (library
  (name promise_lwt)
- (public_name ocplib-extension.promise-lwt)
+ (public_name ezjs-extension.promise-lwt)
  (modules promise_lwt)
  (preprocess (pps js_of_ocaml-ppx))
  (optional)
@@ -15,15 +15,15 @@
 
 (library
  (name extension_common)
- (public_name ocplib-extension.common)
+ (public_name ezjs-extension.common)
  (wrapped false)
  (modules browser_utils tabs_utils runtime_utils)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries ocplib-jsmin.js))
+ (libraries ezjs-min.js))
 
 (library
  (name declarative_content)
- (public_name ocplib-extension.declarative-content)
+ (public_name ezjs-extension.declarative-content)
  (modules declarative_content)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries ocplib-jsmin.js))
+ (libraries ezjs-min.js))

@@ -1,27 +1,92 @@
 (library
- (name jsutils)
- (public_name ocplib-jsutils)
+ (name ocp_js)
+ (public_name ezjs-utils)
  (wrapped false)
- (modules
-  ocp_js
-  js_utils
-  lwt_request
-  xhr
-  jsbind
-  bootstrap_helpers
-  jsloc
-  jsStorage
-  cookie
-  session
-  jslang
-  onload
-  jsdate)
+ (modules ocp_js js_utils)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml-tyxml lwt))
+ (libraries js_of_ocaml-tyxml))
 
 (library
- (public_name ocplib-jsutils.xor)
+ (name lwt_request)
+ (public_name ezjs-utils.lwt_request)
+ (modules lwt_request)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ocp_js lwt))
+
+(library
+ (name xhr)
+ (public_name ezjs-utils.xhr)
+ (modules xhr)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ocp_js))
+
+(library
+ (name jsbind)
+ (public_name ezjs-utils.bind)
+ (modules jsbind)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries xhr))
+
+(library
+ (name bs3)
+ (public_name ezjs-utils.bs3)
+ (modules bootstrap_helpers)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ocp_js))
+
+(library
+ (name jsloc)
+ (public_name ezjs-utils.loc)
+ (modules jsloc)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries jsStorage))
+
+(library
+ (name jsStorage)
+ (public_name ezjs-utils.storage)
+ (modules jsStorage)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ocp_js))
+
+(library
+ (name cookie)
+ (public_name ezjs-utils.cookie)
+ (modules cookie)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ocp_js))
+
+(library
+ (name session)
+ (public_name ezjs-utils.session)
+ (modules session)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ocp_js))
+
+(library
+ (name jslang)
+ (public_name ezjs-utils.lang)
+ (modules jslang)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries jsloc cookie))
+
+(library
+ (name onload)
+ (public_name ezjs-utils.onload)
+ (modules onload)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ocp_js))
+
+(library
+ (name jsdate)
+ (public_name ezjs-utils.date)
+ (modules jsdate)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ocp_js))
+
+(library
+ (public_name ezjs-utils.xor)
  (name xor)
  (modules xor)
  (optional)
+ (preprocess (pps js_of_ocaml-ppx))
  (libraries base64))

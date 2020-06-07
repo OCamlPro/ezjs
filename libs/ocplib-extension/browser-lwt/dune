@@ -1,6 +1,6 @@
 (library
  (name browser_lwt)
- (public_name ocplib-extension.browser-lwt)
+ (public_name ezjs-extension.browser-lwt)
  (modules
   tabs_browser_lwt
   windows_browser_lwt

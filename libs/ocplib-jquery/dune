@@ -1,13 +1,13 @@
 (library
  (name jquery)
- (public_name ocplib-jquery)
+ (public_name ezjs-jquery)
  (modules jquery)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries ocplib-jsutils))
+ (libraries ezjs-utils))
 
 (library
  (name sortable)
- (public_name ocplib-jquery.sortable)
+ (public_name ezjs-jquery.sortable)
  (modules sortable)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries ocplib-jquery))
+ (libraries ezjs-jquery))

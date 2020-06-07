@@ -1,5 +1,5 @@
 (lang dune 2.5)
-(name ocplib-jsutils)
+(name ezjs)
 (allow_approximate_merlin)
 
 (generate_opam_files true)
@@ -16,7 +16,7 @@
 (documentation "https://ocamlpro.github.io/ocplib-jsutils/doc")
 
 (package
- (name ocplib-jsutils)
+ (name ezjs-utils)
  (synopsis "A collection of useful libraries to build sites with js_of_ocaml")
  (depends
   (js_of_ocaml-tyxml (>= 3.4.0))
@@ -25,76 +25,76 @@
  (depopts (base64 (>= 3.2.0))))
 
 (package
- (name ocplib-jsmin)
+ (name ezjs-min)
  (synopsis "A minimal helper for js and dom object")
  (depends
   (js_of_ocaml-ppx (>= 3.4.0))
   stdlib-shims))
 
 (package
- (name ocplib-ace)
+ (name ezjs-ace)
  (synopsis "Ace binding")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
 (package
- (name ocplib-amcharts3)
+ (name ezjs-amcharts3)
  (synopsis "Amcharts3 binding")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
  (package
- (name ocplib-bs4)
+ (name ezjs-bs4)
  (synopsis "Bootstrap4 helpers")
  (depends
   (js_of_ocaml-ppx (>= 3.4.0))
-  ocplib-cleave ocplib-jquery))
+  ezjs-cleave ezjs-jquery))
 
 (package
- (name ocplib-cleave)
+ (name ezjs-cleave)
  (synopsis "Binding for Cleave JS")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
 (package
- (name ocplib-cytoscape)
+ (name ezjs-cytoscape)
  (synopsis "Binding for Cytoscape")
- (depends ocplib-jsutils))
+ (depends ezjs-utils))
 
 (package
- (name ocplib-d3pie)
+ (name ezjs-d3pie)
  (synopsis "Binding for D3Pie")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
 (package
- (name ocplib-disqus)
+ (name ezjs-disqus)
  (synopsis "Binding for Disqus")
- (depends ocplib-jsutils))
+ (depends ezjs-utils))
 
 (package
- (name ocplib-extension)
+ (name ezjs-extension)
  (synopsis "Binding for chrome and firefox extension API")
- (depends ocplib-jsmin)
+ (depends ezjs-min)
  (depopts lwt))
 
 (package
- (name ocplib-jquery)
+ (name ezjs-jquery)
  (synopsis "Binding for JQuery")
- (depends ocplib-jsutils))
+ (depends ezjs-utils))
 
 (package
- (name ocplib-odometer)
+ (name ezjs-odometer)
  (synopsis "Binding for Odometer JS")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
 (package
- (name ocplib-push-js)
+ (name ezjs-push)
  (synopsis "Binding for Push Notification JS")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
 (package
- (name ocplib-qrcode-js)
+ (name ezjs-qrcode)
  (synopsis "Binding for Qrcode JS")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
 (package
- (name ocplib-recaptcha-js)
+ (name ezjs-recaptcha)
  (synopsis "Binding for Client Side Recaptcha")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
