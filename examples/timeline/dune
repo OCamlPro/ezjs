@@ -1,0 +1,5 @@
+(executable
+ (name example_timeline)
+ (modules example_timeline)
+ (libraries timeline)
+ (modes js))
