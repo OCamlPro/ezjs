@@ -29,7 +29,7 @@ class type headers = object
   method append : js_string t -> js_string t -> unit meth
   method delete : js_string t -> unit meth
   method entries : js_string t js_array t iterator t meth
-  (* method forEach *)
+  method forEach : (js_string t -> js_string t -> unit) callback -> unit meth
   method get : js_string t -> js_string t opt meth
   method has : js_string t -> bool t meth
   method keys : js_string t iterator t meth
@@ -50,15 +50,19 @@ class type body = object
 end
 
 class type request_init = object
-  method cache : js_string t optdef readonly_prop
-  method credentials : js_string t optdef readonly_prop
-  method headers : headers t optdef readonly_prop
-  method integrity : js_string t optdef readonly_prop
-  method method_ : js_string t optdef readonly_prop
-  method mode : js_string t optdef readonly_prop
-  method redirect : js_string t optdef readonly_prop
-  method referrer : js_string t optdef readonly_prop
-  method body : File.file_any optdef readonly_prop
+  method cache : js_string t optdef prop
+  method credentials : js_string t optdef prop
+  method headers : headers t optdef prop
+  method integrity : js_string t optdef prop
+  method method_ : js_string t optdef prop
+  method mode : js_string t optdef prop
+  method redirect : js_string t optdef prop
+  method referrer : js_string t optdef prop
+  method body_blob : File.blob t optdef prop
+  method body_string : js_string t optdef prop
+  method body_buffer : Typed_array.arrayBuffer t optdef prop
+  method body_formdata : Form.formData t optdef prop
+  method body_urlparam : headers t optdef prop
 end
 
 class type abort_signal = object
@@ -132,22 +136,34 @@ let get_headers (h : headers t)=
   List.rev @@ List.fold_left
     (fun acc x -> match x with None -> acc | Some x -> x :: acc) [] l
 
+type request_body =
+  | RBlob of File.blob t
+  | RString of string
+  | RBuffer of Typed_array.arrayBuffer t
+  | RFormData of Form.formData t
+  | RUrlParam of (string * string) list
+
 let request_init ?cache ?credentials ?headers ?integrity ?meth ?mode ?redirect
-    ?referrer ?body () : request_init t optdef =
+    ?referrer ?body () =
   match cache, credentials, headers, integrity, meth, mode, redirect, referrer, body with
   | None, None, None, None, None, None, None, None, None -> undefined
-  | _ -> def @@
-    object%js
-      val cache = optdef string cache
-      val credentials = optdef string credentials
-      val headers = optdef make_headers headers
-      val integrity = optdef string integrity
-      val method_ = optdef string meth
-      val mode = optdef string mode
-      val redirect = optdef string redirect
-      val referrer = optdef string referrer
-      val body = Optdef.option body
-    end
+  | _ -> let r = Unsafe.obj [||] in
+    r##.cache := optdef string cache;
+    r##.credentials := optdef string credentials;
+    r##.headers := optdef make_headers headers;
+    r##.integrity := optdef string integrity;
+    r##.method_ := optdef string meth;
+    r##.mode := optdef string mode;
+    r##.redirect := optdef string redirect;
+    r##.referrer := optdef string referrer;
+    (match body with
+     | Some (RBlob b) -> r##.body_blob := def b
+     | Some (RString s) -> r##.body_string := def (string s)
+     | Some (RBuffer b) -> r##.body_buffer := def b
+     | Some (RFormData f) -> r##.body_formdata := def f
+     | Some (RUrlParam p) -> r##.body_urlparam := def (make_headers p)
+     | _ -> ());
+    def r
 
 let request ?cache ?credentials ?headers ?integrity ?meth ?mode ?redirect
     ?referrer ?body url =
@@ -157,23 +173,16 @@ let request ?cache ?credentials ?headers ?integrity ?meth ?mode ?redirect
 
 let fetch_init ?cache ?credentials ?headers ?integrity ?meth ?mode ?redirect
     ?referrer ?body ?referrerPolicy ?keepalive () : fetch_init t optdef =
-  match cache, credentials, headers, integrity, meth, mode, redirect, referrer, body with
-  | None, None, None, None, None, None, None, None, None -> undefined
-  | _ -> def @@
-    object%js
-      val cache = optdef string cache
-      val credentials = optdef string credentials
-      val headers = optdef make_headers headers
-      val integrity = optdef string integrity
-      val method_ = optdef string meth
-      val mode = optdef string mode
-      val redirect = optdef string redirect
-      val referrer = optdef string referrer
-      val body = Optdef.option body
-      val referrerPolicy = optdef string referrerPolicy
-      val keepalive = optdef bool keepalive
-      val signal = undefined
-    end
+  match Optdef.to_option (request_init ?cache ?credentials ?headers ?integrity ?meth ?mode ?redirect
+                            ?referrer ?body ()), referrerPolicy, keepalive with
+  | None, None, None -> undefined
+  | r, _, _ ->
+    let r = match r with
+      | None -> Unsafe.obj [||]
+      | Some r -> r in
+    r##.referrerPolicy := optdef string referrerPolicy;
+    r##.keepalive := optdef bool keepalive;
+    def r
 
 let fetch_base ?cache ?credentials ?headers ?integrity ?meth ?mode ?redirect ?referrer ?body
     ?referrerPolicy ?keepalive url =

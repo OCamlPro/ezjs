@@ -39,7 +39,7 @@
 (package
  (name ezjs-amcharts3)
  (synopsis "Amcharts3 binding")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
+ (depends ezjs-utils))
 
  (package
  (name ezjs-bs4)
