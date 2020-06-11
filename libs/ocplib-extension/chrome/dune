@@ -10,7 +10,7 @@
   i18n_chrome_common
   browser_action_chrome_common)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries extension_common promise))
+ (libraries extension_common ezjs-min.promise))
 
 (library
  (name chrome)

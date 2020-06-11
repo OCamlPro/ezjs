@@ -15,7 +15,7 @@ doc: "https://ocamlpro.github.io/ocplib-jsutils/doc"
 bug-reports: "https://github.com/ocamlpro/ocplib-jsutils/issues"
 depends: [
   "dune" {>= "2.5"}
-  "ezjs-min.promise-lwt"
+  "ezjs-min"
 ]
 build: [
   ["dune" "subst"] {pinned}

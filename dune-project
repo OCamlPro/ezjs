@@ -1,6 +1,6 @@
 (lang dune 2.5)
-(name ezjs)
 (allow_approximate_merlin)
+(name ezjs-min)
 
 (generate_opam_files true)
 
@@ -112,4 +112,4 @@
 (package
  (name ezjs-fetch)
  (synopsis "Binding for Fetch")
- (depends ezjs-min.promise-lwt))
+ (depends ezjs-min))
