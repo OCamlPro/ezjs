@@ -1,17 +1,3 @@
-(library
- (name promise)
- (public_name ezjs-extension.promise)
- (modules promise)
- (preprocess (pps js_of_ocaml-ppx))
- (libraries ezjs-min.js))
-
-(library
- (name promise_lwt)
- (public_name ezjs-extension.promise-lwt)
- (modules promise_lwt)
- (preprocess (pps js_of_ocaml-ppx))
- (optional)
- (libraries promise lwt))
 
 (library
  (name extension_common)

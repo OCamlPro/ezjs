@@ -18,3 +18,18 @@
  (modules dom_min)
  (preprocess (pps js_of_ocaml-ppx))
  (libraries js_min))
+
+(library
+ (name promise)
+ (public_name ezjs-min.promise)
+ (modules promise)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_min))
+
+(library
+ (name promise_lwt)
+ (public_name ezjs-min.promise-lwt)
+ (modules promise_lwt)
+ (preprocess (pps js_of_ocaml-ppx))
+ (optional)
+ (libraries promise lwt))

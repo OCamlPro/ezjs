@@ -1,0 +1,6 @@
+(library
+ (name fetch)
+ (public_name ezjs-fetch)
+ (modules fetch)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs-min.promise-lwt))
