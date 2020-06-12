@@ -28,7 +28,7 @@
  (libraries xhr))
 
 (library
- (name bs3)
+ (name bootstrap_helpers)
  (public_name ezjs-utils.bs3)
  (modules bootstrap_helpers)
  (preprocess (pps js_of_ocaml-ppx))
