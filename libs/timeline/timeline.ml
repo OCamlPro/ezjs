@@ -36,9 +36,72 @@ class type options = object
   method script_path_ : js_string t optdef prop
 end
 
-class type timeline = object end
+class type date = object
+  method year : int readonly_prop
+  method month : int optdef readonly_prop
+  method day : int optdef readonly_prop
+  method hour : int optdef readonly_prop
+  method minute : int optdef readonly_prop
+  method second : int optdef readonly_prop
+  method millisecond : int optdef readonly_prop
+  method format : js_string t optdef readonly_prop
+  method display_text : js_string t optdef readonly_prop
+end
 
-type timeline_cs = (js_string t -> js_string t -> options t optdef -> timeline t) constr
+class type location = object
+  method icon : js_string t readonly_prop
+  method lat : number t readonly_prop
+  method lon : number t readonly_prop
+  method line : bool t readonly_prop
+  method name : js_string t readonly_prop
+  method zoom : int optdef readonly_prop
+end
+
+class type media = object
+  method caption : js_string t readonly_prop
+  method credit : js_string t readonly_prop
+  method url : js_string t readonly_prop
+  method thumbnail : js_string t readonly_prop
+end
+
+class type text = object
+  method headline : js_string t readonly_prop
+  method text : js_string t readonly_prop
+end
+
+class type ['a] data = object
+  method data : 'a t readonly_prop
+end
+
+class type ['a] event_data = object
+  method start_date_ : 'a readonly_prop
+  method end_date_ : 'a optdef readonly_prop
+  method location : location t optdef readonly_prop
+  method media : media t optdef readonly_prop
+  method text : text t readonly_prop
+  method unique_id_ : js_string t optdef readonly_prop
+end
+
+class type timeline = object
+  method ready : bool t readonly_prop
+  method version : js_string t readonly_prop
+  method on : js_string t -> (date t data t event_data t -> unit) callback -> unit meth
+  method goTo : int -> unit meth
+  method goToId : js_string t -> unit meth
+  method goToNext : unit meth
+  method goToPrev : unit meth
+  method goToStart : unit meth
+  method goToEnd : unit meth
+  method remove : int -> unit meth
+  method removeId : js_string t -> unit meth
+  method add : date t event_data t -> unit meth
+  method getData : int -> date t data t event_data t meth
+  method getDataById : js_string t -> date t data t event_data t meth
+  method getSlide : int -> date t data t event_data t meth
+  method getSlideById : js_string t -> date t data t event_data t meth
+end
+
+type timeline_cs = (js_string t -> Unsafe.any -> options t optdef -> timeline t) constr
 
 let timeline_cs : timeline_cs = Unsafe.variable "TL.Timeline"
 
@@ -85,7 +148,57 @@ let options
   (match script_path with None -> () | Some p -> o##.script_path_ := def (string p));
   o
 
+type json_source = SUrl of string | SStr of string
+
 let make ?options id json =
+  let json = match json with
+    | SUrl s -> Unsafe.inject (string s)
+    | SStr s -> Unsafe.inject (_JSON##parse (string s)) in
   let options = match options with None -> undefined | Some o -> def o in
-  let timeline = new%js timeline_cs (string id) (string json) options in
+  let timeline = new%js timeline_cs (string id) json options in
   export "timeline" timeline
+
+let optdef f = function
+  | None -> undefined
+  | Some x -> def (f x)
+
+let make_date ?month ?day ?hour ?minute ?second ?millisecond ?format ?display_text year : date t =
+  object%js
+    val year = year
+    val month = Optdef.option month
+    val day = Optdef.option day
+    val hour = Optdef.option hour
+    val minute = Optdef.option minute
+    val second = Optdef.option second
+    val millisecond = Optdef.option millisecond
+    val format = optdef string format
+    val display_text = optdef string display_text
+  end
+
+let make_media ?(caption="") ?(credit="") ?(thumbnail="") url : media t =
+  object%js
+    val caption = string caption
+    val credit = string credit
+    val url = string url
+    val thumbnail = string thumbnail
+  end
+
+let make_text ?(headline="") text : text t =
+  object%js
+    val headline = string headline
+    val text = string text
+  end
+
+let make_event ?end_date ?media ?id text start_date : date t event_data t =
+  object%js
+    val start_date_ = start_date
+    val end_date_ = Optdef.option end_date
+    val location = undefined
+    val media = Optdef.option media
+    val text = text
+    val unique_id_ = optdef string id
+  end
+
+let add_event ?end_date ?media ?id text start_date (timeline : timeline t) =
+  let event = make_event ?end_date ?media ?id text start_date in
+  timeline##add event
