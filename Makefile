@@ -11,6 +11,9 @@ clean:
 install:
 	dune install
 
+doc:
+	dune build @doc
+
 ocp-build-conf:
 	ocp-autoconf
 
