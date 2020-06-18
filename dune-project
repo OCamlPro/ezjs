@@ -20,7 +20,7 @@
  (synopsis "A collection of useful libraries to build sites with js_of_ocaml")
  (depends
   (js_of_ocaml-tyxml (>= 3.4.0))
-  (lwt (>= 4.0.0))
+  (lwt (>= 5.3.0))
   stdlib-shims)
  (depopts (base64 (>= 3.2.0))))
 
@@ -72,7 +72,7 @@
  (name ezjs-extension)
  (synopsis "Binding for chrome and firefox extension API")
  (depends ezjs-min)
- (depopts lwt))
+ (depopts (lwt (>= 5.3.0))))
 
 (package
  (name ezjs-jquery)

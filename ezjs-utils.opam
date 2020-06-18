@@ -16,7 +16,7 @@ bug-reports: "https://github.com/ocamlpro/ocplib-jsutils/issues"
 depends: [
   "dune" {>= "2.5"}
   "js_of_ocaml-tyxml" {>= "3.4.0"}
-  "lwt" {>= "4.0.0"}
+  "lwt" {>= "5.3.0"}
   "stdlib-shims"
 ]
 depopts: [
