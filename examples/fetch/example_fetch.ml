@@ -6,5 +6,10 @@ class type test = object
 end
 
 let () = Lwt.async @@ fun () ->
-  fetch "https://api.dunscan.io/v4/head" to_js >|=? fun (r : test Js.t response) ->
-  Firebug.console##log r.body##.hash
+  Lwt.bind
+    (fetch "https://api.dunscan.io/v4/head" to_js)
+    (function
+      | Error s ->
+        Lwt.return @@ Firebug.console##log_2 (Js.string "Error") (Js.string s)
+      | Ok (r : test Js.t response) ->
+        Lwt.return @@ Firebug.console##log r.body##.hash)
