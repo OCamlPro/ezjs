@@ -1,0 +1,13 @@
+(library
+ (name storage_local)
+ (public_name ezjs-extension.local)
+ (modules storage_local)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs-min.js))
+
+(library
+ (name storage_local_lwt)
+ (public_name ezjs-extension.local-lwt)
+ (modules storage_local_lwt)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs-min.promise-lwt storage_local))
