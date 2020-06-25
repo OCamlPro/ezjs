@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 
 class type mutedInfo = object
   method extensionId : js_string t optdef prop

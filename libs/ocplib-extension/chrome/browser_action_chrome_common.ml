@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 
 type uint8Array = Js_of_ocaml.Typed_array.uint8Array
 

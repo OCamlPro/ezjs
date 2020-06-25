@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 include Windows_chrome_common
 
 let get ?info id f = windows##get id (Optdef.option info) (wrap_callback f)

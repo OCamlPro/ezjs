@@ -1,5 +1,5 @@
-open Js_min
-open Promise
+open Ezjs_min.Js
+open Ezjs_min.Promise
 include Runtime_browser_common
 
 let getBackgroundPage f = jthen runtime##getBackgroundPage f

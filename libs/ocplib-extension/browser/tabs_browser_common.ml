@@ -1,5 +1,5 @@
-open Js_min
-open Promise
+open Ezjs_min.Js
+open Ezjs_min.Promise
 open Browser_utils
 open Runtime_utils
 open Tabs_utils

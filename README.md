@@ -1,9 +1,10 @@
 [![Travis-CI Build Status](https://travis-ci.org/OCamlPro/ocplib-jsutils.svg?branch=master)](https://travis-ci.org/OCamlPro/ocplib-jsutils)
+# ezjs
 
-# ocplib-jsutils
+A collection of useful libraries to work with `js_of_ocaml`.
 
-A collection of useful libraries to build sites with `js_of_ocaml`:
-* `ocplib-utils-js` : generic functions for DOM manipulation
-* `ocplib-amcharts3-js` : partial bindings for amcharts3 
-* `ocplib-ace-js` : partial bindings for ace editor
-* `ocplib-d3pie-js` : bindings for d3.js pies
+Some of them have been extracted to their own repository:
+
+- [ezjs_min]: library providing a bunch of useful shortcuts
+
+[ezjs_min]: https://github.com/OCamlPro/ezjs_min

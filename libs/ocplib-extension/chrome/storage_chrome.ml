@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 include Storage_chrome_common
 
 let get ?key (st:storageArea t) f = st##get (opt string key) (wrap_callback f)

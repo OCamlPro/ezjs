@@ -1,5 +1,5 @@
-open Js_min
-open Promise
+open Ezjs_min.Js
+open Ezjs_min.Promise
 include Browser_action_browser_common
 
 let get_title ?tabId ?windowId f =

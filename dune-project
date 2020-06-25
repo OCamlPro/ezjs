@@ -25,13 +25,6 @@
  (depopts (base64 (>= 3.2.0))))
 
 (package
- (name ezjs-min)
- (synopsis "A minimal helper for js and dom object")
- (depends
-  (js_of_ocaml-ppx (>= 3.4.0))
-  stdlib-shims))
-
-(package
  (name ezjs-ace)
  (synopsis "Ace binding")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))

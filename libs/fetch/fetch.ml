@@ -1,5 +1,6 @@
 open Js_of_ocaml
 open Js
+open Ezjs_min
 type ('a, 'b) result = ('a, 'b) Stdlib.result = Ok of 'a | Error of 'b
 
 let optdef f = function

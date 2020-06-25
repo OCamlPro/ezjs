@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 include Browser_action_chrome_common
 
 let set_title ?id ?title ?callback () =

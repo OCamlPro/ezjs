@@ -1,15 +1,16 @@
-
 (library
  (name extension_common)
  (public_name ezjs-extension.common)
  (wrapped false)
  (modules browser_utils tabs_utils runtime_utils)
- (preprocess (pps js_of_ocaml-ppx))
- (libraries ezjs-min.js))
+ (preprocess
+  (pps js_of_ocaml-ppx))
+ (libraries ezjs_min))
 
 (library
  (name declarative_content)
  (public_name ezjs-extension.declarative-content)
  (modules declarative_content)
- (preprocess (pps js_of_ocaml-ppx))
- (libraries ezjs-min.js))
+ (preprocess
+  (pps js_of_ocaml-ppx))
+ (libraries ezjs_min))

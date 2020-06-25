@@ -2,26 +2,17 @@
  (name chrome_common)
  (public_name ezjs-extension.chrome-common)
  (wrapped false)
- (modules
-  tabs_chrome_common
-  windows_chrome_common
-  runtime_chrome_common
-  storage_chrome_common
-  i18n_chrome_common
-  browser_action_chrome_common)
- (preprocess (pps js_of_ocaml-ppx))
- (libraries extension_common ezjs-min.promise))
+ (modules tabs_chrome_common windows_chrome_common runtime_chrome_common
+   storage_chrome_common i18n_chrome_common browser_action_chrome_common)
+ (preprocess
+  (pps js_of_ocaml-ppx))
+ (libraries extension_common ezjs_min))
 
 (library
  (name chrome)
  (public_name ezjs-extension.chrome)
- (modules
-  tabs_chrome
-  windows_chrome
-  runtime_chrome
-  storage_chrome
-  i18n_chrome
-  browser_action_chrome
-  chrome)
- (preprocess (pps js_of_ocaml-ppx))
+ (modules tabs_chrome windows_chrome runtime_chrome storage_chrome
+   i18n_chrome browser_action_chrome chrome)
+ (preprocess
+  (pps js_of_ocaml-ppx))
  (libraries chrome_common))

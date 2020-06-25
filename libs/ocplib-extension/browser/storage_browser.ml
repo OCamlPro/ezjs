@@ -1,5 +1,5 @@
-open Js_min
-open Promise
+open Ezjs_min.Js
+open Ezjs_min.Promise
 include Storage_browser_common
 
 let get ?key (st:storageArea t) f = jthen (st##get (opt string key)) f

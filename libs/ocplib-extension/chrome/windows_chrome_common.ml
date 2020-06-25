@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 open Browser_utils
 
 class type window = object
