@@ -88,11 +88,6 @@
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
 (package
- (name ezjs-blockies)
- (synopsis "Binding for Blockies")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
  (name ezjs-timeline)
  (synopsis "Binding for TimelineJS")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
