@@ -25,11 +25,6 @@
  (depopts (base64 (>= 3.2.0))))
 
 (package
- (name ezjs-ace)
- (synopsis "Ace binding")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
  (name ezjs-amcharts3)
  (synopsis "Amcharts3 binding")
  (depends ezjs-utils))
