@@ -6,12 +6,12 @@ class type storageChange = object
 end
 
 class type storageArea = object
-  method get : js_string t opt -> ('a t -> unit) callback -> unit meth
-  method get_arr : js_string t js_array t opt -> ('a t -> unit) callback -> unit meth
-  method get_o : 'a t opt -> ('a t -> unit) callback -> unit meth
+  method get : js_string t opt -> ('a -> unit) callback -> unit meth
+  method get_arr : js_string t js_array t opt -> ('a -> unit) callback -> unit meth
+  method get_o : 'a opt -> ('a -> unit) callback -> unit meth
   method getBytesInUse : js_string t opt -> (int -> unit) callback -> unit meth
   method getBytesInUse_arr : js_string t js_array t opt -> (int -> unit) callback -> unit meth
-  method set : 'b t -> (unit -> unit) callback optdef -> unit meth
+  method set : 'a -> (unit -> unit) callback optdef -> unit meth
   method remove : js_string t -> (unit -> unit) callback optdef -> unit meth
   method clear : (unit -> unit) callback optdef -> unit meth
 end
