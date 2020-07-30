@@ -1,9 +1,0 @@
-OCaml.library("cleave-js", ocaml + {
-  files = [
-    "cleave.ml", pp_js
-  ];
-  requires = [
-    "ocplib-utils-js";
-    "js_of_ocaml-ppx"
-  ];
-});

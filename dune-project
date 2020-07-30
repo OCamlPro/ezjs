@@ -37,11 +37,6 @@
   ezjs-cleave ezjs-jquery))
 
 (package
- (name ezjs-cleave)
- (synopsis "Binding for Cleave JS")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
  (name ezjs-cytoscape)
  (synopsis "Binding for Cytoscape")
  (depends ezjs-utils))
