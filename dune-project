@@ -58,11 +58,6 @@
  (depends ezjs-utils))
 
 (package
- (name ezjs-push)
- (synopsis "Binding for Push Notification JS")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
  (name ezjs-qrcode)
  (synopsis "Binding for Qrcode JS")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
