@@ -42,11 +42,6 @@
  (depends ezjs-utils))
 
 (package
- (name ezjs-d3pie)
- (synopsis "Binding for D3Pie")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
  (name ezjs-disqus)
  (synopsis "Binding for Disqus")
  (depends ezjs-utils))
