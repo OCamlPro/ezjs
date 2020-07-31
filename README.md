@@ -12,6 +12,7 @@ Some of them have been extracted to their own repository:
 - [ezjs_fetch]: bindings for Fetch
 - [ezjs_min]: library providing a bunch of useful shortcuts
 - [ezjs_odometer]: bindings for odometer
+- [ezjs_recaptcha]: bindings for reCAPTCHA
 
 [ezjs_ace]: https://github.com/OCamlPro/ezjs_ace
 [ezjs_blockies]: https://github.com/OCamlPro/ezjs_blockies
@@ -20,3 +21,4 @@ Some of them have been extracted to their own repository:
 [ezjs_fetch]: https://github.com/OCamlPro/ezjs_fetch
 [ezjs_min]: https://github.com/OCamlPro/ezjs_min
 [ezjs_odometer]: https://github.com/OCamlPro/ezjs_odometer
+[ezjs_recaptcha]: https://github.com/OCamlPro/ezjs_recaptcha

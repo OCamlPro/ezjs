@@ -68,11 +68,6 @@
  (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
 (package
- (name ezjs-recaptcha)
- (synopsis "Binding for Client Side Recaptcha")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
  (name ezjs-timeline)
  (synopsis "Binding for TimelineJS")
  (depends (js_of_ocaml-ppx (>= 3.4.0))))

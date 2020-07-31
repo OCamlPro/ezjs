@@ -1,6 +1,0 @@
-(library
- (name recaptcha_js)
- (public_name ezjs-recaptcha)
- (modules recaptcha_js)
- (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml))
