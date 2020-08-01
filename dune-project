@@ -56,8 +56,3 @@
  (name ezjs-jquery)
  (synopsis "Binding for JQuery")
  (depends ezjs-utils))
-
-(package
- (name ezjs-timeline)
- (synopsis "Binding for TimelineJS")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
