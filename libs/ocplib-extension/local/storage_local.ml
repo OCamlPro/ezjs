@@ -8,7 +8,9 @@ let local_storage f =
 let get_item_storage storage key =
   match Opt.to_option @@ storage##getItem (string key) with
   | None -> Printf.printf "no storage value for %S" key; None
-  | Some v -> Some (_JSON##parse v)
+  | Some v ->
+    if v = string "undefined" || v = string "null" then None
+    else Some (_JSON##parse v)
 
 let get_item key f = local_storage @@ fun storage ->
   match get_item_storage storage key with
