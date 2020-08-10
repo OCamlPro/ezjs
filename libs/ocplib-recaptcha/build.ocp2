@@ -1,9 +1,0 @@
-OCaml.library("ocplib-recaptcha", ocaml + {
-  files = [
-    "recaptcha_js.ml", pp_js
-  ];
-  requires = [
-    "js_of_ocaml";
-    "js_of_ocaml-ppx"
-  ];
-});

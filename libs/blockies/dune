@@ -1,6 +1,0 @@
-(library
- (name blockies)
- (public_name ezjs-blockies)
- (modules blockies)
- (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml))

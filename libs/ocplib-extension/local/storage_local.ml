@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 
 let local_storage f =
   match Optdef.to_option Dom_html.window##.localStorage with

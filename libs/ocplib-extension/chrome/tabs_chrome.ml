@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 include Tabs_chrome_common
 
 let captureVisibleTab ?id ?options f =

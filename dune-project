@@ -25,18 +25,6 @@
  (depopts (base64 (>= 3.2.0))))
 
 (package
- (name ezjs-min)
- (synopsis "A minimal helper for js and dom object")
- (depends
-  (js_of_ocaml-ppx (>= 3.4.0))
-  stdlib-shims))
-
-(package
- (name ezjs-ace)
- (synopsis "Ace binding")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
  (name ezjs-amcharts3)
  (synopsis "Amcharts3 binding")
  (depends ezjs-utils))
@@ -49,19 +37,9 @@
   ezjs-cleave ezjs-jquery))
 
 (package
- (name ezjs-cleave)
- (synopsis "Binding for Cleave JS")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
  (name ezjs-cytoscape)
  (synopsis "Binding for Cytoscape")
  (depends ezjs-utils))
-
-(package
- (name ezjs-d3pie)
- (synopsis "Binding for D3Pie")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
 
 (package
  (name ezjs-disqus)
@@ -78,38 +56,3 @@
  (name ezjs-jquery)
  (synopsis "Binding for JQuery")
  (depends ezjs-utils))
-
-(package
- (name ezjs-odometer)
- (synopsis "Binding for Odometer JS")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
- (name ezjs-push)
- (synopsis "Binding for Push Notification JS")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
- (name ezjs-qrcode)
- (synopsis "Binding for Qrcode JS")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
- (name ezjs-recaptcha)
- (synopsis "Binding for Client Side Recaptcha")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
- (name ezjs-blockies)
- (synopsis "Binding for Blockies")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
- (name ezjs-timeline)
- (synopsis "Binding for TimelineJS")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
-
-(package
- (name ezjs-fetch)
- (synopsis "Binding for Fetch")
- (depends ezjs-min))

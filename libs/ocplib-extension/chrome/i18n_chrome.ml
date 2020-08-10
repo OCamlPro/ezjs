@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 include I18n_chrome_common
 
 let getAcceptLanguages f =

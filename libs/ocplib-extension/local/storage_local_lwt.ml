@@ -1,4 +1,4 @@
-open Promise_lwt
+open Ezjs_min.Promise_lwt
 open Storage_local
 
 let to_lwt_cb_opt0 f callback =

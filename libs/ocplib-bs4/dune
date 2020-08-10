@@ -2,6 +2,7 @@
  (name bs4)
  (public_name ezjs-bs4)
  (wrapped false)
- (flags (:standard -w +a-3-4-44-45-48))
+ (flags
+  (:standard -w +a-3-4-44-45-48))
  (modules bs4 bs4_card bs4_navs bs4_form bs4_deck)
- (libraries ezjs-utils.loc ezjs-cleave ezjs-jquery))
+ (libraries ezjs-utils.loc ezjs_cleave ezjs-jquery))

@@ -1,4 +1,4 @@
-open Js_min
+open Ezjs_min.Js
 open Runtime_utils
 include Runtime_chrome_common
 

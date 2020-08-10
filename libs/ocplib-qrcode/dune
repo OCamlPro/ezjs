@@ -1,6 +1,0 @@
-(library
- (name qrcode)
- (public_name ezjs-qrcode)
- (modules qrcode)
- (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml))
