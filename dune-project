@@ -1,10 +1,10 @@
 (lang dune 2.5)
 (allow_approximate_merlin)
-(name ezjs-min)
+(name ezjs-utils)
 
 (generate_opam_files true)
 
-(source (github ocamlpro/ocplib-jsutils))
+(source (github ocamlpro/ezjs))
 (license GPL-3.0-or-later)
 (authors
  "Cagdas Bozman <cagdas.bozman@ocamlpro.com>"
@@ -13,7 +13,7 @@
  "Maxime Levillain <maxime.levillain@ocamlpro.com>"
  "Steven de Oliveira <steven.de_oliveira@ocamlpro.com>")
 (maintainers "Fabrice Le Fessant <fabrice.le_fessant@ocamlpro.com>")
-(documentation "https://ocamlpro.github.io/ocplib-jsutils/doc")
+(documentation "https://ocamlpro.github.io/ezjs/doc")
 
 (package
  (name ezjs-utils)
@@ -34,7 +34,7 @@
  (synopsis "Bootstrap4 helpers")
  (depends
   (js_of_ocaml-ppx (>= 3.4.0))
-  ezjs-cleave ezjs-jquery))
+  ezjs_cleave ezjs-jquery))
 
 (package
  (name ezjs-cytoscape)
@@ -49,7 +49,7 @@
 (package
  (name ezjs-extension)
  (synopsis "Binding for chrome and firefox extension API")
- (depends ezjs-min)
+ (depends ezjs_min)
  (depopts (lwt (>= 5.3.0))))
 
 (package

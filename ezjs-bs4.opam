@@ -10,13 +10,13 @@ authors: [
   "Steven de Oliveira <steven.de_oliveira@ocamlpro.com>"
 ]
 license: "GPL-3.0-or-later"
-homepage: "https://github.com/ocamlpro/ocplib-jsutils"
-doc: "https://ocamlpro.github.io/ocplib-jsutils/doc"
-bug-reports: "https://github.com/ocamlpro/ocplib-jsutils/issues"
+homepage: "https://github.com/ocamlpro/ezjs"
+doc: "https://ocamlpro.github.io/ezjs/doc"
+bug-reports: "https://github.com/ocamlpro/ezjs/issues"
 depends: [
   "dune" {>= "2.5"}
   "js_of_ocaml-ppx" {>= "3.4.0"}
-  "ezjs-cleave"
+  "ezjs_cleave"
   "ezjs-jquery"
 ]
 build: [
@@ -33,4 +33,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/ocamlpro/ocplib-jsutils.git"
+dev-repo: "git+https://github.com/ocamlpro/ezjs.git"
