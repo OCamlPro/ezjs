@@ -39,7 +39,7 @@
 (package
  (name ezjs-cytoscape)
  (synopsis "Binding for Cytoscape")
- (depends ezjs-utils))
+ (depends (js_of_ocaml (>= 3.4.0))))
 
 (package
  (name ezjs-disqus)

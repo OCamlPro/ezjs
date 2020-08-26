@@ -3,4 +3,4 @@
  (public_name ezjs-cytoscape)
  (modules cytoscape)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries ezjs-utils.bind))
+ (libraries js_of_ocaml))
