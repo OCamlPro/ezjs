@@ -1,4 +1,5 @@
-open Js_min
+open Ezjs_min
+open Js
 open Promise_lwt
 include Windows_chrome_common
 
