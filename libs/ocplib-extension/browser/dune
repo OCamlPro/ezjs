@@ -12,7 +12,7 @@
  (name browser)
  (public_name ezjs-extension.browser)
  (modules tabs_browser windows_browser runtime_browser storage_browser
-   i18n_browser browser_action_browser)
+   i18n_browser browser_action_browser browser)
  (preprocess
   (pps js_of_ocaml-ppx))
  (libraries browser_common ezjs_min))

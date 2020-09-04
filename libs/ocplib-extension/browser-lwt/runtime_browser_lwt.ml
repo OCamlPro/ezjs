@@ -1,4 +1,5 @@
-open Js_min
+open Ezjs_min
+open Js
 open Promise_lwt
 include Runtime_browser_common
 
