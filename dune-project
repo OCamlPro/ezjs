@@ -29,7 +29,7 @@
  (synopsis "Amcharts3 binding")
  (depends ezjs-utils))
 
- (package
+(package
  (name ezjs-bs4)
  (synopsis "Bootstrap4 helpers")
  (depends

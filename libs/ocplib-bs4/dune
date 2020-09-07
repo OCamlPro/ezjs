@@ -1,6 +1,7 @@
 (library
  (name bs4)
  (public_name ezjs-bs4)
+ (optional)
  (wrapped false)
  (flags
   (:standard -w +a-3-4-44-45-48))
