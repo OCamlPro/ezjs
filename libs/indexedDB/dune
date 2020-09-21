@@ -1,0 +1,8 @@
+(library
+ (name indexedDB)
+ (public_name ezjs-idb)
+ (wrapped false)
+ (modules indexedDB indexedDB_types)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs_min)
+ (modes byte))

@@ -56,3 +56,8 @@
  (name ezjs-jquery)
  (synopsis "Binding for JQuery")
  (depends ezjs-utils))
+
+(package
+ (name ezjs-idb)
+ (synopsis "Binding for indexedDB")
+ (depends ezjs_min))
