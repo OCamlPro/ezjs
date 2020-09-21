@@ -1,9 +1,7 @@
--include autoconf/Makefile.config
-
 all: build
 
 build:
-	dune build
+	dune build libs
 
 clean:
 	dune clean
@@ -14,14 +12,6 @@ install:
 doc:
 	dune build @doc
 
-ocp-build-conf:
-	ocp-autoconf
-
-ocp-build-old: ocp-build-conf
-	ocp-build $(PROJECT_BUILD)
-
-ocp-build-install-old: ocp-build-install $(PROJECT_INSTALL)
-
-ocp-build-clean-old: ocp-build-clean $(PROJECT_CLEAN)
-
--include autoconf/Makefile.rules
+example:
+	dune build --profile release examples
+	@cp -f _build/default/examples/indexedDB/indexedDB_example.bc.js examples/indexedDB/indexedDB-example.js
