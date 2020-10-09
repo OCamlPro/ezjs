@@ -306,3 +306,9 @@ let has_granted_scopes (user : google_user t) scopes =
 
 let user_disconnect (user : google_user t) =
   user##disconnect
+
+let wrap_auth ?timeout ?options ?error params button f =
+  init ?timeout params @@ fun gauth ->
+  onclick ?options ?error gauth button @@ fun user ->
+  let profile = basic_profile user in
+  auth_response user (fun auth -> f (profile, auth))
