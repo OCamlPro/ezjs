@@ -61,3 +61,8 @@
  (name ezjs-idb)
  (synopsis "Binding for indexedDB")
  (depends ezjs_min))
+
+(package
+ (name ezjs-google-auth)
+ (synopsis "Binding for Google Sign in")
+ (depends ezjs_min))
