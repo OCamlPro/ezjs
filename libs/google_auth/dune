@@ -1,0 +1,7 @@
+(library
+ (name gauth)
+ (public_name ezjs-google-auth)
+ (modules gauth)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs_min)
+ (modes byte))
