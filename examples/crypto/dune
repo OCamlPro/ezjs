@@ -1,0 +1,6 @@
+(executable
+ (name crypto_example)
+ (modules crypto_example)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs_crypto)
+ (modes js))

@@ -47,12 +47,6 @@
  (depends ezjs-utils))
 
 (package
- (name ezjs-extension)
- (synopsis "Binding for chrome and firefox extension API")
- (depends ezjs_min)
- (depopts (lwt (>= 5.3.0))))
-
-(package
  (name ezjs-jquery)
  (synopsis "Binding for JQuery")
  (depends ezjs-utils))
@@ -65,4 +59,9 @@
 (package
  (name ezjs-google-auth)
  (synopsis "Binding for Google Sign in")
+ (depends ezjs_min))
+
+(package
+ (name ezjs_crypto)
+ (synopsis "WebCrypto binding")
  (depends ezjs_min))
