@@ -1,0 +1,6 @@
+(library
+ (public_name ezjs_bs4)
+ (optional)
+ (flags (:standard -w +a-3-4-44-45-48))
+ (libraries ezjs_utils.loc ezjs_utils.tyxml ezjs_cleave ezjs_jquery)
+ (modes byte))

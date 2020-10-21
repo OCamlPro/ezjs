@@ -1,4 +1,5 @@
-[![Travis-CI Build Status](https://travis-ci.org/OCamlPro/ezjs.svg?branch=master)](https://travis-ci.org/OCamlPro/ezjs)
+![Build Status](https://github.com/OCamlPro/ezjs/workflows/CI/badge.svg?branch=master)
+
 # ezjs
 
 A collection of useful libraries to work with `js_of_ocaml`.
@@ -16,6 +17,7 @@ Some of them have been extracted to their own repository:
 - [ezjs_qrcode]: bindings for QRCode.js
 - [ezjs_recaptcha]: bindings for reCAPTCHA
 - [ezjs_timeline]: bindings for TimelineJS
+- [ezjs_extension]: bindings for Chrome/Firefox Extension
 
 [ezjs_ace]: https://github.com/OCamlPro/ezjs_ace
 [ezjs_blockies]: https://github.com/OCamlPro/ezjs_blockies
@@ -28,3 +30,4 @@ Some of them have been extracted to their own repository:
 [ezjs_qrcode]: https://github.com/OCamlPro/ezjs_qrcode
 [ezjs_recaptcha]: https://github.com/OCamlPro/ezjs_recaptcha
 [ezjs_timeline]: https://github.com/OCamlPro/ezjs_timeline
+[ezjs_extension]: https://github.com/OCamlPro/ezjs_extension

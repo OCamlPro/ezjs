@@ -2,5 +2,5 @@
  (name indexedDB_example)
  (modules indexedDB_example)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries indexedDB)
+ (libraries ezjs_idb)
  (modes js))

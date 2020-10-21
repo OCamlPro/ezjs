@@ -1,7 +1,0 @@
-(library
- (name amcharts3)
- (public_name ezjs-amcharts3)
- (wrapped false)
- (modules ammap3 amcharts3 amcharts3_bis)
- (preprocess (pps js_of_ocaml-ppx))
- (libraries ezjs-utils.bind))

@@ -1,6 +1,0 @@
-(library
- (name disqus)
- (public_name ezjs-disqus)
- (modules disqus)
- (preprocess (pps js_of_ocaml-ppx))
- (libraries ezjs-utils))
