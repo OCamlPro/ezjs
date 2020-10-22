@@ -16,48 +16,50 @@
 (documentation "https://ocamlpro.github.io/ezjs/doc")
 
 (package
- (name ezjs-utils)
+ (name ezjs_utils)
  (synopsis "A collection of useful libraries to build sites with js_of_ocaml")
  (depends
-  (js_of_ocaml-tyxml (>= 3.4.0))
-  (lwt (>= 5.3.0))
+  (js_of_ocaml (>= 3.4.0))
   stdlib-shims)
- (depopts (base64 (>= 3.2.0))))
+ (depopts
+  (lwt (>= 5.3.0))
+  (base64 (>= 3.2.0))
+  (js_of_ocaml-tyxml (>= 3.4.0))))
 
 (package
- (name ezjs-amcharts3)
+ (name ezjs_amcharts3)
  (synopsis "Amcharts3 binding")
- (depends ezjs-utils))
+ (depends ezjs_utils.bind))
 
 (package
- (name ezjs-bs4)
+ (name ezjs_bs4)
  (synopsis "Bootstrap4 helpers")
  (depends
   (js_of_ocaml-ppx (>= 3.4.0))
-  ezjs_cleave ezjs-jquery))
+  ezjs_utils.tyxml ezjs_utils.loc ezjs_cleave ezjs_jquery))
 
 (package
- (name ezjs-cytoscape)
+ (name ezjs_cytoscape)
  (synopsis "Binding for Cytoscape")
  (depends (js_of_ocaml (>= 3.4.0))))
 
 (package
- (name ezjs-disqus)
+ (name ezjs_disqus)
  (synopsis "Binding for Disqus")
- (depends ezjs-utils))
+ (depends (js_of_ocaml (>= 3.4.0))))
 
 (package
- (name ezjs-jquery)
+ (name ezjs_jquery)
  (synopsis "Binding for JQuery")
- (depends ezjs-utils))
+ (depends (js_of_ocaml (>= 3.4.0))))
 
 (package
- (name ezjs-idb)
+ (name ezjs_idb)
  (synopsis "Binding for indexedDB")
  (depends ezjs_min))
 
 (package
- (name ezjs-google-auth)
+ (name ezjs_gauth)
  (synopsis "Binding for Google Sign in")
  (depends ezjs_min))
 

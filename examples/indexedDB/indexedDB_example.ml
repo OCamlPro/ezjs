@@ -1,6 +1,6 @@
 open Ezjs_min.Js
-open IndexedDB
-open IndexedDB_types
+open Ezjs_idb
+open Types
 
 let log_test i o =
   Firebug.console##debug_2 (string ("TEST " ^ string_of_int i)) o

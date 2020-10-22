@@ -1,5 +1,5 @@
 (library
- (public_name ezjs_gauth)
+ (public_name ezjs_disqus)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries ezjs_min)
+ (libraries js_of_ocaml)
  (modes byte))

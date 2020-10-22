@@ -1,0 +1,107 @@
+(library
+ (name ezjs_tyxml)
+ (public_name ezjs_utils.tyxml)
+ (optional)
+ (modules ezjs_tyxml)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml-tyxml)
+ (modes byte))
+
+(library
+ (name ezjs_xhr_lwt)
+ (public_name ezjs_utils.xhr_lwt)
+ (modules ezjs_xhr_lwt)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml lwt)
+ (modes byte))
+
+(library
+ (name ezjs_xhr)
+ (public_name ezjs_utils.xhr)
+ (modules ezjs_xhr)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml)
+ (modes byte))
+
+(library
+ (name ezjs_bind)
+ (public_name ezjs_utils.bind)
+ (modules ezjs_bind)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs_xhr)
+ (modes byte))
+
+(library
+ (name ezjs_bs3)
+ (public_name ezjs_utils.bs3)
+ (optional)
+ (modules ezjs_bs3)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs_tyxml)
+ (modes byte))
+
+(library
+ (name ezjs_storage)
+ (public_name ezjs_utils.storage)
+ (modules ezjs_storage)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml)
+ (modes byte))
+
+(library
+ (name ezjs_loc)
+ (public_name ezjs_utils.loc)
+ (modules ezjs_loc)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs_storage)
+ (modes byte))
+
+(library
+ (name ezjs_cookie)
+ (public_name ezjs_utils.cookie)
+ (modules ezjs_cookie)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml)
+ (modes byte))
+
+(library
+ (name ezjs_session)
+ (public_name ezjs_utils.session)
+ (modules ezjs_session)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml)
+ (modes byte))
+
+(library
+ (name ezjs_lang)
+ (public_name ezjs_utils.lang)
+ (optional)
+ (modules ezjs_lang)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries ezjs_loc ezjs_cookie ezjs_tyxml)
+ (modes byte))
+
+(library
+ (name ezjs_onload)
+ (public_name ezjs_utils.onload)
+ (modules ezjs_onload)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml)
+ (modes byte))
+
+(library
+ (name ezjs_date)
+ (public_name ezjs_utils.date)
+ (modules ezjs_date)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml)
+ (modes byte))
+
+(library
+ (name ezjs_xor)
+ (public_name ezjs_utils.xor)
+ (modules ezjs_xor)
+ (optional)
+ (preprocess (pps js_of_ocaml-ppx))
+ (libraries base64)
+ (modes byte))
