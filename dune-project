@@ -29,14 +29,14 @@
 (package
  (name ezjs_amcharts3)
  (synopsis "Amcharts3 binding")
- (depends ezjs_utils.bind))
+ (depends ezjs_utils))
 
 (package
  (name ezjs_bs4)
  (synopsis "Bootstrap4 helpers")
  (depends
   (js_of_ocaml-ppx (>= 3.4.0))
-  ezjs_utils.tyxml ezjs_utils.loc ezjs_cleave ezjs_jquery))
+  ezjs_utils ezjs_cleave ezjs_jquery))
 
 (package
  (name ezjs_disqus)

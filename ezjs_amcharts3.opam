@@ -15,7 +15,7 @@ doc: "https://ocamlpro.github.io/ezjs/doc"
 bug-reports: "https://github.com/ocamlpro/ezjs/issues"
 depends: [
   "dune" {>= "2.5"}
-  "ezjs_utils.bind"
+  "ezjs_utils"
 ]
 build: [
   ["dune" "subst"] {pinned}
