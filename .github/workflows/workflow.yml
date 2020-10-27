@@ -42,6 +42,7 @@ jobs:
       - name: Install opam packages
         if: steps.cache-opam.outputs.cache-hit != 'true'
         run: |
+          opam update
           opam install . --deps-only --with-doc --with-test
           opam install $(opam show -f depopts: . | sed -e 's/{.*}//g' -e 's/"//g')
 
