@@ -1,4 +1,0 @@
-js_program("chrome-example", "chrome_example.ml", [ "ocplib-chrome"; "ocplib-dom-min" ]);
-js_program("background-example", "background.ml", [ "ocplib-chrome"; "ocplib-dom-min"; "ocplib-declarative-content" ]);
-js_program("popup-example", "popup.ml", [ "ocplib-chrome"; "ocplib-dom-min" ]);
-js_program("options-example", "options.ml", [ "ocplib-chrome"; "ocplib-dom-min" ]);
