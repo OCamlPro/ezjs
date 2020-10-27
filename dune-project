@@ -39,31 +39,11 @@
   ezjs_utils.tyxml ezjs_utils.loc ezjs_cleave ezjs_jquery))
 
 (package
- (name ezjs_cytoscape)
- (synopsis "Binding for Cytoscape")
- (depends (js_of_ocaml (>= 3.4.0))))
-
-(package
  (name ezjs_disqus)
  (synopsis "Binding for Disqus")
  (depends (js_of_ocaml (>= 3.4.0))))
 
 (package
- (name ezjs_jquery)
- (synopsis "Binding for JQuery")
- (depends (js_of_ocaml (>= 3.4.0))))
-
-(package
- (name ezjs_idb)
- (synopsis "Binding for indexedDB")
- (depends ezjs_min))
-
-(package
  (name ezjs_gauth)
  (synopsis "Binding for Google Sign in")
- (depends ezjs_min))
-
-(package
- (name ezjs_crypto)
- (synopsis "WebCrypto binding")
  (depends ezjs_min))

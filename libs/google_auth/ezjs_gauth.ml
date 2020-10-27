@@ -1,5 +1,4 @@
 open Ezjs_min
-open Js
 open Promise
 
 class type basic_profile_js = object

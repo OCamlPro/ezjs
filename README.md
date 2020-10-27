@@ -18,6 +18,10 @@ Some of them have been extracted to their own repository:
 - [ezjs_recaptcha]: bindings for reCAPTCHA
 - [ezjs_timeline]: bindings for TimelineJS
 - [ezjs_extension]: bindings for Chrome/Firefox Extension
+- [ezjs_crypto]: bindings for WebCrypto
+- [ezjs_jquery]: bindings for JQuery
+- [ezjs_cytoscape]: bindings for cytoscape
+- [ezjs_idb]: bindings for indexedDB
 
 [ezjs_ace]: https://github.com/OCamlPro/ezjs_ace
 [ezjs_blockies]: https://github.com/OCamlPro/ezjs_blockies
@@ -31,3 +35,7 @@ Some of them have been extracted to their own repository:
 [ezjs_recaptcha]: https://github.com/OCamlPro/ezjs_recaptcha
 [ezjs_timeline]: https://github.com/OCamlPro/ezjs_timeline
 [ezjs_extension]: https://github.com/OCamlPro/ezjs_extension
+[ezjs_crypto]: https://github.com/OCamlPro/ezjs_crypto
+[ezjs_jquery]: https://github.com/OCamlPro/ezjs_jquery
+[ezjs_cytoscape]: https://github.com/OCamlPro/ezjs_cytoscape
+[ezjs_idb]: https://github.com/OCamlPro/ezjs_idb
