@@ -46,4 +46,4 @@
 (package
  (name ezjs_gauth)
  (synopsis "Binding for Google Sign in")
- (depends ezjs_min))
+ (depends (ezjs_min (>= 0.2))))
