@@ -13,7 +13,12 @@ let all () =
       | [] -> ("", "")
   ) list
 
-let set key value =
+let path_str =
+  function
+  | None -> ""
+  | Some p -> Format.sprintf "path=%s;" p
+
+let set ?path key value =
   let today = new%js Js.date_now in
   let expire_date = new%js Js.date_ms
       (today##getFullYear + 1) (today##getMonth) (today##getDay)
@@ -21,15 +26,15 @@ let set key value =
       (today##getMilliseconds) in
   let expire_time = Js.to_string expire_date##toUTCString in
   Dom_html.document##.cookie :=
-    Js.string (Printf.sprintf "%s=%s;expires=%s" key value expire_time)
+    Js.string (Printf.sprintf "%s=%s;expires=%s;%s" key value expire_time (path_str path))
 
-let set_with_timeout key value date =
+let set_with_timeout ?path key value date =
   let expire_time = Js.to_string date##toUTCString in
   Dom_html.document##.cookie :=
-    Js.string (Printf.sprintf "%s=%s;expires=%s" key value expire_time)
+    Js.string (Printf.sprintf "%s=%s;expires=%s;%s" key value expire_time (path_str path))
 
 
-let clear key =
+let clear ?path key =
   Dom_html.document##.cookie :=
-    Js.string (Printf.sprintf "%s=;expires=%s" key
-                              "Thu, 01 Jan 1970 00:00:00 UTC")
+    Js.string (Printf.sprintf "%s=;expires=%s;%s" key
+                              "Thu, 01 Jan 1970 00:00:00 UTC" (path_str path))
