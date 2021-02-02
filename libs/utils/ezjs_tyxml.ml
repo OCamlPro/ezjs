@@ -402,7 +402,7 @@ module Manip = struct
                (fun () -> acc)
                (fun file -> file :: acc)) [] l)
 
-  let upload_input ?(btoa=true) elt post =
+  let upload_input ?(btoa=true) ?encoding elt post =
     let files = files elt in
     List.iter (fun file ->
         let reader = new%js File.fileReader in
@@ -418,7 +418,10 @@ module Manip = struct
                        post s);
               _true
             );
-        reader##(readAsBinaryString file);) files;
+        match encoding with
+          | None -> reader##(readAsBinaryString file)
+          | Some e -> reader##(readAsText_withEncoding file (Js.string e))
+    ) files;
     true
 
   module Elt = struct

@@ -101,7 +101,7 @@ module Manip : sig
   val blur: 'a elt -> unit
 
   val files: 'a elt -> File.file t list
-  val upload_input: ?btoa:bool -> 'a elt -> (string -> unit) -> bool
+  val upload_input: ?btoa:bool -> ?encoding:string -> 'a elt -> (string -> unit) -> bool
 
   val scrollIntoView : ?bottom:bool -> 'a Html.elt -> unit
 
