@@ -1,6 +1,6 @@
 (lang dune 2.5)
 (allow_approximate_merlin)
-(name ezjs-utils)
+(name ezjs_utils)
 
 (generate_opam_files true)
 
