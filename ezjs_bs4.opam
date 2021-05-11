@@ -15,7 +15,6 @@ doc: "https://ocamlpro.github.io/ezjs/doc"
 bug-reports: "https://github.com/ocamlpro/ezjs/issues"
 depends: [
   "dune" {>= "2.5"}
-  "js_of_ocaml-ppx" {>= "3.4.0"}
   "ezjs_utils"
   "ezjs_cleave"
   "ezjs_jquery"

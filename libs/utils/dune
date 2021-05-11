@@ -21,7 +21,6 @@
  (public_name ezjs_utils.xhr)
  (modules ezjs_xhr)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml)
  (modes byte))
 
 (library
@@ -46,7 +45,6 @@
  (public_name ezjs_utils.storage)
  (modules ezjs_storage)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml)
  (modes byte))
 
 (library
@@ -62,7 +60,6 @@
  (public_name ezjs_utils.cookie)
  (modules ezjs_cookie)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml)
  (modes byte))
 
 (library
@@ -70,7 +67,6 @@
  (public_name ezjs_utils.session)
  (modules ezjs_session)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml)
  (modes byte))
 
 (library
@@ -87,7 +83,6 @@
  (public_name ezjs_utils.onload)
  (modules ezjs_onload)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml)
  (modes byte))
 
 (library
@@ -95,7 +90,6 @@
  (public_name ezjs_utils.date)
  (modules ezjs_date)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml)
  (modes byte))
 
 (library
@@ -112,5 +106,4 @@
  (public_name ezjs_utils.canvas)
  (modules ezjs_canvas)
  (preprocess (pps js_of_ocaml-ppx))
- (libraries js_of_ocaml)
  (modes byte))

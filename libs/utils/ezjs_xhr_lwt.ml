@@ -27,7 +27,7 @@ let unoptf f def x = match Js.Opt.to_option x with
   | None -> def
   | Some x -> f x
 
-let get ?(headers=[]) ~url ~args =
+let get ?(headers=[]) ?(args=[]) url =
   let (res, w) = Lwt.task () in
   let req = XmlHttpRequest.create () in
   let url = match args with
@@ -57,12 +57,12 @@ let get ?(headers=[]) ~url ~args =
   Lwt.on_cancel res (fun () -> req##abort);
   res
 
-let post ?(headers=[]) ?(get_args=[]) ~url ~body =
+let post ?(headers=[]) ?(args=[]) ~body url =
   let (res, w) = Lwt.task () in
   let req = XmlHttpRequest.create () in
-  let url = match get_args with
+  let url = match args with
     | [] -> url
-    | _ -> url ^ "?" ^ (url_encode_list get_args) in
+    | _ -> url ^ "?" ^ (url_encode_list args) in
   req##(_open (Js.string "POST") (Js.string url) (Js._true));
   req##(setRequestHeader (Js.string "Content-type")
 			 (Js.string "application/x-www-form-urlencoded"));

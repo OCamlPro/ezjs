@@ -19,9 +19,9 @@ exception Request_failed of (int * string)
 
 val post:
   ?headers:(string * string) list ->
-  ?get_args:(string * string) list ->
-  url:string -> body:string option -> string Lwt.t
+  ?args:(string * string) list ->
+  body:string option -> string -> string Lwt.t
 
 val get:
   ?headers:(string * string) list ->
-  url:string -> args:(string * string) list -> string Lwt.t
+  ?args:(string * string) list -> string -> string Lwt.t
