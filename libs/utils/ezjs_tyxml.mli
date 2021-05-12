@@ -121,6 +121,7 @@ module Manip : sig
     val onmouseover: ('a,Dom_html.mouseEvent) ev
     val onclick: ('a,Dom_html.mouseEvent) ev
     val ondblclick: ('a,Dom_html.mouseEvent) ev
+    val onmousemove: ('a,Dom_html.mouseEvent) ev
     val onload: ('a,Dom_html.event) ev
     val onerror: ('a,Dom_html.event) ev
     val onabort: ('a,Dom_html.event) ev
