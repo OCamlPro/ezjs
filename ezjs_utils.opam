@@ -21,7 +21,7 @@ depends: [
 depopts: [
   "lwt" {>= "5.3.0"}
   "base64" {>= "3.2.0"}
-  "js_of_ocaml-tyxml" {>= "3.4.0"}
+  "js_of_ocaml-tyxml" {>= "5.5.0"}
 ]
 build: [
   ["dune" "subst"] {pinned}

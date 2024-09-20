@@ -365,7 +365,7 @@ class type amCharts =
 
 let amCharts() =
   let amCharts : amCharts Js.t =
-    Js.Unsafe.variable "AmCharts"
+    Js.Unsafe.global ##. _AmCharts
   in
   amCharts
 

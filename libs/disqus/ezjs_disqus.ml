@@ -23,7 +23,7 @@ let build_config ?(lang="en") ?title url identifier () =
   let title = match title with
     | None -> Printf.sprintf "Thread for %s" identifier
     | Some title -> title in
-  let disqus : disqus Js.t = Js.Unsafe.variable "DISQUS" in
+  let disqus : disqus Js.t = Js.Unsafe.global ##. _DISQUS in
   let page_config : page Js.t = Js.Unsafe.obj [||] in
   page_config##.identifier := Js.string identifier;
   page_config##.url := Js.string url;
@@ -42,7 +42,7 @@ let init ?lang ?title url identifier name =
   Dom.appendChild doc##.body s
 
 let reset ?lang ?title url identifier =
-  let disqus : disqus Js.t = Js.Unsafe.variable "DISQUS" in
+  let disqus : disqus Js.t = Js.Unsafe.global ##. _DISQUS in
   let disqus_obj : disqus_reset Js.t = Js.Unsafe.obj [||] in
   disqus_obj##.reload := Js._true;
   disqus_obj##.config := build_config ?lang ?title url identifier;

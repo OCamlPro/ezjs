@@ -24,7 +24,7 @@
  (depopts
   (lwt (>= 5.3.0))
   (base64 (>= 3.2.0))
-  (js_of_ocaml-tyxml (>= 3.4.0))))
+  (js_of_ocaml-tyxml (>= 5.5.0))))
 
 (package
  (name ezjs_amcharts3)
@@ -40,7 +40,7 @@
 (package
  (name ezjs_disqus)
  (synopsis "Binding for Disqus")
- (depends (js_of_ocaml-ppx (>= 3.4.0))))
+ (depends (js_of_ocaml-ppx (>= 5.5.0))))
 
 (package
  (name ezjs_gauth)

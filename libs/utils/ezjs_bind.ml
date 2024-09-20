@@ -2,7 +2,7 @@ open Js_of_ocaml
 
 type string_field = Js.js_string Js.t Js.prop
 type int_field = int Js.prop
-type float_field = float Js.prop
+type float_field = Js.number_t Js.prop
 type bool_field = bool Js.prop
 type 'a array_field = 'a Js.js_array Js.t Js.prop
 
