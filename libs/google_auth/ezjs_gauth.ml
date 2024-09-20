@@ -212,13 +212,13 @@ type auth_response = {
 let verbose = ref false
 let set_verbose v =  verbose := v
 
-let gapi : gapi t optdef = Unsafe.variable "gapi"
+let gapi : gapi t optdef = Unsafe.global ##. gapi
 
 let ready ?(none=fun () -> if !verbose then log_str "cannot find gapi")
     ?(timeout=500.) (f : gapi t -> unit) =
-  match Optdef.to_option (Unsafe.variable "gapi") with
+  match Optdef.to_option (Unsafe.global ##. gapi) with
   | None ->
-    let cb () = Optdef.case (Unsafe.variable "gapi") none f in
+    let cb () = Optdef.case (Unsafe.global ##. gapi) none f in
     ignore @@ Dom_html.window##setTimeout (wrap_callback cb) timeout
   | Some gapi -> f gapi
 

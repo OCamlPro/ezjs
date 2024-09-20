@@ -594,7 +594,7 @@ class type amCharts =
   end
 
 let amCharts () =
-  let amCharts : amCharts Js.t = Js.Unsafe.variable "AmCharts" in
+  let amCharts : amCharts Js.t = Js.Unsafe.global ##. _AmCharts in
   amCharts
 
 let export ?divId () =

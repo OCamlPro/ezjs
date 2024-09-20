@@ -34,7 +34,7 @@ type 'a elt = 'a Html.elt
 
 open Js
 
-exception JsError = Error
+exception JsError = Js_error.Exn
 type ('a, 'b) result = ('a, 'b) Stdlib.result = Ok of 'a | Error of 'b
 
 let doc = Dom_html.document

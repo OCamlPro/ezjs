@@ -34,7 +34,7 @@ type 'a elt = 'a Html.elt
 
 open Js
 
-exception JsError of error t
+exception JsError of Js_error.t
 type ('a, 'b) result = ('a, 'b) Stdlib.result = Ok of 'a | Error of 'b
 
 val alert: string -> unit
