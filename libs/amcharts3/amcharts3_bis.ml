@@ -152,10 +152,10 @@ class type ['a] chart = object
   method usePrefixes : bool_field
   method addLabel :
     int -> int -> Js.js_string Js.t -> Js.js_string Js.t -> int -> Js.js_string Js.t
-    -> int -> float -> bool -> Js.js_string Js.t -> unit Js.meth
+    -> int -> Js.number_t -> bool -> Js.js_string Js.t -> unit Js.meth
   method addLegend : legend Js.t -> Js.js_string Js.t -> unit Js.meth
   (* method addListerner *)
-  method addTitle : Js.js_string Js.t -> int -> Js.js_string Js.t -> float ->
+  method addTitle : Js.js_string Js.t -> int -> Js.js_string Js.t -> Js.number_t ->
     bool -> unit Js.meth
   method clear : unit Js.meth
   method clearLabels : unit Js.meth

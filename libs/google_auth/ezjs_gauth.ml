@@ -219,7 +219,7 @@ let ready ?(none=fun () -> if !verbose then log_str "cannot find gapi")
   match Optdef.to_option (Unsafe.global ##. gapi) with
   | None ->
     let cb () = Optdef.case (Unsafe.global ##. gapi) none f in
-    ignore @@ Dom_html.window##setTimeout (wrap_callback cb) timeout
+    ignore @@ Dom_html.window##setTimeout (wrap_callback cb) (Js_of_ocaml.Js.float timeout)
   | Some gapi -> f gapi
 
 let init ?timeout params f =

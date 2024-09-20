@@ -63,7 +63,9 @@ let arc
     (t : t)
     (x : float) (y : float) (rad : float)
     (init_angle : float) (end_angle : float) (dir : bool) =
-  t.context2d##arc x y rad init_angle end_angle (Js.bool dir);
+  t.context2d##arc
+    (Js.float x) (Js.float y) (Js.float rad)
+    (Js.float init_angle) (Js.float end_angle) (Js.bool dir);
   let cos_end_angle = cos end_angle in
   let sin_end_angle = sin end_angle in
   let cos_end_angle_2 = cos_end_angle *. abs_float (cos_end_angle) in
@@ -76,7 +78,8 @@ let arcTo
     (x0 : float) (y0 : float)
     (x1 : float) (y1 : float)
     (rad : float) =
-  t.context2d##arcTo x0 y0 x1 y1 rad;
+  t.context2d##arcTo
+    (Js.float x0) (Js.float y0) (Js.float x1) (Js.float y1) (Js.float rad);
   t.position.x <- nan; (* todo: calculate position *)
   t.position.y <- nan
 
@@ -87,7 +90,9 @@ let bezierCurveTo
     (x0 : float) (y0 : float)
     (x1 : float) (y1 : float)
     (x2 : float) (y2 : float) =
-  t.context2d##bezierCurveTo x0 y0 x1 y1 x2 y2;
+  t.context2d##bezierCurveTo
+    (Js.float x0) (Js.float y0) (Js.float x1) (Js.float y1)
+    (Js.float x2) (Js.float y2);
   t.position.x <- x2;
   t.position.y <- y2
 
@@ -95,7 +100,7 @@ let clearRect
     (t : t)
     (x0 : float) (y0 : float)
     (x1 : float) (y1 : float) =
-  t.context2d##clearRect x0 y0 x1 y1
+  t.context2d##clearRect (Js.float x0) (Js.float y0) (Js.float x1) (Js.float y1)
 
 let clip (t : t) = t.context2d##clip
 
@@ -111,7 +116,8 @@ let createLinearGradient
     (t: t)
     (x0 : float) (y0 : float)
     (x1 : float) (y1 : float) =
-  t.context2d##createLinearGradient x0 y0 x1 y1
+  t.context2d##createLinearGradient
+    (Js.float x0) (Js.float y0) (Js.float x1) (Js.float y1)
 
 let createPattern
     (t : t)
@@ -127,7 +133,9 @@ let createRadialGradient
     (t : t)
     (x0 : float) (y0 : float) (r0 : float)
     (x1 : float) (y1 : float) (r1 : float) =
-  t.context2d##createRadialGradient x0 y0 r0 x1 y1 r1
+  t.context2d##createRadialGradient
+    (Js.float x0) (Js.float y0) (Js.float r0)
+    (Js.float x1) (Js.float y1) (Js.float r1)
 
 let drawFocusRing
     (t : t)
@@ -135,7 +143,7 @@ let drawFocusRing
     (f1 : float)
     (f2 : float)
     (b : bool) =
-  t.context2d##drawFocusRing e f1 f2 (Js.bool b)
+  t.context2d##drawFocusRing e (Js.float f1) (Js.float f2) (Js.bool b)
 
 let drawImage
     (t : t)
@@ -153,38 +161,44 @@ let drawImage
       match img with
       | Image img ->
         t.context2d##drawImage_full
-          img sx sy sWidth sHeight dx dy dWidth dHeight
+          img (Js.float sx) (Js.float sy) (Js.float sWidth) (Js.float sHeight)
+          (Js.float dx) (Js.float dy) (Js.float dWidth) (Js.float dHeight)
       | Canvas c ->
         t.context2d##drawImage_fullFromCanvas
-          c sx sy sWidth sHeight dx dy dWidth dHeight
+          c (Js.float sx) (Js.float sy) (Js.float sWidth) (Js.float sHeight)
+          (Js.float dx) (Js.float dy) (Js.float dWidth) (Js.float dHeight)
       | Video vid ->
         t.context2d##drawImage_fullFromVideo
-          vid sx sy sWidth sHeight dx dy dWidth dHeight
+          vid (Js.float sx) (Js.float sy) (Js.float sWidth) (Js.float sHeight)
+          (Js.float dx) (Js.float dy) (Js.float dWidth) (Js.float dHeight)
     end
 
   | Some dWidth, Some dHeight, _, _, _, _ -> begin
       match img with
       | Image img ->
         t.context2d##drawImage_withSize
-          img dx dy dWidth dHeight
+          img (Js.float dx) (Js.float dy) (Js.float dWidth) (Js.float dHeight)
       | Canvas c ->
         t.context2d##drawImage_fromCanvasWithSize
-          c dx dy dWidth dHeight
+          c (Js.float dx) (Js.float dy) (Js.float dWidth) (Js.float dHeight)
       | Video vid ->
         t.context2d##drawImage_fromVideoWithSize
-          vid dx dy dWidth dHeight
+          vid (Js.float dx) (Js.float dy) (Js.float dWidth) (Js.float dHeight)
     end
   | _ -> begin
       match img with
-      | Image img -> t.context2d##drawImage img dx dy
-      | Canvas c -> t.context2d##drawImage_fromCanvas c dx dy
-      | Video vid -> t.context2d##drawImage_fromVideoWithVideo vid dx dy
+      | Image img ->
+        t.context2d##drawImage img (Js.float dx) (Js.float dy)
+      | Canvas c ->
+        t.context2d##drawImage_fromCanvas c (Js.float dx) (Js.float dy)
+      | Video vid ->
+        t.context2d##drawImage_fromVideoWithVideo vid (Js.float dx) (Js.float dy)
     end
 
 let fill (t : t) = t.context2d##fill
 
 let fillRect (t : t) (x0 : float) (y0 : float) (x1 : float) (y1 : float) =
-  t.context2d##fillRect x0 y0 x1 y1
+  t.context2d##fillRect (Js.float x0) (Js.float y0) (Js.float x1) (Js.float y1)
 
 let setFillStyle (t : t) (s : style) =
   match s with
@@ -194,8 +208,10 @@ let setFillStyle (t : t) (s : style) =
 
 let fillText (t : t) (text : string) ?(maxWidth: float option) (x : float) (y : float) =
   match maxWidth with
-  | None -> t.context2d##fillText (Js.string text) x y
-  | Some w -> t.context2d##fillText_withWidth (Js.string text) x y w
+  | None -> t.context2d##fillText (Js.string text) (Js.float x) (Js.float y)
+  | Some w ->
+    t.context2d##fillText_withWidth (Js.string text) (Js.float x) (Js.float y)
+      (Js.float w)
 
 let setFont (t : t) (font : string) =
   t.context2d##.font := Js.string font
@@ -203,13 +219,13 @@ let setFont (t : t) (font : string) =
 let getFont (t : t) = t.context2d##.font
 
 let getImageData (t : t) (sx : float) (sy : float) (sw : float) (sh : float) =
-  t.context2d##getImageData sx sy sw sh
+  t.context2d##getImageData (Js.float sx) (Js.float sy) (Js.float sw) (Js.float sh)
 
 let putImageData (t : t) (img : Dom_html.imageData Js.t) (dx: float) (dy : float) =
-  t.context2d##putImageData img dx dy
+  t.context2d##putImageData img (Js.float dx) (Js.float dy)
 
-let setGlobalAlpha (t : t) (f : float) = t.context2d##.globalAlpha := f
-let getGlobalAlpha (t : t) = t.context2d##.globalAlpha
+let setGlobalAlpha (t : t) (f : float) = t.context2d##.globalAlpha := Js.float f
+let getGlobalAlpha (t : t) = Js.to_float t.context2d##.globalAlpha
 
 let setGlobalCompositeOperation (t : t) (op : string) =
   t.context2d##.globalCompositeOperation := (Js.string op)
@@ -217,7 +233,7 @@ let getGlobalCompositeOperation (t : t) =
   t.context2d##.globalCompositeOperation
 
 let isPointInPath (t : t) (x : float) (y : float) =
-  Js.to_bool (t.context2d##isPointInPath x y)
+  Js.to_bool (t.context2d##isPointInPath (Js.float x) (Js.float y))
 
 let lineCap (t : t) =
   Js.to_string t.context2d##.lineCap
@@ -226,40 +242,41 @@ let lineJoin (t : t) =
   Js.to_string t.context2d##.lineJoin
 
 let lineTo (t : t) (x : float) (y : float) =
-  t.context2d##lineTo x y;
+  t.context2d##lineTo (Js.float x) (Js.float y);
   t.position.x <- x;
   t.position.y <- y
 
-let setLineWidth (t : t) (w : float) = t.context2d##.lineWidth := w
-let getLineWidth (t : t) = t.context2d##.lineWidth
+let setLineWidth (t : t) (w : float) = t.context2d##.lineWidth := Js.float w
+let getLineWidth (t : t) = Js.to_float t.context2d##.lineWidth
 
 let measureText (t : t) (txt : string) =
   t.context2d##measureText (Js.string txt)
 
-let setMiterLimit (t : t) (f : float) = t.context2d##.miterLimit := f
-let getMiterLimit (t : t) = t.context2d##.miterLimit
+let setMiterLimit (t : t) (f : float) = t.context2d##.miterLimit := Js.float f
+let getMiterLimit (t : t) = Js.to_float t.context2d##.miterLimit
 
 let moveTo (t : t) (x : float) (y : float) =
-  t.context2d##moveTo x y;
+  t.context2d##moveTo (Js.float x) (Js.float y);
   t.position.x <- x;
   t.position.y <- y
 
 let quadraticCurveTo (t : t) (x1 : float) (y1 : float) (x2 : float) (y2 : float) =
-  t.context2d##quadraticCurveTo x1 y1 x2 y2;
+  t.context2d##quadraticCurveTo
+    (Js.float x1) (Js.float y1) (Js.float x2) (Js.float y2);
   t.position.x <- x2;
   t.position.y <- y2
 
 let rect (t : t) (x0 : float) (y0 : float) (x1 : float) (y1 : float) =
-  t.context2d##rect x0 y0 x1 y1
+  t.context2d##rect (Js.float x0) (Js.float y0) (Js.float x1) (Js.float y1)
 
 let restore (t : t) = t.context2d##restore
 
-let rotate (t : t) (deg : float) = t.context2d##rotate deg
+let rotate (t : t) (deg : float) = t.context2d##rotate (Js.float deg)
 
 let save (t : t) = t.context2d##save
 
 let scale (t : t) (x : float) (y : float) =
-  t.context2d##scale x y;
+  t.context2d##scale (Js.float x) (Js.float y);
   t.position.x <- t.position.x *. x;
   t.position.y <- t.position.y *. y
 
@@ -267,24 +284,25 @@ let setTransform
     (t : t)
     (a : float) (b : float) (c : float)
     (d : float) (e : float) (f : float) =
-  t.context2d##setTransform a b c d e f
+  t.context2d##setTransform
+    (Js.float a) (Js.float b) (Js.float c) (Js.float d) (Js.float e) (Js.float f)
 
-let setShadowBlur (t : t) (blur : float) = t.context2d##.shadowBlur := blur
-let getShadowBlur (t : t) = t.context2d##.shadowBlur
+let setShadowBlur (t : t) (blur : float) = t.context2d##.shadowBlur := Js.float blur
+let getShadowBlur (t : t) = Js.to_float t.context2d##.shadowBlur
 
 let setShadowColor (t : t) (color : string) = t.context2d##.shadowColor := Js.string color
 let getShadowColor (t : t) = Js.to_string t.context2d##.shadowColor
 
-let setShadowOffsetX (t : t) (x : float) = t.context2d##.shadowOffsetX := x
-let getShadowOffsetX (t : t) = t.context2d##.shadowOffsetX
+let setShadowOffsetX (t : t) (x : float) = t.context2d##.shadowOffsetX := Js.float x
+let getShadowOffsetX (t : t) = Js.to_float t.context2d##.shadowOffsetX
 
-let setShadowOffsetY (t : t) (y : float) = t.context2d##.shadowOffsetY := y
-let getShadowOffsetY (t : t) = t.context2d##.shadowOffsetY
+let setShadowOffsetY (t : t) (y : float) = t.context2d##.shadowOffsetY := Js.float y
+let getShadowOffsetY (t : t) = Js.to_float t.context2d##.shadowOffsetY
 
 let stroke (t : t) = t.context2d##stroke
 
 let strokeRect (t : t) (x0 : float) (y0 : float) (x1 : float) (y1 : float) =
-  t.context2d##strokeRect x0 y0 x1 y1
+  t.context2d##strokeRect (Js.float x0) (Js.float y0) (Js.float x1) (Js.float y1)
 
 let setStrokeStyle (t : t) (style : style) =
   match style with
@@ -297,8 +315,10 @@ let strokeText
     (txt : string) ?(width : float option)
     (x : float) (y : float) =
   match width with
-  | None -> t.context2d##strokeText (Js.string txt) x y
-  | Some w -> t.context2d##strokeText_withWidth (Js.string txt) x y w
+  | None -> t.context2d##strokeText (Js.string txt) (Js.float x) (Js.float y)
+  | Some w ->
+    t.context2d##strokeText_withWidth
+      (Js.string txt) (Js.float x) (Js.float y) (Js.float w)
 
 let setTextAlign (t : t) (styl : string) =
   t.context2d##.textAlign := Js.string styl
@@ -312,10 +332,11 @@ let transform
     (t : t)
     (a : float) (b : float) (c : float)
     (d : float) (e : float) (f : float) =
-  t.context2d##transform a b c d e f
+  t.context2d##transform
+    (Js.float a) (Js.float b) (Js.float c) (Js.float d) (Js.float e) (Js.float f)
 
 let translate (t : t) (x : float) (y : float) =
-  t.context2d##translate x y
+  t.context2d##translate (Js.float x) (Js.float y)
 
 let addColorStop (g : Dom_html.canvasGradient Js.t) (stop : float) (color : string) =
-  g##addColorStop stop (Js.string color)
+  g##addColorStop (Js.float stop) (Js.string color)
